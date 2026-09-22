@@ -10,7 +10,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class NamePanel : MonoBehaviour
+public class NamePanel : PanelBase
 {
     [SerializeField] private Text _itemNameText;
 
@@ -19,17 +19,33 @@ public class NamePanel : MonoBehaviour
 
     [SerializeField] private Canvas _canvas;
 
-    private void Awake()
+    protected override  void Awake()
     {
+        base.Awake();
         if (_canvas == null)
             _canvas = GetComponentInParent<Canvas>();
-        Hide();
+        OnClose(); // 初始隐藏
     }
-
+    public override void OnInit()
+    {
+        base.OnInit();
+    }
     private void Update()
     {
-        FollowMouse();
+        if (IsOpen) FollowMouse();
     }
+
+    public override void OnOpen(object data = null)
+    {
+        if (data is string strData)
+        {
+            _itemNameText.text = strData;
+            base.OnOpen(data);
+            FollowMouse();
+        }
+        
+    }
+
 
     private void FollowMouse()
     {
@@ -47,20 +63,11 @@ public class NamePanel : MonoBehaviour
         }
         else
         {
-            // Screen Space - Overlay
             transform.position = mousePos + _offset;
         }
     }
 
-    public void Show(string itemName)
-    {
-        _itemNameText.text = itemName;
-        gameObject.SetActive(true);
-        FollowMouse();
-    }
-
-    public void Hide()
-    {
-        gameObject.SetActive(false);
-    }
+    // 保留旧 API，方便已有调用处
+    public void Show(string itemName) => OnOpen(itemName);
+    public void Hide() => OnClose();
 }

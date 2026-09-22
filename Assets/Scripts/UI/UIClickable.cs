@@ -42,6 +42,8 @@ public class UIClickable : MonoBehaviour, IPointerClickHandler
     /// <param name="dialogueList"></param>
     public void Init(List<DialogueLine> dialogueList)
     {
+        //DialogueHistoryModel.Instance?.Clear();  // 新对话开始，清空历史
+
         _dialogueList = dialogueList;
         currentIndex = 0;
         _currentSpeaker = null;
@@ -91,6 +93,8 @@ public class UIClickable : MonoBehaviour, IPointerClickHandler
         }
 
         DialogueLine line = _dialogueList[currentIndex];
+        //写入历史对话
+        DialogueHistoryModel.Instance?.Add(line);
 
         if (_currentSpeaker != line.speakerName)
         {

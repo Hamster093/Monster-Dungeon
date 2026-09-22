@@ -7,194 +7,126 @@
 *****************************************************/
 
 using System;
-using System.Xml;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+public class ItemDescriptionData
+{
+    public string itemName;
+    public string itemDescription;
+    public Sprite itemSprite;
+    public Sprite emptySprite;   // 没有图片时的兜底
+}
+
+public class ItemActionData
+{
+    public string itemName;
+    public Sprite itemSprite;
+    public string itemDescription;
+    public Sprite emptySprite;
+
+    /// <summary>点击“丢弃”时由 ItemSlot 执行</summary>
+    public Action onDrop;
+}
+
 public class ItemSlot : MonoBehaviour ,IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
-    //=====物品属性=====//
-    public string _itemName;
-    public int _quantity;
-    public Sprite _itemSprite;
-    public bool _isFull;
-    public string _itemDescription;
-    public Sprite _emptySprite;
-
-    [SerializeField] private int _maxNumberOfItems;
-
     //=====物品格子=====//
-    [SerializeField]
-    private Text _quantityText;
+    [SerializeField] private Text _quantityText;
+    [SerializeField] private Image _itemImage;
+    [SerializeField] public GameObject _selectedShader; 
 
-    [SerializeField]
-    private Image _itemImage;
-
-
-    //=====物品格子声明=====//
-    public Image _itemDescriptionImage;
-    public Text _itemDescriptionNameText;
-    public Text _itemDescriptionText;
-
-    //名字面板
-    [SerializeField]
-    private NamePanel _namePanle;
-
-    public GameObject _selectedShader; 
     public bool _thisItemSelected;
 
-    private InventoryManager _inventoryManager;
+    public int SlotIndex { get; private set; }
+    private ItemStack _stack;
 
-    public GameObject _itemPrefab;
-
-    private void Start()
+    /// <summary>由 BackpackPanel 在 OnInit 时绑定索引</summary>
+    public void Bind(int index, Sprite emptySprite)
     {
-        _inventoryManager=GameObject.Find("InventoryCanvas").GetComponent<InventoryManager>();//此处子物体拿到父物体引用 后续应改为事件 todo
+        SlotIndex = index;
+        Refresh(InventoryModel.Instance.GetSlot(index), emptySprite);
     }
 
-    public int AddItem(string itemName, int quantity, Sprite itemSprite,string itemDescription)
+    /// <summary>刷新单个格子的显示</summary>
+    public void Refresh(ItemStack stack, Sprite emptySprite)
     {
-        if (_isFull)
-            return quantity;
+        _stack = stack;
 
-        //更新名称
-        _itemName =itemName;
-        //更新图片
-        _itemSprite=itemSprite;
-        _itemImage.sprite = itemSprite;
-        //更新描述
-        _itemDescription=itemDescription;
-        //更新数量
-        _quantity += quantity;
-        if (_quantity >= _maxNumberOfItems)
+        if (stack == null || stack.IsEmpty)
         {
-            _quantityText.text = _maxNumberOfItems.ToString();
-            _quantityText.enabled = true;
-            _isFull = true;
-
-            int extraItem = _quantity - _maxNumberOfItems;
-            _quantity = _maxNumberOfItems;
-            return extraItem;
+            _itemImage.sprite = emptySprite;
+            _quantityText.enabled = false;
         }
+        else
+        {
+            _itemImage.sprite = stack.sprite != null ? stack.sprite : emptySprite;
+            _quantityText.enabled = stack.quantity > 1;
+            _quantityText.text = stack.quantity.ToString();
+        }
+    }
 
-        _quantityText.text = _quantity.ToString();
-        _quantityText.enabled = true;
-
-        return 0;
+    public void SetSelected(bool selected)
+    {
+        _thisItemSelected = selected;
+        _selectedShader.SetActive(selected);
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Left)
-        {
             OnLeftClick();
-        }
         else if (eventData.button == PointerEventData.InputButton.Right)
-        {
             OnRightClick();
-        }
     }
 
     private void OnLeftClick()
     {
-        //选中状态再次点击 触发使用逻辑  todo如果可使用 项目可能不需要消耗品 先写在这
+        DeselectAllRequested.Trigger();
+        SetSelected(true);
+
+        if (_stack == null || _stack.IsEmpty) return;
+
         if (_thisItemSelected)
         {
-            _inventoryManager.UseItem(_itemName);
-            _quantity--;
-            _quantityText.text=_quantity.ToString();
-            if (_quantity<=0)
-            {
-                EmptySlot();
-            }
+            // 使用逻辑
+            // InventoryModel.Instance.UseItem(SlotIndex);
+            
         }
-        else
-        {
-            _inventoryManager.DeselectAllSlots();
-            _selectedShader.SetActive(true);
-            _thisItemSelected = true;
-
-            _itemDescriptionNameText.text = _itemName;
-            _itemDescriptionText.text = _itemDescription;
-            _itemDescriptionImage.sprite = _itemSprite;
-            if (_itemDescriptionImage.sprite == null)
-                _itemDescriptionImage.sprite = _emptySprite;
-        }
-        //todo 鼠标左键单击查看 弹出查看窗口  点击该窗口外的图片关闭窗口
     }
-
-    /// <summary>
-    /// 消耗物品方法
-    /// </summary>
-    /// <exception cref="NotImplementedException"></exception>
-    private void EmptySlot()
-    {
-        //背包面板清空
-        _quantityText.enabled=false;
-        _itemImage.sprite = _emptySprite;
-        //描述栏位面板清空
-        _itemDescriptionNameText.text = "";
-        _itemDescriptionText.text = "";
-        _itemDescriptionImage.sprite = _emptySprite;
-    }
-
     private void OnRightClick()
     {
-        //todo 鼠标右键弹出菜单 菜单包含查看 丢弃按钮
-        //test测试丢弃逻辑
-        DiscardItem();
+        if (_stack == null || _stack.IsEmpty) return;
+
+        UIManager.Instance.Open<ItemActionPanel>(new ItemActionData
+        {
+            itemName = _stack.itemName,
+            itemSprite = _stack.sprite,
+            itemDescription = _stack.description,
+            onDrop = () => DropItem()
+        });
     }
 
-    /// <summary>
-    /// 丢弃逻辑
-    /// </summary>
-    private void DiscardItem()
+    private void DropItem()
     {
-        GameObject droppedItem = Instantiate(_itemPrefab, new Vector3 (0,0,0), Quaternion.identity);//todo 暂时生成在000
+        if (_stack == null || _stack.IsEmpty) return;
 
-        Item itemComp = droppedItem.GetComponent<Item>();
-        if (itemComp != null)
-        {
-            itemComp._quantity = 1;
-            itemComp._itemName = _itemName;
-            itemComp._sprite = _itemSprite;
-            itemComp._itemDescription = _itemDescription;
-        }
+        // 生成掉落物？TODO
 
-        // 3. 更新子物体Square的精灵图
-        SpriteRenderer sr = droppedItem.transform.Find("Square")?.GetComponent<SpriteRenderer>();
-        if (sr != null)
-        {
-            sr.sprite = _itemSprite;
-        }
-
-        if (_isFull)
-        {
-            _isFull = false;
-        }
-        //判断物品是否为空
-        _quantity--;
-
-        _quantityText.text = _quantity.ToString();
-        if (_quantity <= 0)
-        {
-            EmptySlot();
-        }
+        //丢弃一个
+        InventoryModel.Instance.RemoveItem(SlotIndex, 1);
+        
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (_quantity <= 0 || string.IsNullOrEmpty(_itemName))
-            return;
-        _namePanle.gameObject.SetActive(true);
-        _namePanle.Show(_itemName);
-
+        if (_stack == null || _stack.IsEmpty) return;
+        UIManager.Instance.Open<NamePanel>(_stack.itemName);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        _namePanle.Hide();
+        UIManager.Instance.Close<NamePanel>();
     }
-
 }

@@ -7,22 +7,37 @@
 *****************************************************/
 
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class HUDPanel : MonoBehaviour 
+public class HUDPanel : PanelBase
 {
     public Transform ButtonRoot;
 
-    private void Start()
+    public override bool IsModal => false;
+
+    public override bool OnEscapePressed() => false;
+
+    public override void OnInit()
     {
         BindButtonClick("Talk", OnTalk);
         BindButtonClick("Investigate", OnInvestigate);
         BindButtonClick("RouteReal", OnRouteReal);
         BindButtonClick("RouteFake", OnRouteFake);
         BindButtonClick("NextDay", OnNextDay);
-        BindButtonClick("Backpack", OnOpenBackpack);
+        BindButtonClick("Backpack", ToggleBackpack);
+        BindButtonClick("Description", OnDescription);
+    }
+
+
+    private void Update()
+    {
+        if (Input.GetButtonDown("Inventory"))
+        {
+            ToggleBackpack();
+        }
     }
 
     private void BindButtonClick(string buttonName,UnityAction action)
@@ -47,13 +62,18 @@ public class HUDPanel : MonoBehaviour
     {
         Debug.Log($"真实指路第 1 次，消耗 1 AP");
     }
-    private void OnNextDay()
+    private void OnNextDay() => NextDayEvent.Trigger();
+    private void ToggleBackpack()
     {
-        NextDayEvent.Trigger();
+        // 已打开就关闭，没打开就打开
+        if (UIManager.Instance.IsOpen<BackpackPanel>())
+            UIManager.Instance.Close<BackpackPanel>();
+        else
+            UIManager.Instance.Open<BackpackPanel>();
     }
-    private void OnOpenBackpack()
+    private void OnDescription()
     {
-        OpenBackPack.Trigger();
+        UIManager.Instance.Open<DialogueHistoryPanel>();
     }
     #endregion
 }

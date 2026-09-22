@@ -6,7 +6,20 @@
 	功能：物品类
 *****************************************************/
 
+using System;
 using UnityEngine;
+
+/// <summary>拾取请求的数据包</summary>
+public class ItemPickupData
+{
+    public string itemName;
+    public int quantity;
+    public Sprite sprite;
+    public string description;
+
+    /// <summary>处理结果回调：参数为剩余数量，0 表示全部放入</summary>
+    public Action<int> onResult;
+}
 
 public class Item : MonoBehaviour//目前不确定物品是否需要实例
 {
@@ -26,40 +39,43 @@ public class Item : MonoBehaviour//目前不确定物品是否需要实例
     [SerializeField]
     public string _itemDescription;
 
-
-    private InventoryManager _inventoryManager;
-
-    private void Start()
-    {
-        _inventoryManager = GameObject.Find("InventoryCanvas").GetComponent<InventoryManager>();
-
-    }
-
     /// <summary>
     /// 玩家拾取物品
     /// </summary>
     /// <param name="collision"></param>
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag=="Player")
-        {
-            int leftoverItems= _inventoryManager.AddItem(_itemName, _quantity, _sprite,_itemDescription);
-            if (leftoverItems<=0)
-                Destroy(gameObject);
-            else
-                _quantity=leftoverItems;
-            
-        }
+        if (collision.gameObject.CompareTag("Player"))
+            Pickup();
     }
+
     /// <summary>
     /// 玩家获得物品
     /// </summary>
     public void PlayerAddItem()
     {
-        int leftoverItems = _inventoryManager.AddItem(_itemName, _quantity, _sprite, _itemDescription);
-        //if (leftoverItems <= 0)
-        //    Destroy(gameObject);//如果物品有实例销毁 如果是商店 应该减去相应数量todo
-        //else
-        //    _quantity = leftoverItems;//背包装不下那么多的情况
+        Pickup();
+    }
+
+    /// <summary>
+    /// 拾取
+    /// </summary>
+    private void Pickup()
+    {
+        ItemPickupRequested.Trigger(new ItemPickupData
+        {
+            itemName = _itemName,
+            quantity = _quantity,
+            sprite = _sprite,
+            description = _itemDescription,
+            onResult = leftover =>
+            {
+                if (leftover <= 0)
+                //Destroy(gameObject);       // 全部放进去了，销毁
+                    return;
+                else
+                    _quantity = leftover;       // 背包满了，剩下的留在场景里
+            }
+        });
     }
 }
