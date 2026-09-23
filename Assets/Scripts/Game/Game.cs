@@ -8,7 +8,7 @@
 
 using UnityEngine;
 
-public class Game : MonoBehaviour 
+public class StratGameController : MonoBehaviour 
 {
     private void Awake()
     {
