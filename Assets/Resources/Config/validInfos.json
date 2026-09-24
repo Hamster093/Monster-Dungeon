@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "adventurerId": 1,
+    "text": "我曾独自讨伐过一只B级魔物，就在东边的废弃矿坑。",
+    "verified": false
+  },
+  {
+    "id": 2,
+    "adventurerId": 1,
+    "text": "我妹妹失踪前，最后出现的地方就是这座地牢附近。",
+    "verified": false
+  }
+]

@@ -1,0 +1,11 @@
+[
+  {
+    "id": 1,
+    "adventurerId": 1,
+    "targetMonsterId": 1,
+    "targetZoneId": 1,
+    "baseReward": 200,
+    "description": "讨伐C级魔物，取得其核心材料",
+    "specialConditions": ""
+  }
+]

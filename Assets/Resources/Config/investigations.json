@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "adventurerId": 1,
+    "order": 1,
+    "text": "艾伦曾是某骑士团成员，因一次任务失败被除名。",
+    "costAP": 1,
+    "itemId": 1
+  },
+  {
+    "id": 2,
+    "adventurerId": 1,
+    "order": 2,
+    "text": "退役后他一直在暗中寻找失踪的妹妹，怀疑与地牢有关。",
+    "costAP": 1,
+    "itemId": 1
+  },
+  {
+    "id": 3,
+    "adventurerId": 1,
+    "order": 3,
+    "text": "他妹妹最后一次出现时，身上带着一枚旧骑士团徽章，现在可能落在地牢某处。",
+    "costAP": 1,
+    "itemId": 1
+  }
+]

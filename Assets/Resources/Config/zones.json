@@ -1,0 +1,9 @@
+[
+  {
+    "id": 1,
+    "name": "潮湿洞窟",
+    "dangerLevel": 2,
+    "monsterIds": [1],
+    "routeDescription": "沿左侧水道深入，第三个岔路右转"
+  }
+]

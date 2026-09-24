@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "name": "陈旧委托书",
+    "type": 0,
+    "price": 50,
+    "currency": 0,
+    "effect": "Investigation",
+    "maxPerDay": 3,
+    "usableIn": "Reception"
+  }
+]

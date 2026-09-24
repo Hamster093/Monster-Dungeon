@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "adventurerId": 1,
+    "stage": 1,
+    "costAP": 0,
+    "text": "你以前打过这种魔物吗？",
+    "checkTarget": 12,
+    "successText": "打过，上次一个人清了三只。",
+    "failText": "……记不太清了。",
+    "validInfoId": 1,
+    "statChanges": { "Trust": 5 }
+  }
+]

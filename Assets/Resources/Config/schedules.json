@@ -1,0 +1,7 @@
+[
+  { "phase": 1, "dayCount": 3, "unlockAdventurerIds": [1,2,3], "installmentAmount": 100, "deadlineDay": 3 },
+  { "phase": 2, "dayCount": 4, "unlockAdventurerIds": [4], "installmentAmount": 150, "deadlineDay": 7 },
+  { "phase": 3, "dayCount": 5, "unlockAdventurerIds": [5], "installmentAmount": 200, "deadlineDay": 12 },
+  { "phase": 4, "dayCount": 7, "unlockAdventurerIds": [6], "installmentAmount": 300, "deadlineDay": 19 },
+  { "phase": 5, "dayCount": 8, "unlockAdventurerIds": [7], "installmentAmount": 500, "deadlineDay": 27 }
+]

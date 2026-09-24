@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "name": "艾伦",
+    "isParty": false,
+    "baseLevel": 3,
+    "personalityAxes": [3, 0],
+    "visitDays": [3, 10, 17, 24],
+    "contractId": 1,
+    "backgrounds": ["曾是某骑士团成员", "因事故退役", "暗中寻找失踪的妹妹"],
+    "successorType": "欲望型",
+    "mainDimension": 0,
+    "secondaryDimension": 2,
+    "initialStats": { "Desire": 50, "Reason": 40, "Trust": 30, "Fear": 20, "Vanity": 60, "Cooperation": 40 }
+  }
+]

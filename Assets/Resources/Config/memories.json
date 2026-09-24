@@ -1,0 +1,9 @@
+[
+  { "id": 1, "trigger": 0, "text": "被主人误导", "revengeLevel": 1 },
+  { "id": 2, "trigger": 1, "text": "怀疑主人", "revengeLevel": 0 },
+  { "id": 3, "trigger": 2, "text": "在某分区受重伤", "revengeLevel": 0 },
+  { "id": 4, "trigger": 3, "text": "成功取得目标材料", "revengeLevel": 0 },
+  { "id": 5, "trigger": 4, "text": "确认自己曾被欺骗", "revengeLevel": 1 },
+  { "id": 6, "trigger": 5, "text": "因错误指路身受重伤", "revengeLevel": 2 },
+  { "id": 7, "trigger": 6, "text": "未能从地牢返回", "revengeLevel": 2 }
+]

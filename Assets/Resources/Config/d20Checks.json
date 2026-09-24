@@ -1,0 +1,11 @@
+[
+  {
+    "id": 1,
+    "checkType": 1,
+    "baseTarget": 10,
+    "levelModifiers": "等级差每级+/-2",
+    "stateModifiers": "受损+3, 濒危+6",
+    "routeModifiers": "编造+2",
+    "resultBands": "1:大失败,2-9:失败,10-18:成功,19-20:大成功"
+  }
+]

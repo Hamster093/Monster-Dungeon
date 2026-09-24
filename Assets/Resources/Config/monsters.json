@@ -1,0 +1,11 @@
+[
+  {
+    "id": 1,
+    "name": "石甲蜥",
+    "level": 2,
+    "zoneId": 1,
+    "nutrientValue": 15,
+    "materialValue": 200,
+    "dailyLimit": 1
+  }
+]
