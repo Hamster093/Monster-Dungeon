@@ -228,8 +228,9 @@ public class TestBootstrap : MonoBehaviour
 
         Debug.Log($"[冒险] 结算前: 现金={cashBefore}, 养分={nutrientBefore}");
 
-        bool ok = sm.Reception.GiveRoute(advId, isTruth);
-        Debug.Log($"[冒险] 指路完成: {ok}");
+        var result = sm.Reception.GiveRoute(advId, isTruth);
+        Debug.Log(result.Message);
+        bool ok = result.Success;
 
         Debug.Log($"[冒险] 结算后: 现金={sm.Economy.Cash}, 养分={sm.Economy.Nutrient}");
 

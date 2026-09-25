@@ -14,7 +14,7 @@ public class RunState
 {
     public int currentDay = 1;
     public int currentPhase = 1;
-    public int cash = 0;
+    public int cash = 2000;
     public int nutrient = 0;
     public int actionPoint = 5;
 
@@ -23,6 +23,9 @@ public class RunState
 
     // 每只魔物的运行状态，key = monsterId
     public Dictionary<int, MonsterState> monsters = new();
+
+    // 道具库存，key=itemId, value=数量
+    public Dictionary<int, int> itemInventory = new Dictionary<int, int>();
 
     // 当日已处理的来客
     public List<int> todayVisitors = new();

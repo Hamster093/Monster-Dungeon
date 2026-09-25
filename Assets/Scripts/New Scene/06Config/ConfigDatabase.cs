@@ -26,12 +26,17 @@ public class ConfigDatabase
     public List<ScheduleConfig> Schedules = new();
     public Dictionary<int, MemoryConfig> Memories = new();
 
+    /// <summary>
+    /// 创建 ConfigDatabase 新实例并调用 LoadAll() 加载所有配置表。
+    /// </summary>
     public static void Load()
     {
         Instance = new ConfigDatabase();
         Instance.LoadAll();
     }
-
+    /// <summary>
+    /// 批量加载所有配置表。
+    /// </summary>
     private void LoadAll()
     {
         Adventurers = LoadDict<AdventurerConfig>("adventurers");
@@ -46,7 +51,12 @@ public class ConfigDatabase
         Schedules = LoadList<ScheduleConfig>("schedules");
         Memories = LoadDict<MemoryConfig>("memories");
     }
-
+    /// <summary>
+    /// 加载指定指定文件名的 JSON 配置到字典中
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="fileName"></param>
+    /// <returns></returns>
     private Dictionary<int, T> LoadDict<T>(string fileName) where T : class
     {
         var list = LoadList<T>(fileName);
@@ -59,7 +69,12 @@ public class ConfigDatabase
         }
         return dict;
     }
-
+    /// <summary>
+    /// 加载指定指定文件名的 JSON 返回列表
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="fileName"></param>
+    /// <returns></returns>
     private List<T> LoadList<T>(string fileName)
     {
         var textAsset = Resources.Load<TextAsset>($"Config/{fileName}");
@@ -71,7 +86,4 @@ public class ConfigDatabase
 
         return JsonConvert.DeserializeObject<List<T>>(textAsset.text) ?? new List<T>();
     }
-
-    [System.Serializable]
-    private class Wrapper<T> { public List<T> items; }
 }

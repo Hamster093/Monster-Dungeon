@@ -86,7 +86,11 @@ public class ScheduleSystem
         PhaseEndedEvent.Trigger(_runState.run.currentPhase);
         _runState.run.currentPhase++;
     }
-
+    /// <summary>
+    /// 是否是阶段结束日
+    /// </summary>
+    /// <param name="day"></param>
+    /// <returns></returns>
     private bool IsPhaseEndDay(int day)
     {
         var schedule = _config.Schedules.Find(s => s.phase == _runState.run.currentPhase);

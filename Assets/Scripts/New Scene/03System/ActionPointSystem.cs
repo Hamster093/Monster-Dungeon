@@ -38,6 +38,18 @@ public class ActionPointSystem
         return true;
     }
     /// <summary>
+    /// 返回当次搭话所需行动点
+    /// </summary>
+    /// <param name="formalTalkCount">已经搭过几次”，下一次是第 formalTalkCount+1 次</param>
+    /// <returns></returns>
+    public int GetTalkCost(int formalTalkCount)
+    {
+        int nextIndex = formalTalkCount + 1;
+        if (nextIndex < 1) nextIndex = 1;
+        if (nextIndex > 5) nextIndex = 5;
+        return nextIndex;
+    }
+    /// <summary>
     /// 重置点数
     /// </summary>
     public void ResetDaily()

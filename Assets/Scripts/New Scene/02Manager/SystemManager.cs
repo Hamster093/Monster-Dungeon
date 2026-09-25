@@ -3,7 +3,7 @@
 	作者：DADI
     邮箱: 1581507659@qq.com
     日期：2026/9/25 0:56:27
-	功能：
+	功能：系统管理器
 *****************************************************/
 
 public class SystemManager
@@ -44,7 +44,7 @@ public class SystemManager
         ActionPoint = new ActionPointSystem(RunState);
         Memory = new MemorySystem(RunState, Config);
         Schedule = new ScheduleSystem(RunState, Config);
-        Reception = new ReceptionController(RunState, Config, _resolver, Economy, ActionPoint, Memory);
+        Reception = new ReceptionController(RunState, Config, _resolver, Economy, ActionPoint, Memory, _d20);
 
         // 5. 让各系统自己注册事件
         Schedule.Init();

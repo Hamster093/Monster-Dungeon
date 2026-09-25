@@ -24,7 +24,11 @@ public class MemorySystem
         // 需要时注册监听
     }
     public void Dispose() { }
-
+    /// <summary>
+    /// 写入记忆
+    /// </summary>
+    /// <param name="adventurerId"></param>
+    /// <param name="trigger"></param>
     public void Write(int adventurerId, MemoryTrigger trigger)
     {
         if (!_runState.run.adventurers.TryGetValue(adventurerId, out var adv)) return;

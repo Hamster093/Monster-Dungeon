@@ -8,6 +8,9 @@
 
 public enum Level { S = 5, A = 4, B = 3, C = 2, D = 1 }
 
+/// <summary>
+/// 性格维度枚举。用于描述角色的性格倾向
+/// </summary>
 public enum PersonalityAxis
 {
     Greed,      // 贪婪
@@ -17,7 +20,9 @@ public enum PersonalityAxis
     Impulse,    // 冲动
     Suspicion   // 多疑
 }
-
+/// <summary>
+/// 物品类型枚举。用于区分道具在玩法中的功能分类。
+/// </summary>
 public enum ItemType
 {
     Investigation,      // 调查道具
@@ -25,11 +30,17 @@ public enum ItemType
     Trap,               // 陷阱
     ExtraAP             // 额外行动点
 }
-
+/// <summary>
+/// 货币类型枚举。用于区分不同种类的消耗资源。
+/// </summary>
 public enum CurrencyType { Cash, Nutrient }
-
+/// <summary>
+/// 检定类型枚举。用于区分不同场景下的 D20 检定规则。
+/// </summary>
 public enum CheckType { Dialogue, Adventure, Revenge }
-
+/// <summary>
+/// 记忆触发条件枚举。用于标记在何种事件发生时写入或更新角色的记忆条目。
+/// </summary>
 public enum MemoryTrigger
 {
     Misled,             // 被误导
@@ -40,15 +51,29 @@ public enum MemoryTrigger
     HeavyInjuryByLie,   // 因错误指路重伤
     Death               // 死亡
 }
-
+/// <summary>
+/// 复仇程度枚举。用于量化角色对玩家的敌意或报复等级。
+/// </summary>
 public enum RevengeLevel { None, Light, Heavy }
-
+/// <summary>
+/// 对话阶段枚举。用于区分对话流程的不同阶段
+/// </summary>
 public enum DialogueStage { Pre, Formal }
-
+/// <summary>
+/// 健康状态枚举
+/// </summary>
 public enum HealthState { Normal, Damaged, Critical }
+/// <summary>
+/// 装备状态枚举
+/// </summary>
 public enum EquipmentState { Normal, Damaged, Critical }
+/// <summary>
+/// 关系状态枚举。
+/// </summary>
 public enum RelationshipState { Neutral, Suspicious, Hostile }
-
+/// <summary>
+/// 继承者维度枚举。用于描述角色在成长或评价时的多维属性。
+/// </summary>
 public enum SuccessorDimension
 {
     Desire,      // 欲望
