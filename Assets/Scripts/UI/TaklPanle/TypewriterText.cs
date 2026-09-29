@@ -11,7 +11,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TypewriterTextLegacy : MonoBehaviour
+public class TypewriterTextLegacy : MonoBehaviour, ITypewriterEffect
 {
     [Header("UI 引用")]
     public Text text;

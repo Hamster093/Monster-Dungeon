@@ -1937,9 +1937,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 485753039}
-  - component: {fileID: 485753038}
+  - component: {fileID: 485753042}
   - component: {fileID: 485753041}
   - component: {fileID: 485753040}
+  - component: {fileID: 485753043}
   m_Layer: 0
   m_Name: Game
   m_TagString: Untagged
@@ -1947,19 +1948,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &485753038
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 485753037}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5531e30c18c21ea488e07cc4d5725305, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetGameSceneName: SampleScene
 --- !u!4 &485753039
 Transform:
   m_ObjectHideFlags: 0
@@ -2087,6 +2075,31 @@ MonoBehaviour:
   musicVolume: 1
   sfxVolume: 1
   bgmSource: {fileID: 485753040}
+--- !u!114 &485753042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 485753037}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a31c44e1ff160674d97c84550c7f8dc1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &485753043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 485753037}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9224f5d780ceb04e8a4db3fa28b81e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetGameSceneName: Gameplay
 --- !u!1 &567903607
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,0 +1,49 @@
+{
+  "dialogueId": "npc_liuming",
+  "startNodeId": "1",
+  "nodes": [
+    {
+      "id": "1",
+      "speakerName": "刘明",
+      "iconName": "liuming",
+      "contents": [
+        "你要去哪里？",
+        "我刚好也要出门，顺路的话可以一起。"
+      ],
+      "nextNodeId": "",
+      "options": [
+        { "text": "去森林", "targetNodeId": "2" },
+        { "text": "去城镇", "targetNodeId": "3" }
+      ]
+    },
+    {
+      "id": "2",
+      "speakerName": "刘明",
+      "iconName": "liuming",
+      "contents": [
+        "森林很危险，小心点。"
+      ],
+      "nextNodeId": "4"
+    },
+    {
+      "id": "3",
+      "speakerName": "刘明",
+      "iconName": "liuming",
+      "contents": [
+        "城镇很热闹。"
+      ],
+
+      "nextNodeId": "4"
+    },
+    {
+      "id": "4",
+      "speakerName": "刘明",
+      "iconName": "liuming",
+      "contents": [
+        "祝你好运。"
+      ],
+
+      "nextNodeId": ""
+    }
+  ]
+}
