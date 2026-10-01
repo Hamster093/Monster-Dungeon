@@ -3,7 +3,7 @@
 	作者：DADI
     邮箱: 1581507659@qq.com
     日期：2026/9/24 16:37:54
-	功能：
+	功能：管理配置表的加载和访问
 *****************************************************/
 
 using Newtonsoft.Json;
@@ -25,6 +25,7 @@ public class ConfigDatabase
     public Dictionary<int, D20CheckConfig> D20Checks = new();
     public List<ScheduleConfig> Schedules = new();
     public Dictionary<int, MemoryConfig> Memories = new();
+    public Dictionary<int, VisitOrder> VisitOrders = new();
 
     /// <summary>
     /// 创建 ConfigDatabase 新实例并调用 LoadAll() 加载所有配置表。
@@ -50,6 +51,8 @@ public class ConfigDatabase
         D20Checks = LoadDict<D20CheckConfig>("d20Checks");
         Schedules = LoadList<ScheduleConfig>("schedules");
         Memories = LoadDict<MemoryConfig>("memories");
+        VisitOrders = LoadDict<VisitOrder>("visitOrders");
+
     }
     /// <summary>
     /// 加载指定指定文件名的 JSON 配置到字典中
@@ -85,5 +88,41 @@ public class ConfigDatabase
         }
 
         return JsonConvert.DeserializeObject<List<T>>(textAsset.text) ?? new List<T>();
+    }
+
+    /// <summary>
+    /// 按阶段取配置，找不到返回 null
+    /// </summary>
+    public ScheduleConfig GetSchedule(int phase)
+    {
+        foreach (var s in Schedules)
+            if (s.phase == phase) return s;
+        return null;
+    }
+    /// <summary>
+    /// 根据当前天 + 当前阶段，计算当前阶段剩余天数（不含今天）
+    /// </summary>
+    public int GetRemainingDays(int currentDay, int currentPhase)
+    {
+        int phaseStartDay = 1;
+        foreach (var s in Schedules)
+        {
+            if (s.phase == currentPhase)
+            {
+                int dayInPhase = currentDay - phaseStartDay + 1;   // 阶段内第几天（从 1 开始）
+                return s.dayCount - dayInPhase;                    // ← 去掉 +1
+            }
+            phaseStartDay += s.dayCount;
+        }
+        return 0;
+    }
+
+    /// <summary>
+    /// 按阶段取待付分期金额
+    /// </summary>
+    public int GetInstallmentPayment(int currentPhase)
+    {
+        var s = GetSchedule(currentPhase);
+        return s != null ? s.installmentAmount : 0;
     }
 }

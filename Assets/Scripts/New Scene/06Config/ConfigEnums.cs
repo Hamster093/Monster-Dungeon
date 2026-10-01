@@ -75,11 +75,25 @@ public enum RelationshipState { Neutral, Suspicious, Hostile }
 /// 继承者维度枚举。用于描述角色在成长或评价时的多维属性。
 /// </summary>
 public enum SuccessorDimension
-{
-    Desire,      // 欲望
+{    
     Reason,      // 理智
+    Courage,     // 勇气
     Trust,       // 信任
     Fear,        // 恐惧
     Vanity,      // 虚荣
     Cooperation  // 合作力
+}
+/// <summary>
+/// 人物id枚举。用于标识游戏中不同的来访角色。
+/// </summary>
+public enum Guest
+{
+    None,
+    年轻的冒险者=1,
+    神秘魔法师=2,
+    矮人小队=3,
+    胆小的修女=4,
+    古怪商人=5,
+    老迈的佣兵=6,
+    不知道姓名的女子= 7
 }

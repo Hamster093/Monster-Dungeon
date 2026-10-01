@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ReceptionPanel : MonoBehaviour
+public class ReceptionPanel : PanelBase
 {
     // ---------- 顶部状态栏 ----------
     private Text _dayText;
@@ -19,6 +19,8 @@ public class ReceptionPanel : MonoBehaviour
     private Text _cashText;
     private Text _nutrientText;
     private Text _apText;
+    private Text _remainingDays;
+    private Text _installmentPayment;
 
     // ---------- 来客信息 ----------
     private Text _nameText;
@@ -49,10 +51,14 @@ public class ReceptionPanel : MonoBehaviour
     private int _currentAdventurerId = -1;
     private readonly List<Button> _spawnedOptions = new List<Button>();
 
+    // ---------- 接待相关时 ----------
+    private List<int> _todayVisitors = new ();// 今日访客列表
+    private int _visitorIndex = 0;// 今日访客索引
+
     // ============================================================
     //  生命周期
     // ============================================================
-    private void Awake()
+    public override void OnInit()
     {
         // 顶部
         _dayText = FindByName<Text>("DayText");
@@ -60,6 +66,8 @@ public class ReceptionPanel : MonoBehaviour
         _cashText = FindByName<Text>("CashText");
         _nutrientText = FindByName<Text>("NutrientText");
         _apText = FindByName<Text>("APText");
+        _remainingDays = FindByName<Text>("RemainingDays");
+        _installmentPayment = FindByName<Text>("InstallmentPayment");
 
         // 来客
         _nameText = FindByName<Text>("NameText");
@@ -91,6 +99,7 @@ public class ReceptionPanel : MonoBehaviour
             _optionButtonTemplate = tmpl;
             tmpl.gameObject.SetActive(false);
         }
+        
     }
 
     private void Start()
@@ -111,8 +120,6 @@ public class ReceptionPanel : MonoBehaviour
             });
         }
 
-        TodayVisitorsReadyEvent.Register(OnVisitorsReady);
-        NextDayEvent.Register(RefreshTopBar);
         //今日访客
         if (SystemManager.Instance.RunState.run.todayVisitors.Count > 0)
             _currentAdventurerId = SystemManager.Instance.RunState.run.todayVisitors[0];
@@ -121,10 +128,17 @@ public class ReceptionPanel : MonoBehaviour
         RefreshAll();
     }
 
-    private void OnDestroy()
+    private void OnEnable()
+    {
+        TodayVisitorsReadyEvent.Register(OnVisitorsReady);
+        NextDayEvent.Register(RefreshTopBar);
+        ReceptionComplete.Register(OnVisitorFinished);
+    }
+    private void OnDisable()
     {
         TodayVisitorsReadyEvent.UnRegister(OnVisitorsReady);
         NextDayEvent.UnRegister(RefreshTopBar);
+        ReceptionComplete.UnRegister(OnVisitorFinished);
     }
 
     // ============================================================
@@ -137,16 +151,35 @@ public class ReceptionPanel : MonoBehaviour
     private void OnVisitorsReady(List<int> ids)
     {
         HideOptions();
-        if (ids != null && ids.Count > 0)
-        {
-            _currentAdventurerId = ids[0];
-            RefreshVisitor();
-        }
-        else
+        _todayVisitors = ids ?? new List<int>();
+        _visitorIndex = 0;
+        ShowCurrentVisitor();
+        RefreshTopBar();
+    }
+
+    /// <summary>
+    /// 显示当前索引对应的访客
+    /// </summary>
+    private void ShowCurrentVisitor()
+    {
+        if (_todayVisitors.Count == 0 || _visitorIndex >= _todayVisitors.Count)
         {
             _currentAdventurerId = -1;
             ClearVisitor();
+            return;
         }
+
+        _currentAdventurerId = _todayVisitors[_visitorIndex];
+        RefreshVisitor();
+    }
+
+    /// <summary>
+    /// 接待完当前这位时调用
+    /// </summary>
+    public void OnVisitorFinished()
+    {
+        _visitorIndex++;
+        ShowCurrentVisitor();
         RefreshTopBar();
     }
 
@@ -163,16 +196,32 @@ public class ReceptionPanel : MonoBehaviour
         else ClearVisitor();
     }
     /// <summary>
+    /// 根据当前天数和阶段刷新 RunState 中的 remainingDays 和 installmentPayment
+    /// </summary>
+    private void UpdateRunState()
+    {
+        var run = SystemManager.Instance.RunState.run;
+        var cfg = ConfigDatabase.Instance;
+
+        run.remainingDays = cfg.GetRemainingDays(run.currentDay, run.currentPhase);
+        run.installmentPayment = cfg.GetInstallmentPayment(run.currentPhase);
+    }
+
+    /// <summary>
     /// 刷新顶部状态栏
     /// </summary>
     private void RefreshTopBar()
     {
+        UpdateRunState();
+
         var run = SystemManager.Instance.RunState.run;
         if (_dayText) _dayText.text = $"第 {run.currentDay} 天";
         if (_phaseText) _phaseText.text = $"阶段 {run.currentPhase}";
         if (_cashText) _cashText.text = $"现金 {run.cash}";
         if (_nutrientText) _nutrientText.text = $"养分 {run.nutrient}";
         if (_apText) _apText.text = $"行动点 {run.actionPoint}";
+        if (_remainingDays) _remainingDays.text = $"当前阶段剩余经营日 {run.remainingDays}";
+        if (_installmentPayment) _installmentPayment.text = $"分期金额 {run.installmentPayment}";
     }
     /// <summary>
     /// 刷新访客列表
@@ -265,6 +314,8 @@ public class ReceptionPanel : MonoBehaviour
         _currentAdventurerId = -1;
         ClearVisitor();
         RefreshTopBar();
+
+        ReceptionComplete.Trigger();//完成接待，触发事件
     }
     /// <summary>
     /// 指路
@@ -284,6 +335,8 @@ public class ReceptionPanel : MonoBehaviour
             ClearVisitor();
         }
         RefreshTopBar();
+
+        ReceptionComplete.Trigger();//完成接待，触发事件
     }
 
     // ============================================================

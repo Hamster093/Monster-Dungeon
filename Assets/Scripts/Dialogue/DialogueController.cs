@@ -3,38 +3,73 @@
 	作者：DADI
     邮箱: 1581507659@qq.com
     日期：2026/9/29 18:44:23
-	功能：对话流程控制器
+	功能：对话流程控制器（由 TalkPanel 持有
 *****************************************************/
 
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class DialogueController : MonoBehaviour
+[Serializable]
+public class DialogueController
 {
-    [Header("UI 引用")]
-    [SerializeField] private TalkPanle _talkPanel;
-    [SerializeField] private GameObject _optionPanel;       // 选项按钮的父节点
-    [SerializeField] private Transform _optionButtonRoot;   // 选项按钮生成位置
-    [SerializeField] private GameObject _optionButtonPrefab; // 选项按钮预制体
+    [Tooltip("选项按钮的父节点")]
+    [SerializeField] private GameObject _optionPanel;
+
+    [Tooltip("选项按钮生成位置")]
+    [SerializeField] private Transform _optionButtonRoot;
+
+    [Tooltip("选项按钮预制体")]
+    [SerializeField] private GameObject _optionButtonPrefab;
+
+    // 运行时绑定，不参与序列化
+    [NonSerialized] private TalkPanel _talkPanel;
+    [NonSerialized] private bool _disposed;
 
     private DialogueData _currentData;
     private Dictionary<string, DialogueNode> _nodeDict;
     private string _currentStopNodeId;
 
-    private void Start()
+    #region 生命周期（由 TalkPanel 调用）
+
+    /// <summary>
+    /// 由 TalkPanel 在 OnInit 里调用：绑定 owner 并订阅事件
+    /// </summary>
+    public void Init(TalkPanel talkPanel)
     {
-        // 监听 TalkPanel 播放完毕事件
-        if (_talkPanel != null)
-            _talkPanel.OnDialogueComplete += OnTalkPanelComplete;
+        _talkPanel = talkPanel;
+        _talkPanel.OnDialogueComplete += OnTalkPanelComplete;
     }
+    /// <summary>
+    /// 由 TalkPanel 在 OnDestroy 里调用：退订，释放引用
+    /// </summary>
+    public void Dispose()
+    {
+        if (_disposed) return;
+        _disposed = true;
+
+        if (_talkPanel != null)
+            _talkPanel.OnDialogueComplete -= OnTalkPanelComplete;
+
+        _talkPanel = null;
+    }
+
+    #endregion
+
+    #region 对外接口
 
     /// <summary>
     /// 对外唯一接口：开始一段新对话
     /// </summary>
     public async void StartDialogue(string dialogueAddressableKey)
     {
+        if (_talkPanel == null)
+        {
+            Debug.LogError("[DialogueController] 未初始化或已被 Dispose，无法开始对话");
+            return;
+        }
+
         _currentData = await DialogueLoader.LoadDialogueData(dialogueAddressableKey);
-        if (_currentData == null) return;
+        if (_currentData == null || _disposed || _talkPanel == null) return;
 
         // 将 List 转为 Dictionary 方便按 ID 查找
         _nodeDict = new Dictionary<string, DialogueNode>();
@@ -44,6 +79,9 @@ public class DialogueController : MonoBehaviour
         PlayFromNode(_currentData.startNodeId);
     }
 
+    #endregion
+
+    #region 内部流程
     /// <summary>
     /// 从指定节点开始，向后拼接一段“线性对话”喂给 TalkPanel
     /// </summary>
@@ -103,7 +141,12 @@ public class DialogueController : MonoBehaviour
     /// </summary>
     private void OnTalkPanelComplete()
     {
-        DialogueNode stopNode = _nodeDict[_currentStopNodeId];
+        if (_disposed || _talkPanel == null) return;
+        if (_nodeDict == null || !_nodeDict.TryGetValue(_currentStopNodeId, out var stopNode))
+        {
+            Debug.LogError($"[DialogueController] 找不到节点：{_currentStopNodeId}");
+            return;
+        }
 
         // 1. 如果有选项，弹窗让玩家选
         if (stopNode.options != null && stopNode.options.Count > 0)
@@ -121,11 +164,12 @@ public class DialogueController : MonoBehaviour
     {
         _optionPanel.SetActive(true);
         // 清理旧按钮
-        foreach (Transform child in _optionButtonRoot) Destroy(child.gameObject);
+        foreach (Transform child in _optionButtonRoot)
+            UnityEngine.Object.Destroy(child.gameObject);
 
         foreach (var option in options)
         {
-            GameObject btnObj = Instantiate(_optionButtonPrefab, _optionButtonRoot);
+            GameObject btnObj = UnityEngine.Object.Instantiate(_optionButtonPrefab, _optionButtonRoot);
             // 假设按钮上有 Text 和 Button 组件
             btnObj.GetComponentInChildren<UnityEngine.UI.Text>().text = option.text;
             string targetId = option.targetNodeId; // 闭包捕获
@@ -140,13 +184,10 @@ public class DialogueController : MonoBehaviour
 
     private void EndDialogue()
     {
-        _talkPanel.gameObject.SetActive(false);
+        if (_talkPanel != null)
+            _talkPanel.gameObject.SetActive(false);
         Debug.Log("[DialogueController] 对话结束");
     }
 
-    private void OnDestroy()
-    {
-        if (_talkPanel != null)
-            _talkPanel.OnDialogueComplete -= OnTalkPanelComplete;
-    }
+    #endregion
 }

@@ -42,6 +42,7 @@ public class UIManager : MonoBehaviour
 
     [Header("面板配置")]
     [SerializeField] private List<PanelConfig> _configs = new List<PanelConfig>();
+    public List<PanelConfig> Configs => _configs;
 
     [Header("场景引用")]
     [Tooltip("所有面板的父节点")]

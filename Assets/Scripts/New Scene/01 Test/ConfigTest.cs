@@ -111,7 +111,6 @@ public class TestBootstrap : MonoBehaviour
         if (db.Adventurers.TryGetValue(1, out var adv))
         {
             Debug.Log($"[配置] 冒险者 1: name={adv.name}, level={adv.baseLevel}, isParty={adv.isParty}");
-            Debug.Log($"[配置] 来访日: {string.Join(",", adv.visitDays)}");
             Debug.Log($"[配置] 背景数: {adv.backgrounds.Count}");
             Debug.Log($"[配置] 主要维度: {adv.mainDimension}, 次要维度: {adv.secondaryDimension}");
 

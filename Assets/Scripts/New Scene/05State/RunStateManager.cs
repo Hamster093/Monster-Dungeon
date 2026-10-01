@@ -34,11 +34,13 @@ public class RunStateManager
     {
         run = new RunState();
 
-        run.currentDay = 1;
+        run.currentDay = 0;
         run.currentPhase = 1;
         run.cash = InitialCash;
         run.nutrient = 0;
         run.actionPoint = InitialActionPoint;
+        run.remainingDays = 3;
+        run.installmentPayment = 325;
 
         // 假设调查道具 id=1，先给 5 个 TEST
         run.itemInventory[1] = 5;

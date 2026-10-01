@@ -28,6 +28,11 @@ public class GameBootstrap : MonoBehaviour
 
         InitGame();
     }
+    private void Start()
+    {
+        // 3. 生成今日来客手动触发一次
+        NextDayEvent.Trigger();//放在start 因为ReceptionPanel要先注册事件
+    }
 
     private void OnDestroy()
     {
@@ -59,8 +64,5 @@ public class GameBootstrap : MonoBehaviour
                   $"阶段 {SystemManager.Instance.RunState.run.currentPhase}，" +
                   $"现金 {SystemManager.Instance.RunState.run.cash}");
 
-        // 3. 生成今日来客（如果开局就在第 1 天，可手动触发一次）
-        //    如果你希望开局就刷新第 1 天的来客，取消下面注释
-        // NextDayEvent.Trigger();
     }
 }

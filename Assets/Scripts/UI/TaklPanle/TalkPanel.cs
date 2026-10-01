@@ -25,13 +25,17 @@ public class DialogueLine
     public string content;
 }
 
-public class TalkPanle : MonoBehaviour, IPointerClickHandler
+public class TalkPanel : PanelBase, IPointerClickHandler
 {
 
     [Header("UI组件引用")]
     [SerializeField] private MonoBehaviour _typewriterComponent;
     [SerializeField] private Text _speakerNameText;
     [SerializeField] private Image _iconImage;     // 当前物体上的头像 Image
+
+    [Header("对话控制器")]
+    [SerializeField] private DialogueController _dialogueController = new DialogueController();
+    public DialogueController Dialogue => _dialogueController;
 
     // 运行时获取接口实例
     private ITypewriterEffect Typewriter =>_typewriterComponent as ITypewriterEffect;
@@ -64,8 +68,16 @@ public class TalkPanle : MonoBehaviour, IPointerClickHandler
 
     #region 生命周期与初始化
 
-    private void OnEnable()
+    /// <summary>
+    /// 面板初始化（由 PanelBase.Awake 调用，只执行一次）
+    /// </summary>
+    public override void OnInit()
     {
+        base.OnInit();
+
+        _dialogueController ??= new DialogueController();
+        _dialogueController.Init(this);
+
         try
         {
             if (_dialogueList.Count > 0 && !_isInitialized)
@@ -75,6 +87,25 @@ public class TalkPanle : MonoBehaviour, IPointerClickHandler
         {
             Debug.LogException(e, this);
         }
+    }
+
+    public override void OnDestroy()
+    {
+        _dialogueController?.Dispose();
+        _dialogueController = null;
+
+        base.OnDestroy();
+
+        // 停止协程
+        if (_autoCompleteCoroutine != null)
+        {
+            StopCoroutine(_autoCompleteCoroutine);
+            _autoCompleteCoroutine = null;
+        }
+
+        ClearIconCache();
+        OnDialogueComplete = null;
+        OnLineStart = null;
     }
 
     /// <summary>
@@ -329,17 +360,5 @@ public class TalkPanle : MonoBehaviour, IPointerClickHandler
     }
     #endregion
 
-    private void OnDestroy()
-    {
-        //停止携程
-        if (_autoCompleteCoroutine != null)
-        {
-            StopCoroutine(_autoCompleteCoroutine);
-            _autoCompleteCoroutine = null;
-        }
 
-        ClearIconCache();
-        OnDialogueComplete = null;
-        OnLineStart = null;
-    }
 }

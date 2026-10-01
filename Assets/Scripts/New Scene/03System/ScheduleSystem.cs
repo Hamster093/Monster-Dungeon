@@ -37,6 +37,9 @@ public class ScheduleSystem
     /// </summary>
     public void AdvanceDay()
     {
+        if (IsPhaseEndDay(_runState.run.currentDay))
+            EndPhase();
+
         _runState.run.currentDay++;
         Debug.Log($"进入第 {_runState.run.currentDay} 天");
 
@@ -51,9 +54,6 @@ public class ScheduleSystem
 
         TodayVisitorsReadyEvent.Trigger(visitors);
 
-        if (IsPhaseEndDay(_runState.run.currentDay))
-            EndPhase();
-
         if (_runState.run.currentDay > 27)
         {
             Debug.Log("27 天结束");
@@ -66,13 +66,10 @@ public class ScheduleSystem
     /// </summary>
     public List<int> GetTodayVisitors()
     {
-        var result = new List<int>();
-        foreach (var adv in ConfigDatabase.Instance.Adventurers.Values)
-        {
-            if (adv.visitDays != null && adv.visitDays.Contains(CurrentDay))
-                result.Add(adv.id);
-        }
-        return result;
+        if (ConfigDatabase.Instance.VisitOrders.TryGetValue(CurrentDay, out var order) && order.visitors != null)
+            return order.visitors;
+
+        return new List<int>();
     }
     /// <summary>
     /// 扣除分期

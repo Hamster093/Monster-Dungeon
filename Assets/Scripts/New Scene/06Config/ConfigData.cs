@@ -21,15 +21,23 @@ public class AdventurerConfig
     public bool isParty;                           // 否为小队单位
     public Level baseLevel;                        // 标称等级 S/A/B/C/D，表示基础战力</summary>
     public List<PersonalityAxis> personalityAxes;  // 突出的2~3条
-    public List<int> visitDays;                    // 固定来访日，如 [3,10,17,24]
     public int contractId;                         // 默认委托 ID
     public List<string> backgrounds;               // 三条固定背景，按顺序
     public string successorType;                   // 接任类型"
-    public SuccessorDimension mainDimension;
-    public SuccessorDimension secondaryDimension;  // 主要接任维度
+    public SuccessorDimension mainDimension;       // 主要接任维度
+    public SuccessorDimension secondaryDimension;  // 次要接任维度
     public Dictionary<SuccessorDimension, int> initialStats; // 六维初始值
 }
 
+/// <summary>
+/// 来访顺序配置，固定游戏流程 程序应判断是否已解锁该角色
+/// </summary>
+[Serializable]
+public class VisitOrder
+{
+    public int id;                // 天数
+    public List<int> visitors;    // 当天固定的来客 id 列表
+}
 /// <summary>
 /// 委托固定配置。每名冒险者对应一条固定委托。
 /// 委托内容、目标、酬劳不随机，随机只影响结算结果。
@@ -174,3 +182,5 @@ public class MemoryConfig
     public string text;               // 如"被主人误导"
     public RevengeLevel revengeLevel; //该记忆对应的报复等级：无 / 轻度 / 重度
 }
+
+

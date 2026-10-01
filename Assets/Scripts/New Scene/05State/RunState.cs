@@ -12,11 +12,13 @@ using System.Collections.Generic;
 [Serializable]
 public class RunState
 {
-    public int currentDay = 1;
+    public int currentDay = 0;
     public int currentPhase = 1;
     public int cash = 2000;
     public int nutrient = 0;
     public int actionPoint = 5;
+    public int remainingDays;
+    public int installmentPayment;
 
     // 每个冒险者的运行状态，key = adventurerId
     public Dictionary<int, AdventurerState> adventurers = new();
