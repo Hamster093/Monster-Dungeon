@@ -29,6 +29,10 @@ public class DialogueController
     private Dictionary<string, DialogueNode> _nodeDict;
     private string _currentStopNodeId;
 
+    //========对话回调相关========
+    private bool _playingExtraLines;//正在播放返回的额外台词
+    private string _pendingNextNodeId;//待处理的下一个节点ID
+
     #region 生命周期（由 TalkPanel 调用）
 
     /// <summary>
@@ -141,6 +145,17 @@ public class DialogueController
     /// </summary>
     private void OnTalkPanelComplete()
     {
+        // 额外行播放完毕 → 继续原流程
+        if (_playingExtraLines)
+        {
+            _playingExtraLines = false;
+            string next = _pendingNextNodeId;
+            _pendingNextNodeId = null;
+            if (!string.IsNullOrEmpty(next)) PlayFromNode(next);
+            else EndDialogue();
+            return;
+        }
+
         if (_disposed || _talkPanel == null) return;
         if (_nodeDict == null || !_nodeDict.TryGetValue(_currentStopNodeId, out var stopNode))
         {
@@ -177,9 +192,51 @@ public class DialogueController
             btnObj.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() =>
             {
                 _optionPanel.SetActive(false);
-                PlayFromNode(targetId);
+                HandleOptionSelected(option);
             });
         }
+    }
+    /// <summary>
+    /// 处理选项选中事件：先尝试执行回调，若有额外台词则先播额外台词，否则直接跳转到目标节点
+    /// </summary>
+    /// <param name="option"></param>
+    private void HandleOptionSelected(DialogueOption option)
+    {
+        string targetId = option.targetNodeId;
+
+        // 有回调就先执行回调
+        if (DialogueCallbackRegistry.TryInvoke(option.callbackKey, option, out var result))
+        {
+            if (!string.IsNullOrEmpty(result.targetNodeId))
+                targetId = result.targetNodeId;
+
+            // 有额外行 → 先播这些行，播完再跳
+            if (result.extraLines != null && result.extraLines.Count > 0)
+            {
+                PlayExtraLines(result.extraLines, targetId);
+                return;
+            }
+        }
+
+        PlayFromNode(targetId);
+    }
+    /// <summary>
+    /// 播放额外台词
+    /// </summary>
+    /// <param name="lines"></param>
+    /// <param name="nextNodeId"></param>
+    private void PlayExtraLines(List<DialogueLine> lines, string nextNodeId)
+    {
+        _playingExtraLines = true;
+        _pendingNextNodeId = nextNodeId;
+
+        _talkPanel.gameObject.SetActive(true);
+        _talkPanel.Init(lines);
+        _talkPanel.ResetDialogue();
+
+        _talkPanel.SetInstantText(true);// 立即显示，不走打字机
+        _talkPanel.SetAutoCompleteAtEnd(false);// 不自动跳转，等玩家点击
+        _talkPanel.MoveNext();
     }
 
     private void EndDialogue()

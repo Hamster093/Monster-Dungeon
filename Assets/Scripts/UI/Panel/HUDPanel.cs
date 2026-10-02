@@ -23,7 +23,6 @@ public class HUDPanel : PanelBase
     public override void OnInit()
     {
         BindButtonClick("Backpack", ToggleBackpack);
-        BindButtonClick("Description", OnDescription);
     }
 
 
@@ -48,10 +47,6 @@ public class HUDPanel : PanelBase
             UIManager.Instance.Close<BackpackPanel>();
         else
             UIManager.Instance.Open<BackpackPanel>();
-    }
-    private void OnDescription()
-    {
-        UIManager.Instance.Open<DialogueHistoryPanel>();
     }
     #endregion
 }

@@ -17,6 +17,11 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: b4da2341c40476745985e796b6cfdf6d
   m_SerializeEntries:
+  - m_GUID: 076f129b21bcc8042aabd92e9a6c1afe
+    m_Address: Icons/WWM
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6e5c82bc40e7bb946bd62741182097e7
     m_Address: liuming
     m_ReadOnly: 0

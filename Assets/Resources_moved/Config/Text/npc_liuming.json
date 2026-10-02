@@ -7,13 +7,15 @@
       "speakerName": "刘明",
       "iconName": "liuming",
       "contents": [
-        "你要去哪里？",
-        "我刚好也要出门，顺路的话可以一起。"
+        "嘿嘿嘿，本大爷叫流明？",
+        "能来到你这也是让你这蓬荜生辉了。",
+	"老头，你叫什么名字？"
       ],
       "nextNodeId": "",
       "options": [
-        { "text": "去森林", "targetNodeId": "2" },
-        { "text": "去城镇", "targetNodeId": "3" }
+        { "text": "削减其主要属性，提升一个次要属性", "targetNodeId": "2" },
+        { "text": "检定:50%削减其一个主要属性;50%削减其一个无关属性", "targetNodeId": "3" ,"callbackKey": "check_reduce_attribute"},
+        { "text": "无效果，但是搭话提供的有效信息概率", "targetNodeId": "3" } 
       ]
     },
     {
@@ -21,26 +23,82 @@
       "speakerName": "刘明",
       "iconName": "liuming",
       "contents": [
-        "森林很危险，小心点。"
+        "密码的削我属性是吧。"
       ],
-      "nextNodeId": "4"
+      "nextNodeId": "5"
     },
     {
       "id": "3",
       "speakerName": "刘明",
       "iconName": "liuming",
       "contents": [
-        "城镇很热闹。"
+        "消遣洒家，你看我削不削你就完了。"
       ],
 
-      "nextNodeId": "4"
+      "nextNodeId": "5"
     },
     {
-      "id": "4",
+      "id": "5",
       "speakerName": "刘明",
       "iconName": "liuming",
       "contents": [
-        "祝你好运。"
+        "还有什么事？。"
+      ],
+      "nextNodeId": "",
+      "options": [
+        { "text": "查看委托", "targetNodeId": "6" },
+        { "text": "搭话", "targetNodeId": "7" },
+      	{ "text": "使用道具", "targetNodeId": "8" } 
+      ]
+    },
+{
+      "id": "6",
+      "speakerName": "刘明",
+      "iconName": "liuming",
+      "contents": [
+        "我需要凯尔希的本源精血。"
+      ],
+
+      "nextNodeId": "",
+      "options": [
+        { "text": "指路", "targetNodeId": "9" },
+        { "text": "返回选项", "targetNodeId": "5" }
+      ]
+    },
+    {
+      "id": "7",
+      "speakerName": "刘明",
+      "iconName": "liuming",
+      "contents": [
+        "你还想说什么。"
+      ],
+
+      "nextNodeId": "",
+      "options": [
+        { "text": "谈论来历", "targetNodeId": "5" },
+        { "text": "谈论委托目标", "targetNodeId": "5" },
+      	{ "text": "谈论冒险者自己", "targetNodeId": "8" } 
+      ]
+    },
+{
+      "id": "8",
+      "speakerName": "刘明",
+      "iconName": "liuming",
+      "contents": [
+        "偷偷摸摸干啥呢想给老子下药？。"
+      ],
+
+      "nextNodeId": "",
+      "options": [
+        { "text": "调查道具", "targetNodeId": "5" }
+      ]
+    },
+{
+      "id": "9",
+      "speakerName": "刘明",
+      "iconName": "liuming",
+      "contents": [
+        "再见。"
       ],
 
       "nextNodeId": ""

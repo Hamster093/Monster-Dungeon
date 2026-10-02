@@ -31,17 +31,25 @@ public class TalkPanel : PanelBase, IPointerClickHandler
     [Header("UI组件引用")]
     [SerializeField] private MonoBehaviour _typewriterComponent;
     [SerializeField] private Text _speakerNameText;
-    [SerializeField] private Image _iconImage;     // 当前物体上的头像 Image
+    [SerializeField] private Image _iconImage;     //目前挂载的是背景图，后续可改为头像图 另外需要增加背景图的引用，或者直接在对话行里增加背景图字段 背景图进入对话时使用 UpdateBackgroundImage切换背景图，头像图使用 SetIcon 切换头像图
 
     [Header("对话控制器")]
     [SerializeField] private DialogueController _dialogueController = new DialogueController();
     public DialogueController Dialogue => _dialogueController;
 
     // 运行时获取接口实例
-    private ITypewriterEffect Typewriter =>_typewriterComponent as ITypewriterEffect;
+    private ITypewriterEffect Typewriter => _typewriterComponent as ITypewriterEffect;
 
-    [Header("对话列表")]
-    [SerializeField] private List<DialogueLine> _dialogueList = new List<DialogueLine>();
+    [Header("对话")]
+    [SerializeField] private List<DialogueLine> _dialogueList = new List<DialogueLine>();//对话列表
+    private bool _instantTextMode;// 由外部设置：是否立即显示文本（跳过打字机效果）
+    /// <summary>设置是否跳过打字机直接显示文本</summary>
+    public void SetInstantText(bool instant) => _instantTextMode = instant;
+
+
+    [Header("按钮引用")]
+    [SerializeField] private Button _descriptionButton;
+    [SerializeField] private Button _characterArchiveButton;
 
     private readonly Dictionary<string, AsyncOperationHandle<Sprite>> _iconHandles = new();
 
@@ -78,6 +86,15 @@ public class TalkPanel : PanelBase, IPointerClickHandler
         _dialogueController ??= new DialogueController();
         _dialogueController.Init(this);
 
+        if (_descriptionButton != null)
+            _descriptionButton.onClick.AddListener(OnDescription);
+        else
+            Debug.LogError("[TalkPanel] DescriptionButton 未赋值!", this);
+        if (_characterArchiveButton != null)
+            _characterArchiveButton.onClick.AddListener(OnCharacterArchive);
+        else
+            Debug.LogError("[TalkPanel] CharacterArchiveButton 未赋值!", this);
+
         try
         {
             if (_dialogueList.Count > 0 && !_isInitialized)
@@ -91,6 +108,11 @@ public class TalkPanel : PanelBase, IPointerClickHandler
 
     public override void OnDestroy()
     {
+        if (_descriptionButton != null)
+            _descriptionButton.onClick.RemoveListener(OnDescription);
+        if (_characterArchiveButton != null)
+            _characterArchiveButton.onClick.RemoveListener(OnCharacterArchive);
+
         _dialogueController?.Dispose();
         _dialogueController = null;
 
@@ -117,6 +139,10 @@ public class TalkPanel : PanelBase, IPointerClickHandler
 
         _dialogueList = dialogueList ?? new List<DialogueLine>();
         ResetState();
+        if (_dialogueList.Count > 0)
+        {   //初始化背景图片资源
+            UpdateBackgroundImage(_dialogueList[0].iconName);
+        }
 
         _isInitialized = true;
     }
@@ -181,7 +207,7 @@ public class TalkPanel : PanelBase, IPointerClickHandler
     /// <param name="eventData"></param>
     public void OnPointerClick(PointerEventData eventData)
     {
-        MoveNext();       
+        MoveNext();
 
     }
     /// <summary>
@@ -213,14 +239,18 @@ public class TalkPanel : PanelBase, IPointerClickHandler
         DialogueLine line = _dialogueList[_currentIndex];
         //写入历史对话
         DialogueHistoryModel.Instance?.Add(line);
-
+        //写入人物档案
+        if (!string.IsNullOrEmpty(line.speakerName))
+        {
+            CharacterArchiveModel.Instance?.Add(line.speakerName, line);
+        }
         // 仅在说话人变化时更新文本（减少GC与重绘）
         if (_currentSpeaker != line.speakerName)
         {
             _currentSpeaker = line.speakerName;
             _speakerNameText.text = line.speakerName;
         }
-        // 仅在图标变化时更新头像
+        // 仅在图标变化时更新背景
         if (_currentIcon != line.iconName)
         {
             _currentIcon = line.iconName;
@@ -230,6 +260,7 @@ public class TalkPanel : PanelBase, IPointerClickHandler
         OnLineStart?.Invoke(line);
         // 播放打字机效果
         Typewriter.Play(line.content);
+        if (_instantTextMode) Typewriter.Skip();
         _currentIndex++;
 
         // 最后一句，且外部告知“后面还有选项”，才在打字结束后自动触发完成
@@ -246,6 +277,31 @@ public class TalkPanel : PanelBase, IPointerClickHandler
         _autoCompleteCoroutine = null;
         OnDialogueComplete?.Invoke();
     }
+    #endregion
+
+    #region 按钮回调
+    /// <summary>
+    /// 历史对话按钮点击事件
+    /// </summary>
+    private void OnDescription()
+    {
+        UIManager.Instance.Open<DialogueHistoryPanel>();
+    }
+
+    /// <summary>
+    /// 人物档案按钮点击事件
+    /// </summary>
+    private void OnCharacterArchive()
+    {
+        if (string.IsNullOrEmpty(_currentSpeaker))
+        {
+            Debug.LogWarning("[TalkPanel] 当前没有具体说话人，无法打开人物档案", this);
+            return;
+        }
+
+        UIManager.Instance.Open<CharacterArchivePanel>(_currentSpeaker);
+    }
+
     #endregion
 
     #region 图标资源管理
@@ -358,7 +414,15 @@ public class TalkPanel : PanelBase, IPointerClickHandler
     {
         _autoCompleteAtEnd = value;
     }
-    #endregion
 
+    public void UpdateBackgroundImage(string iconName)
+    {
+        if (_currentIcon != iconName)
+        {
+            _currentIcon = iconName;
+            SetIcon(iconName);
+        }
+    }
+    #endregion
 
 }

@@ -68,6 +68,7 @@ public class UIManager : MonoBehaviour
         InventoryModel.Initialize(20,2);
         //历史对话初始化
         DialogueHistoryModel.Initialize();
+        CharacterArchiveModel.Initialize();
 
         if (Instance != null && Instance != this)
         {
@@ -109,6 +110,7 @@ public class UIManager : MonoBehaviour
             _cache[cfg.panelName] = panel;
         }
         UIManager.Instance.Open<HUDPanel>();
+        UIManager.Instance.Open<ReceptionPanel>();
     }
 
     private void Update()
