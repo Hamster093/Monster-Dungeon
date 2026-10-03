@@ -48,17 +48,10 @@ public class RunStateManager
 
         foreach (var adv in ConfigDatabase.Instance.Adventurers.Values)
         {
-            run.adventurers.Add(adv.id, new AdventurerState
-            {
-                id = adv.id,
-                health = HealthState.Normal,
-                equipment = EquipmentState.Normal,
-                relationship = RelationshipState.Neutral,
-                revenge = RevengeLevel.None,
-                successorStats = new System.Collections.Generic.Dictionary<SuccessorDimension, int>(adv.initialStats)
-            });
+            // 直接调用有参构造函数，自动处理好 configId、Config 和初始属性
+            var runtimeData = new AdventurerRuntimeData(adv);
+            run.adventurers.Add(adv.id, runtimeData);
         }
-
         foreach (var mon in ConfigDatabase.Instance.Monsters.Values)
         {
             run.monsters.Add(mon.id, new MonsterState
@@ -76,14 +69,48 @@ public class RunStateManager
     /// </summary>
     public void Save()
     {
+        if (run == null)
+        {
+            Debug.LogError("当前没有运行状态，无法保存！");
+            return;
+        }
         SaveAndLoadManager.Save("run_state", run);
+        Debug.Log("游戏已保存");
     }
     /// <summary>
     /// 从本地读取运行状态
     /// </summary>
     public void Load()
     {
-        run = SaveAndLoadManager.Load<RunState>("run_state");
+        RunState loadedState = SaveAndLoadManager.Load<RunState>("run_state");
+
+        // --- 安全检查： SaveAndLoadManager 在没文件时会返回 new RunState()，字典是空的 ---
+        if (loadedState == null || loadedState.adventurers == null || loadedState.adventurers.Count == 0)
+        {
+            Debug.LogWarning("未找到有效存档或存档为空，自动开启新游戏。");
+            NewRun();
+            return;
+        }
+
+        run = loadedState;
+
+        // --- 读档后重新绑定静态配置 ---
+        // 序列化时把 AdventurerConfig 标记了 [JsonIgnore] 忽略了，读档后它是 null，必须从全局表重新挂载
+        foreach (var kvp in run.adventurers)
+        {
+            var runtimeData = kvp.Value;
+            if (ConfigDatabase.Instance.Adventurers.TryGetValue(runtimeData.configId, out var config))
+            {
+                runtimeData.Config = config;
+            }
+            else
+            {
+                Debug.LogError($"读档时找不到冒险者配置，configId: {runtimeData.configId}");
+            }
+        }
+
+        Debug.Log("游戏已读取");
     }
 }
+
 

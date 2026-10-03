@@ -60,15 +60,6 @@ public class ReceptionPanel : PanelBase
     // ============================================================
     public override void OnInit()
     {
-        // 顶部
-        _dayText = FindByName<Text>("DayText");
-        _phaseText = FindByName<Text>("PhaseText");
-        _cashText = FindByName<Text>("CashText");
-        _nutrientText = FindByName<Text>("NutrientText");
-        _apText = FindByName<Text>("APText");
-        _remainingDays = FindByName<Text>("RemainingDays");
-        _installmentPayment = FindByName<Text>("InstallmentPayment");
-
         // 来客
         _nameText = FindByName<Text>("NameText");
         _partyTag = FindByName<Text>("PartyTag");
@@ -94,6 +85,7 @@ public class ReceptionPanel : PanelBase
         var opGo = FindByName<Transform>("OptionsPanel");
         _optionsPanel = opGo;
         var tmpl = FindByName<Button>("OptionButtonTemplate");
+
         if (tmpl != null)
         {
             _optionButtonTemplate = tmpl;
@@ -116,7 +108,7 @@ public class ReceptionPanel : PanelBase
             _addCashButton.onClick.AddListener(() =>
             {
                 SystemManager.Instance.Economy.AddCash(2000);
-                RefreshTopBar();
+                TopBarRefreshEvent.Trigger();
             });
         }
 
@@ -131,13 +123,11 @@ public class ReceptionPanel : PanelBase
     private void OnEnable()
     {
         TodayVisitorsReadyEvent.Register(OnVisitorsReady);
-        NextDayEvent.Register(RefreshTopBar);
         ReceptionComplete.Register(OnVisitorFinished);
     }
     private void OnDisable()
     {
         TodayVisitorsReadyEvent.UnRegister(OnVisitorsReady);
-        NextDayEvent.UnRegister(RefreshTopBar);
         ReceptionComplete.UnRegister(OnVisitorFinished);
     }
 
@@ -154,7 +144,7 @@ public class ReceptionPanel : PanelBase
         _todayVisitors = ids ?? new List<int>();
         _visitorIndex = 0;
         ShowCurrentVisitor();
-        RefreshTopBar();
+        TopBarRefreshEvent.Trigger();
     }
 
     /// <summary>
@@ -180,7 +170,7 @@ public class ReceptionPanel : PanelBase
     {
         _visitorIndex++;
         ShowCurrentVisitor();
-        RefreshTopBar();
+        TopBarRefreshEvent.Trigger();
     }
 
     // ============================================================
@@ -191,7 +181,6 @@ public class ReceptionPanel : PanelBase
     /// </summary>
     private void RefreshAll()
     {
-        RefreshTopBar();
         if (_currentAdventurerId >= 0) RefreshVisitor();
         else ClearVisitor();
     }
@@ -207,22 +196,6 @@ public class ReceptionPanel : PanelBase
         run.installmentPayment = cfg.GetInstallmentPayment(run.currentPhase);
     }
 
-    /// <summary>
-    /// 刷新顶部状态栏
-    /// </summary>
-    private void RefreshTopBar()
-    {
-        UpdateRunState();
-
-        var run = SystemManager.Instance.RunState.run;
-        if (_dayText) _dayText.text = $"第 {run.currentDay} 天";
-        if (_phaseText) _phaseText.text = $"阶段 {run.currentPhase}";
-        if (_cashText) _cashText.text = $"现金 {run.cash}";
-        if (_nutrientText) _nutrientText.text = $"养分 {run.nutrient}";
-        if (_apText) _apText.text = $"行动点 {run.actionPoint}";
-        if (_remainingDays) _remainingDays.text = $"当前阶段剩余经营日 {run.remainingDays}";
-        if (_installmentPayment) _installmentPayment.text = $"分期金额 {run.installmentPayment}";
-    }
     /// <summary>
     /// 刷新访客列表
     /// </summary>
@@ -298,7 +271,7 @@ public class ReceptionPanel : PanelBase
 
         var result = SystemManager.Instance.Reception.Investigate(_currentAdventurerId);
         AppendFeedback(result.Message);
-        RefreshTopBar();
+        TopBarRefreshEvent.Trigger();
     }
     /// <summary>
     /// 拒绝
@@ -313,7 +286,7 @@ public class ReceptionPanel : PanelBase
         HideOptions();
         _currentAdventurerId = -1;
         ClearVisitor();
-        RefreshTopBar();
+        TopBarRefreshEvent.Trigger();
 
         ReceptionComplete.Trigger();//完成接待，触发事件
     }
@@ -334,7 +307,7 @@ public class ReceptionPanel : PanelBase
             _currentAdventurerId = -1;
             ClearVisitor();
         }
-        RefreshTopBar();
+        TopBarRefreshEvent.Trigger();
 
         ReceptionComplete.Trigger();//完成接待，触发事件
     }
@@ -391,7 +364,7 @@ public class ReceptionPanel : PanelBase
         AppendFeedback(result.Message);
 
         HideOptions();
-        RefreshTopBar();
+        TopBarRefreshEvent.Trigger();
     }
     /// <summary>
     /// 隐藏选项
@@ -405,24 +378,4 @@ public class ReceptionPanel : PanelBase
         _spawnedOptions.Clear();
     }
 
-    // ============================================================
-    //  工具：按名字递归查找
-    // ============================================================
-    private T FindByName<T>(string nodeName) where T : Component
-        => FindRecursive<T>(transform, nodeName);
-
-    private T FindRecursive<T>(Transform root, string nodeName) where T : Component
-    {
-        if (root.name == nodeName)
-        {
-            var c = root.GetComponent<T>();
-            if (c != null) return c;
-        }
-        for (int i = 0; i < root.childCount; i++)
-        {
-            var result = FindRecursive<T>(root.GetChild(i), nodeName);
-            if (result != null) return result;
-        }
-        return null;
-    }
 }

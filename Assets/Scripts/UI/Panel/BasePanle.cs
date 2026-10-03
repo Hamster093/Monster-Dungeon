@@ -40,4 +40,25 @@ public abstract class PanelBase : MonoBehaviour, IPanel
 
     // 默认不消费 ESC
     public virtual bool OnEscapePressed() => false;
+
+    // ============================================================
+    //  工具：按名字递归查找
+    // ============================================================
+    protected T FindByName<T>(string nodeName) where T : Component
+        => FindRecursive<T>(transform, nodeName);
+
+    protected T FindRecursive<T>(Transform root, string nodeName) where T : Component
+    {
+        if (root.name == nodeName)
+        {
+            var c = root.GetComponent<T>();
+            if (c != null) return c;
+        }
+        for (int i = 0; i < root.childCount; i++)
+        {
+            var result = FindRecursive<T>(root.GetChild(i), nodeName);
+            if (result != null) return result;
+        }
+        return null;
+    }
 }

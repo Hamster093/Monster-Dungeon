@@ -6,7 +6,7 @@
 	功能：定义配置所需的枚举类型
 *****************************************************/
 
-public enum Level { S = 5, A = 4, B = 3, C = 2, D = 1 }
+public enum Level { A = 4, B = 3, C = 2, D = 1 }
 
 /// <summary>
 /// 性格维度枚举。用于描述角色的性格倾向
@@ -72,16 +72,17 @@ public enum EquipmentState { Normal, Damaged, Critical }
 /// </summary>
 public enum RelationshipState { Neutral, Suspicious, Hostile }
 /// <summary>
-/// 继承者维度枚举。用于描述角色在成长或评价时的多维属性。
+/// 七维属性枚举。高值为正向特质，低值为负向特质。
 /// </summary>
-public enum SuccessorDimension
-{    
-    Reason,      // 理智
-    Courage,     // 勇气
-    Trust,       // 信任
-    Fear,        // 恐惧
-    Vanity,      // 虚荣
-    Cooperation  // 合作力
+public enum SevenDimension
+{
+    Reason,       // 理智(高) - 疯狂(低)
+    Courage,      // 勇气(高) - 怯懦(低)
+    Piety,        // 虔诚(高) - 亵渎(低)
+    Tolerance,    // 宽容(高) - 偏狭(低)
+    Benevolence,  // 仁爱(高) - 冷漠(低)
+    Resolve,      // 坚定(高) - 动摇(低)
+    Diligence     // 勤勉(高) - 懒惰(低)
 }
 /// <summary>
 /// 人物id枚举。用于标识游戏中不同的来访角色。

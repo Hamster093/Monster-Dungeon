@@ -8,6 +8,7 @@
 
 using System;
 using System.Collections.Generic;
+using UnityEngine.TextCore.Text;
 
 [Serializable]
 /// <summary>
@@ -24,9 +25,13 @@ public class AdventurerConfig
     public int contractId;                         // 默认委托 ID
     public List<string> backgrounds;               // 三条固定背景，按顺序
     public string successorType;                   // 接任类型"
-    public SuccessorDimension mainDimension;       // 主要接任维度
-    public SuccessorDimension secondaryDimension;  // 次要接任维度
-    public Dictionary<SuccessorDimension, int> initialStats; // 六维初始值
+    public SevenDimension mainDimension;       // 主要接任维度
+    public SevenDimension secondaryDimension;  // 次要接任维度
+    public Dictionary<SevenDimension, int> initialStats; // 七维初始值
+
+    public string IllustrationName;  //角色立绘名字
+    public string briefStory; // 简要的角色背景故事
+
 }
 
 /// <summary>
@@ -113,11 +118,10 @@ public class DialogueOptionConfig
     public string failText;         // 检定失败时的回答整句
     public int validInfoId;         // 成功且有效时关联的有效信息 ID，0 表示不产出有效信息
     /// <summary>
-    /// 接任数值变化，如 { 欲望:+5, 信任:-3 }。
-    /// 同次来访最多推动一次。JsonUtility 不支持 Dictionary，
-    /// 若用 JsonUtility 需改为 List&lt;StatEntry&gt;。
+    /// 七维数值变化。
+    /// 同次来访最多推动一次。。
     /// </summary>
-    public Dictionary<SuccessorDimension, int> statChanges; // 接任数值变化
+    public Dictionary<SevenDimension, int> statChanges; // 接任数值变化
 }
 
 /// <summary>

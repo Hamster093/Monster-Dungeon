@@ -48,7 +48,8 @@
       "options": [
         { "text": "查看委托", "targetNodeId": "6" },
         { "text": "搭话", "targetNodeId": "7" },
-      	{ "text": "使用道具", "targetNodeId": "8" } 
+      	{ "text": "使用道具", "targetNodeId": "8" } ,
+	{ "text": "拒绝", "targetNodeId": "9" }
       ]
     },
 {
@@ -77,7 +78,8 @@
       "options": [
         { "text": "谈论来历", "targetNodeId": "5" },
         { "text": "谈论委托目标", "targetNodeId": "5" },
-      	{ "text": "谈论冒险者自己", "targetNodeId": "8" } 
+      	{ "text": "谈论冒险者自己", "targetNodeId": "5" } ,
+	{ "text": "返回", "targetNodeId": "5" } 
       ]
     },
 {

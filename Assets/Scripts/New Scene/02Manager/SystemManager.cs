@@ -48,6 +48,7 @@ public class SystemManager
 
         // 5. 让各系统自己注册事件
         Schedule.Init();
+        Schedule.RefreshScheduleData();
         ActionPoint.Init();
         Memory.Init();
         Economy.Init();
@@ -66,4 +67,5 @@ public class SystemManager
 
         IsInitialized = false;
     }
+
 }

@@ -93,5 +93,17 @@ public class ScheduleSystem
         var schedule = _config.Schedules.Find(s => s.phase == _runState.run.currentPhase);
         return schedule != null && day >= schedule.deadlineDay;
     }
+
+    /// <summary>
+    /// 刷新与排期相关的运行时数据（剩余天数、分期金额）
+    /// </summary>
+    public void RefreshScheduleData()
+    {
+        var run = SystemManager.Instance.RunState.run;
+        var cfg = SystemManager.Instance.Config;
+
+        run.remainingDays = cfg.GetRemainingDays(run.currentDay, run.currentPhase);
+        run.installmentPayment = cfg.GetInstallmentPayment(run.currentPhase);
+    }
 }
 

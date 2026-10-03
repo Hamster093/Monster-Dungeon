@@ -145,8 +145,8 @@ public class TestBootstrap : MonoBehaviour
         {
             var s = kv.Value;
             Debug.Log($"  冒险者 {kv.Key}: 健康={s.health}, 装备={s.equipment}, " +
-                      $"关系={s.relationship}, 报复={s.revenge}, " +
-                      $"接任数值数={s.successorStats.Count}");
+                      $"关系={s.relationship}, 报复={s.revenge}, "
+                    );
         }
 
         Debug.Log($"[状态] 魔物状态数: {run.monsters.Count}");

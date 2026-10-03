@@ -87,7 +87,15 @@ public class ConfigDatabase
             return new List<T>();
         }
 
-        return JsonConvert.DeserializeObject<List<T>>(textAsset.text) ?? new List<T>();
+        try
+        {
+            return JsonConvert.DeserializeObject<List<T>>(textAsset.text) ?? new List<T>();
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"解析配置表 [{fileName}] 失败！错误信息: {e.Message}");
+            return new List<T>();
+        }
     }
 
     /// <summary>

@@ -1,5 +1,5 @@
 /****************************************************
-    文件：GamePassEvent.cs
+    文件：ItemActionPanel.cs
 	作者：DADI
     邮箱: 1581507659@qq.com
     日期：2026-09-22 13:19:04
@@ -12,6 +12,7 @@ public class ItemActionPanel : PanelBase
 {
     [SerializeField] private Button _examineButton;
     [SerializeField] private Button _dropButton;
+    [SerializeField] private Vector2 _buttonOffset;
 
     // 模态，点遮罩可关闭
     public override bool IsModal => true;
@@ -103,7 +104,7 @@ public class ItemActionPanel : PanelBase
         }
         else
         {
-            transform.position = mousePos+new Vector2(10f, -10f); ;
+            transform.position = mousePos+ _buttonOffset;
         }
     }
 

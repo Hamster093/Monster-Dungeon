@@ -9,6 +9,6 @@
     "successText": "打过，上次一个人清了三只。",
     "failText": "……记不太清了。",
     "validInfoId": 1,
-    "statChanges": { "Trust": 5 }
+    "Benevolence": { "Trust": 5 }
   }
 ]
