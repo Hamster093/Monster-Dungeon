@@ -48,8 +48,11 @@ public class TalkPanel : PanelBase, IPointerClickHandler
 
 
     [Header("按钮引用")]
-    [SerializeField] private Button _descriptionButton;
-    [SerializeField] private Button _characterArchiveButton;
+    [SerializeField] private Button _descriptionButton;//历史对话
+    [SerializeField] private Button _characterArchiveButton;//角色档案
+
+    public GameObject leftDisplayArea;
+    public GameObject RightDisplayArea;
 
     private readonly Dictionary<string, AsyncOperationHandle<Sprite>> _iconHandles = new();
 
@@ -293,13 +296,20 @@ public class TalkPanel : PanelBase, IPointerClickHandler
     /// </summary>
     private void OnCharacterArchive()
     {
+        if (leftDisplayArea == null)
+        {
+            Debug.LogWarning("[TalkPanel] leftDisplayArea 未赋值，无法切换显示", this);
+            return;
+        }
+
+        // 如果仍需校验说话人，可保留下方注释的判断
         if (string.IsNullOrEmpty(_currentSpeaker))
         {
             Debug.LogWarning("[TalkPanel] 当前没有具体说话人，无法打开人物档案", this);
             return;
         }
 
-        UIManager.Instance.Open<CharacterArchivePanel>(_currentSpeaker);
+        leftDisplayArea.SetActive(!leftDisplayArea.activeSelf);
     }
 
     #endregion

@@ -29,18 +29,19 @@ public class DescriptionPanel : PanelBase
     {
         base.OnOpen(data);
 
-        if (data is ItemDescriptionData d)
-        {
-            _itemNameText.text = d.itemName;
-            _itemDescriptionText.text = d.itemDescription;
-            _itemImage.sprite = d.itemSprite != null ? d.itemSprite : d.emptySprite;
-        }
-        else
+        if (data is not ItemData d)
         {
             // 没传数据时清空
             _itemNameText.text = "";
             _itemDescriptionText.text = "";
+            _itemImage.sprite = null;
+            return;
         }
+
+        // 有数据时填充
+        _itemNameText.text = d.itemName;
+        _itemDescriptionText.text = d.description;
+        _itemImage.sprite = d.sprite;
     }
 
     public override void OnClose()

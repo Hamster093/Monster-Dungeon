@@ -3,23 +3,26 @@
     功能：单个背包格子的数据
 *****************************************************/
 
+using System;
 using UnityEngine;
 
-[System.Serializable]
+// 背包格子：物品 + 数量
+[Serializable]
 public class ItemStack
 {
-    public string itemName;
+    public ItemData data;
     public int quantity;
-    public Sprite sprite;
-    public string description;
 
-    public bool IsEmpty => quantity <= 0 || string.IsNullOrEmpty(itemName);
+    public bool IsEmpty => data == null;
+
+    // 便捷转发 .data.sprite
+    public string itemName => data?.itemName;
+    public Sprite sprite => data?.sprite;
+    public string description => data?.description;
 
     public void Clear()
     {
-        itemName = null;
+        data = null;
         quantity = 0;
-        sprite = null;
-        description = null;
     }
 }

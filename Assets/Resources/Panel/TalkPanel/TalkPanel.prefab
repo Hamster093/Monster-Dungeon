@@ -1075,7 +1075,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &6321953156107964936
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1167,6 +1167,8 @@ MonoBehaviour:
     content: "\u6211\u521A\u597D\u4E5F\u8981\u51FA\u95E8\uFF0C\u987A\u8DEF\u7684\u8BDD\u53EF\u4EE5\u4E00\u8D77\u3002"
   _descriptionButton: {fileID: 8463852323053147040}
   _characterArchiveButton: {fileID: 7811046889453051892}
+  leftDisplayArea: {fileID: 6751332956423668556}
+  RightDisplayArea: {fileID: 7322263868433948401}
 --- !u!114 &7227756293192929615
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1196,7 +1198,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8137373635320387986
 RectTransform:
   m_ObjectHideFlags: 0

@@ -111,6 +111,21 @@ public class RunStateManager
 
         Debug.Log("游戏已读取");
     }
+
+
+    //=====外部方法====
+    /// <summary>
+    /// 尝试花费现金，如果现金不足则返回 false，不会扣除现金。(应该由金币系统调用)
+    /// </summary>
+    /// <param name="amount"></param>
+    /// <returns></returns>
+    public bool TrySpendCash(int amount)
+    {
+        if (run == null || run.cash < amount) return false;
+        run.cash -= amount;
+        TopBarRefreshEvent.Trigger();
+        return true;
+    }
 }
 
 

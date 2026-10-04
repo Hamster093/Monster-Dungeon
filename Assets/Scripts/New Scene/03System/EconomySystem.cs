@@ -42,9 +42,7 @@ public class EconomySystem
     /// </summary>
     public bool SpendCash(int amount)
     {
-        if (_runState.run.cash < amount) return false;
-        _runState.run.cash -= amount;
-        return true;
+        return _runState.TrySpendCash(amount);
     }
     /// <summary>
     /// 发放诚实接待的奖励。

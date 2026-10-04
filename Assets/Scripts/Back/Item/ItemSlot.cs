@@ -11,22 +11,10 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ItemDescriptionData
-{
-    public string itemName;
-    public string itemDescription;
-    public Sprite itemSprite;
-    public Sprite emptySprite;   // 没有图片时的兜底
-}
-
+// 右键菜单数据：物品 + 回调
 public class ItemActionData
 {
-    public string itemName;
-    public Sprite itemSprite;
-    public string itemDescription;
-    public Sprite emptySprite;
-
-    /// <summary>点击“丢弃”时由 ItemSlot 执行</summary>
+    public ItemData data;
     public Action onDrop;
 }
 
@@ -35,17 +23,30 @@ public class ItemSlot : MonoBehaviour ,IPointerClickHandler, IPointerEnterHandle
     //=====物品格子=====//
     [SerializeField] private Text _quantityText;
     [SerializeField] private Image _itemImage;
-    [SerializeField] public GameObject _selectedShader; 
+    [SerializeField] public GameObject _selectedShader;
+
+    [SerializeField] private Text _subText;//可选，商店格子显示价格
+
+    private Func<int, ItemStack> _dataProvider;
+
+    //=====商店复用代码添加的逻辑，商店点击格子时会走 OnLeftClickedOverride 逻辑======
+    /// <summary>面板可注册，注册后左键点击由面板接管，默认逻辑不再执行</summary>
+    public System.Action<int> OnLeftClickedOverride;
+    /// <summary>面板可注册，注册后右键点击由面板接管</summary>
+    public System.Action<int> OnRightClickedOverride;
 
     public bool _thisItemSelected;
 
     public int SlotIndex { get; private set; }
     private ItemStack _stack;
 
-    /// <summary>由 BackpackPanel 在 OnInit 时绑定索引</summary>
-    public void Bind(int index, Sprite emptySprite)
+    /// <summary>
+    /// 由 BackpackPanel 在 OnInit 时绑定索引,商店传入自己的provider
+    /// </summary>
+    public void Bind(int index, Sprite emptySprite, Func<int, ItemStack> provider = null)
     {
         SlotIndex = index;
+        _dataProvider = provider ?? (i => InventoryModel.Instance.GetSlot(i));
         Refresh(InventoryModel.Instance.GetSlot(index), emptySprite);
     }
 
@@ -83,6 +84,12 @@ public class ItemSlot : MonoBehaviour ,IPointerClickHandler, IPointerEnterHandle
 
     private void OnLeftClick()
     {
+        if (OnLeftClickedOverride != null)
+        {
+            OnLeftClickedOverride.Invoke(SlotIndex);
+            return;
+        }
+
         DeselectAllRequested.Trigger();
         SetSelected(true);
 
@@ -97,13 +104,17 @@ public class ItemSlot : MonoBehaviour ,IPointerClickHandler, IPointerEnterHandle
     }
     private void OnRightClick()
     {
+        if (OnRightClickedOverride != null)
+        {
+            OnRightClickedOverride.Invoke(SlotIndex);
+            return;
+        }
+
         if (_stack == null || _stack.IsEmpty) return;
 
         UIManager.Instance.Open<ItemActionPanel>(new ItemActionData
         {
-            itemName = _stack.itemName,
-            itemSprite = _stack.sprite,
-            itemDescription = _stack.description,
+            data = _stack.data,
             onDrop = () => DropItem()
         });
     }
@@ -128,5 +139,12 @@ public class ItemSlot : MonoBehaviour ,IPointerClickHandler, IPointerEnterHandle
     public void OnPointerExit(PointerEventData eventData)
     {
         UIManager.Instance.Close<NamePanel>();
+    }
+
+    public void SetSubText(string text)
+    {
+        if (_subText == null) return;
+        _subText.gameObject.SetActive(!string.IsNullOrEmpty(text));
+        _subText.text = text;
     }
 }

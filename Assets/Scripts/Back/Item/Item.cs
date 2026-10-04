@@ -12,32 +12,17 @@ using UnityEngine;
 /// <summary>拾取请求的数据包</summary>
 public class ItemPickupData
 {
-    public string itemName;
+    public ItemData data;   
     public int quantity;
-    public Sprite sprite;
-    public string description;
-
-    /// <summary>处理结果回调：参数为剩余数量，0 表示全部放入</summary>
     public Action<int> onResult;
 }
 
 public class Item : MonoBehaviour//目前不确定物品是否需要实例
 {
-    [SerializeField]
-    public string _itemName;
-
-    [SerializeField]
-    public int _quantity;
-
-    [SerializeField]
-    public int _maxNumber;
-
-    [SerializeField]
-    public Sprite _sprite;
-
-    [TextArea]
-    [SerializeField]
-    public string _itemDescription;
+    [SerializeField] private ItemData _data;
+    [SerializeField] private int _quantity = 1;
+    [Header("拾取是否销毁物体")]
+    [SerializeField] private bool DestroyOnPickupComplete = false;   // 测试时改成 false
 
     /// <summary>
     /// 玩家拾取物品
@@ -62,19 +47,27 @@ public class Item : MonoBehaviour//目前不确定物品是否需要实例
     /// </summary>
     private void Pickup()
     {
+        if (_data == null)
+        {
+            Debug.LogWarning($"[Item] {name} 没有配置 ItemData");
+            return;
+        }
+
         ItemPickupRequested.Trigger(new ItemPickupData
         {
-            itemName = _itemName,
+            data = _data,
             quantity = _quantity,
-            sprite = _sprite,
-            description = _itemDescription,
             onResult = leftover =>
             {
                 if (leftover <= 0)
-                //Destroy(gameObject);       // 全部放进去了，销毁
+                {
+                    if (DestroyOnPickupComplete) Destroy(gameObject);
                     return;
+                }
                 else
-                    _quantity = leftover;       // 背包满了，剩下的留在场景里
+                {
+                    _quantity = leftover;      
+                }
             }
         });
     }

@@ -1,57 +1,58 @@
-/****************************************************
-    文件：ItemActionPanel.cs
+﻿/****************************************************
+    文件：ShopItemActionPanel.cs
 	作者：DADI
     邮箱: 1581507659@qq.com
-    日期：2026-09-22 13:19:04
-	功能：背包内右键点击物品后弹出的操作面板
+    日期：2026/10/4 18:00:15
+	功能：商店右键操作面板
 *****************************************************/
+
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ItemActionPanel : PanelBase
+public class ShopItemActionPanel : PanelBase
 {
     [SerializeField] private Button _examineButton;
-    [SerializeField] private Button _dropButton;
+    [SerializeField] private Button _buyButton;
     [SerializeField] private Vector2 _buttonOffset;
 
-    // 模态，点遮罩可关闭
     public override bool IsModal => true;
 
-    private ItemActionData _currentData;
+    private ShopActionData _currentData;
 
     public override void OnInit()
     {
         _examineButton.onClick.AddListener(OnViewClick);
-        _dropButton.onClick.AddListener(OnDropClick);
+        _buyButton.onClick.AddListener(OnBuyClick);
     }
-    /// <summary>
-    /// 打开
-    /// </summary>
-    /// <param name="data"></param>
+
+    public override void OnDestroy()
+    {
+        _examineButton.onClick.RemoveListener(OnViewClick);
+        _buyButton.onClick.RemoveListener(OnBuyClick);
+        base.OnDestroy();
+    }
+
     public override void OnOpen(object data = null)
     {
         base.OnOpen(data);
+        if (data is ShopActionData d) _currentData = d;
 
-        if (data is ItemActionData d)
-            _currentData = d;
+        _buyButton.interactable = _currentData != null
+            && SystemManager.Instance.Economy.Cash >= _currentData.price;
 
-        FollowMouse(); // 打开时出现在鼠标位置
+        FollowMouse();
     }
-    /// <summary>
-    /// 刷新
-    /// </summary>
-    /// <param name="data"></param>
+
     public override void OnRefresh(object data = null)
     {
-        if (data is ItemActionData d)
-            _currentData = d;
-
+        base.OnRefresh(data);
+        if (data is ShopActionData d) _currentData = d;
         FollowMouse();
     }
 
     public override void OnClose()
     {
-        _currentData = null; // 清掉引用，避免持有旧回调
+        _currentData = null;
         base.OnClose();
     }
 
@@ -61,26 +62,23 @@ public class ItemActionPanel : PanelBase
         return true;
     }
 
-    #region 按钮
+    // ---------- 按钮 ----------
 
     private void OnViewClick()
     {
-        if (_currentData == null) return;
+        if (_currentData?.data == null) return;
 
         UIManager.Instance.Open<DescriptionPanel>(_currentData.data);
-
-        UIManager.Instance.Close(this); // 查看后关掉操作面板
-    }
-
-    private void OnDropClick()
-    {
-        _currentData?.onDrop?.Invoke();
         UIManager.Instance.Close(this);
     }
 
-    #endregion
+    private void OnBuyClick()
+    {
+        _currentData?.onBuy?.Invoke();
+        UIManager.Instance.Close(this);
+    }
 
-    #region 定位
+    // ---------- 定位 ----------
 
     private void FollowMouse()
     {
@@ -98,9 +96,7 @@ public class ItemActionPanel : PanelBase
         }
         else
         {
-            transform.position = mousePos+ _buttonOffset;
+            transform.position = (Vector3)mousePos + (Vector3)_buttonOffset;
         }
     }
-
-    #endregion
 }

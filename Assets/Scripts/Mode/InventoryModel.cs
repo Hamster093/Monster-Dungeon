@@ -39,16 +39,21 @@ public class InventoryModel
     }
 
     /// <summary>添加物品，返回放不下的剩余数量</summary>
-    public int AddItem(string itemName, int quantity, Sprite sprite, string description)
+    public int AddItem(ItemStack itemStack)
     {
-        if (quantity <= 0) return 0;
+
+        if (itemStack == null || itemStack.data == null) return 0;
+
+        ItemData data = itemStack.data;
+        int quantity = itemStack.quantity;
+        int originalQuantity = quantity;
 
         // 第一遍：堆叠到已有的同名物品上
         for (int i = 0; i < _slots.Length && quantity > 0; i++)
         {
             var slot = _slots[i];
             if (slot.IsEmpty) continue;
-            if (slot.itemName != itemName) continue;
+            if (slot.data.id != data.id) continue;   // 用 id 比较，比 name 稳
             if (slot.quantity >= _maxStack) continue;
 
             int space = _maxStack - slot.quantity;
@@ -63,14 +68,13 @@ public class InventoryModel
             var slot = _slots[i];
             if (!slot.IsEmpty) continue;
 
-            slot.itemName = itemName;
-            slot.sprite = sprite;
-            slot.description = description;
+            slot.data = data;                          // 直接引同一个 ItemData
             slot.quantity = Mathf.Min(_maxStack, quantity);
             quantity -= slot.quantity;
         }
 
-        Debug.Log($"[Model] AddItem {itemName} x{quantity}，剩余 {quantity}");
+        int added = originalQuantity - quantity;
+        Debug.Log($"[Model] AddItem {data.itemName} x{added}，剩余放不下 {quantity}");
         BackpackChanged.Trigger();
         return quantity;
     }
@@ -99,7 +103,14 @@ public class InventoryModel
 
     private void OnPickupRequested(ItemPickupData data)
     {
-        int leftover = AddItem(data.itemName, data.quantity, data.sprite, data.description);
+        if(data == null || data.data == null) return;
+
+        int leftover = AddItem(new ItemStack
+        {
+            data = data.data,
+            quantity = data.quantity
+        });
+
         data.onResult?.Invoke(leftover);
     }
 }
