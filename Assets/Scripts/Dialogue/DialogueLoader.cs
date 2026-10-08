@@ -14,7 +14,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 public static class DialogueLoader
 {
     /// <summary>
-    /// 异步加载并解析对话配置 (支持 Addressables)
+    /// 异步加载并解析对话配置 (支持 Addressables)//根据地址加载 要加入组
     /// </summary>
     public static async Task<DialogueData> LoadDialogueData(string addressableKey)
     {

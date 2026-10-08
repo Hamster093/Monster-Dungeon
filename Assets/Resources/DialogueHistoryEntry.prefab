@@ -38,8 +38,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.22577085, y: 0.5435926}
   m_AnchorMax: {x: 0.22577085, y: 0.5435926}
-  m_AnchoredPosition: {x: 526.5, y: -47}
-  m_SizeDelta: {x: 1100, y: 155}
+  m_AnchoredPosition: {x: 526.5, y: -0.74409866}
+  m_SizeDelta: {x: 1100, y: 62.4883}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &3305943115410073233
 MonoBehaviour:
@@ -127,8 +127,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -486, y: -0.00083733}
-  m_SizeDelta: {x: 188.488, y: 155.08}
+  m_AnchoredPosition: {x: -459.5, y: 0.0014133}
+  m_SizeDelta: {x: 181, y: 62.491}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4764254496770196689
 CanvasRenderer:
@@ -160,10 +160,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 51
+    m_FontSize: 30
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 10
+    m_MinSize: 3
     m_MaxSize: 70
     m_Alignment: 5
     m_AlignByGeometry: 0
@@ -208,7 +208,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 81, y: -0.00075912}
+  m_AnchoredPosition: {x: 102, y: -2.3101}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8520302964153186285
@@ -241,11 +241,11 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 50
+    m_FontSize: 30
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
-    m_MaxSize: 77
+    m_MaxSize: 300
     m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -283,7 +283,7 @@ MonoBehaviour:
   m_MinWidth: -1
   m_MinHeight: -1
   m_PreferredWidth: 900
-  m_PreferredHeight: 150
+  m_PreferredHeight: 50
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
@@ -304,7 +304,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7082827068525198727
 RectTransform:
   m_ObjectHideFlags: 0

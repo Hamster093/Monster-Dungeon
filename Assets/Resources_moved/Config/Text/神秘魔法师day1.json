@@ -1,0 +1,104 @@
+{
+  "dialogueId": "神秘魔法师",
+  "startNodeId": "1",
+  "nodes": [
+    {
+      "id": "1",
+      "speakerName": "神秘魔法师",
+      "iconName": "MysteriousMage",
+      "contents": [
+        "呵呵呵……命运的丝线将你牵引至此了吗？",
+        "能亲眼目睹本尊的真容，你的荣幸足以令这陋室生辉。",
+        "那么，凡人，报上你的名讳。"
+      ],
+      "nextNodeId": "",
+      "options": [
+        { "text": "削减其主要属性，提升一个次要属性", "targetNodeId": "2" },
+        { "text": "检定:50%削减其一个主要属性;50%削减其一个无关属性", "targetNodeId": "3", "callbackKey": "check_reduce_attribute" },
+        { "text": "无效果，但是搭话提供的有效信息概率", "targetNodeId": "3" }
+      ]
+    },
+    {
+      "id": "2",
+      "speakerName": "神秘魔法师",
+      "iconName": "MysteriousMage",
+      "contents": [
+        "愚蠢！竟敢妄图扭曲本尊的魔力回路……这份代价，你承受得起吗？"
+      ],
+      "nextNodeId": "5"
+    },
+    {
+      "id": "3",
+      "speakerName": "神秘魔法师",
+      "iconName": "MysteriousMage",
+      "contents": [
+        "无聊的把戏。若再敢用这种低劣的手段消遣本尊，小心被反噬的业火烧成灰烬。"
+      ],
+      "nextNodeId": "5"
+    },
+    {
+      "id": "5",
+      "speakerName": "神秘魔法师",
+      "iconName": "MysteriousMage",
+      "contents": [
+        "……还有什么想说的？本尊的时间可比你的性命珍贵得多。"
+      ],
+      "nextNodeId": "",
+      "options": [
+        { "text": "查看委托", "targetNodeId": "6" },
+        { "text": "搭话", "targetNodeId": "7" },
+        { "text": "使用道具", "targetNodeId": "8" },
+        { "text": "告辞", "targetNodeId": "9" }
+      ]
+    },
+    {
+      "id": "6",
+      "speakerName": "神秘魔法师",
+      "iconName": "MysteriousMage",
+      "contents": [
+        "吾之契约需要一味引子——凯尔希的本源精血。你若能寻来，自有赏赐。"
+      ],
+      "nextNodeId": "",
+      "options": [
+        { "text": "指路", "targetNodeId": "9" },
+        { "text": "返回选项", "targetNodeId": "5" }
+      ]
+    },
+    {
+      "id": "7",
+      "speakerName": "神秘魔法师",
+      "iconName": "MysteriousMage",
+      "contents": [
+        "哦？你还想从本尊口中探听什么秘密？"
+      ],
+      "nextNodeId": "",
+      "options": [
+        { "text": "谈论来历", "targetNodeId": "5" },
+        { "text": "谈论委托目标", "targetNodeId": "5" },
+        { "text": "谈论冒险者自己", "targetNodeId": "5" },
+        { "text": "返回", "targetNodeId": "5" }
+      ]
+    },
+    {
+      "id": "8",
+      "speakerName": "神秘魔法师",
+      "iconName": "MysteriousMage",
+      "contents": [
+        "鬼鬼祟祟的……莫非想在伟大的魔法师面前班门弄斧，暗施药剂？"
+      ],
+      "nextNodeId": "",
+      "options": [
+        { "text": "调查道具", "targetNodeId": "5" }
+      ]
+    },
+    {
+      "id": "9",
+      "speakerName": "神秘魔法师",
+      "iconName": "MysteriousMage",
+      "contents": [
+        "去吧。愿星辰指引你那微不足道的旅途。"
+      ],
+      "nextNodeId": ""
+    }
+  ]
+}

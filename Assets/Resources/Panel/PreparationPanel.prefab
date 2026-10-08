@@ -415,7 +415,7 @@ MonoBehaviour:
   _startReceptionButton: {fileID: 6531488681793981289}
   _shopButton: {fileID: 8178551951791028829}
   _abyssButton: {fileID: 408048808891864424}
-  _dialogueKey: npc_liuming
+  _dialogueKey: "\u5E74\u8F7B\u7684\u5192\u9669\u8005day1"
   _slots:
   - {fileID: 5785362362822927067}
   - {fileID: 5663061761267918105}

@@ -19,7 +19,7 @@ public class AbyssalAltarPanel : PanelBase
     [SerializeField] private Button _decomposeButton;
     [SerializeField] private Image _decomposeDropZone;    // DecomposeBG，接收拖入
 
-    public override bool IsModal => false;
+    public override bool IsModal => true;
 
     public override void OnInit()
     {

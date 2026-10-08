@@ -18,6 +18,7 @@ public class SystemManager
     public ReceptionController Reception { get; private set; }
     public MemorySystem Memory { get; private set; }
     public EconomySystem Economy { get; private set; }
+    public VisitSystem VisitSystem { get; private set; }
 
     private D20Service _d20;
     private AdventureResolver _resolver;
@@ -45,6 +46,7 @@ public class SystemManager
         Memory = new MemorySystem(RunState, Config);
         Schedule = new ScheduleSystem(RunState, Config);
         Reception = new ReceptionController(RunState, Config, _resolver, Economy, ActionPoint, Memory, _d20);
+        VisitSystem = new VisitSystem(RunState, Config);
 
         // 5. 让各系统自己注册事件
         Schedule.Init();
@@ -53,6 +55,7 @@ public class SystemManager
         Memory.Init();
         Economy.Init();
         Reception.Init();
+        VisitSystem.Init();
 
         IsInitialized = true;
     }
@@ -64,6 +67,7 @@ public class SystemManager
         Memory?.Dispose();
         Economy?.Dispose();
         Reception?.Dispose();
+        VisitSystem?.Dispose();
 
         IsInitialized = false;
     }

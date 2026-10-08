@@ -15,61 +15,62 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 public static class SpriteLoader
 {
-    private static readonly Dictionary<string, AsyncOperationHandle<Sprite>> _cache = new();
+    // 缓存加载结果 Task（并发安全，同地址只加载一次）
+    private static readonly Dictionary<string, Task<Sprite>> _tasks = new();
+    // 保留 handle 引用，用于 Release
+    private static readonly Dictionary<string, AsyncOperationHandle<Sprite>> _handles = new();
 
-    /// <summary>
-    /// 异步加载 Sprite，命中缓存直接返回；失败或地址为空返回 null。
-    /// </summary>
-    public static async Task<Sprite> LoadAsync(string address)
+    public static Task<Sprite> LoadAsync(string address)
     {
-        if (string.IsNullOrEmpty(address)) return null;
+        if (string.IsNullOrEmpty(address))
+            return Task.FromResult<Sprite>(null);
 
-        // 1. 命中缓存
-        if (_cache.TryGetValue(address, out var cached)
-            && cached.Status == AsyncOperationStatus.Succeeded)
-            return cached.Result;
+        if (_tasks.TryGetValue(address, out var existing))
+            return existing;
 
+        var task = LoadInternal(address);
+        _tasks[address] = task;
+        return task;
+    }
+
+    private static async Task<Sprite> LoadInternal(string address)
+    {
         try
         {
-            // 2. 旧句柄未完成/已失败，先释放再重来
-            if (cached.IsValid()) Addressables.Release(cached);
-
             var handle = Addressables.LoadAssetAsync<Sprite>(address);
-            _cache[address] = handle;
+            _handles[address] = handle;
             await handle.Task;
 
             if (handle.Status == AsyncOperationStatus.Succeeded)
                 return handle.Result;
 
             Debug.LogWarning($"[SpriteLoader] 加载失败: {address}");
-            _cache.Remove(address);
-            if (handle.IsValid()) Addressables.Release(handle);
             return null;
         }
         catch (Exception e)
         {
             Debug.LogError($"[SpriteLoader] 加载异常: {address}\n{e}");
-            _cache.Remove(address);
             return null;
         }
     }
 
-    /// <summary>释放单个地址</summary>
     public static void Release(string address)
     {
         if (string.IsNullOrEmpty(address)) return;
-        if (_cache.TryGetValue(address, out var h))
+
+        if (_handles.TryGetValue(address, out var h))
         {
             if (h.IsValid()) Addressables.Release(h);
-            _cache.Remove(address);
+            _handles.Remove(address);
         }
+        _tasks.Remove(address);
     }
 
-    /// <summary>释放全部（切场景 / 退出游戏时调用）</summary>
     public static void ReleaseAll()
     {
-        foreach (var h in _cache.Values)
+        foreach (var h in _handles.Values)
             if (h.IsValid()) Addressables.Release(h);
-        _cache.Clear();
+        _handles.Clear();
+        _tasks.Clear();
     }
 }

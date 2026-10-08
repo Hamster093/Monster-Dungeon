@@ -42,4 +42,30 @@ public class CharacterArchivePanel : PanelBase
     {
         UIManager.Instance.Close(this);
     }
+
+    /// <summary>由外部（TalkPanel）调用：刷新指定冒险者的档案</summary>
+    public void Refresh(int adventurerId, Sprite iconSprite = null)
+    {
+        if (adventurerId < 0)
+        {
+            if (_name) _name.text = "";
+            if (_Introduction) _Introduction.text = "";
+            if (_iconImage) _iconImage.sprite = null;
+            return;
+        }
+
+        if (!ConfigDatabase.Instance.Adventurers.TryGetValue(adventurerId, out var adv))
+        {
+            Debug.LogWarning($"[CharacterArchivePanel] 找不到冒险者 id={adventurerId}");
+            return;
+        }
+
+        if (_name) _name.text = adv.name;
+        if (_Introduction) _Introduction.text = adv.briefStory;
+        if (_iconImage)
+        {
+            _iconImage.sprite = iconSprite;
+            _iconImage.enabled = iconSprite != null;
+        }
+    }
 }

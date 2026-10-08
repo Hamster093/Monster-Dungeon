@@ -30,7 +30,7 @@ public class DialogueCallbackBootstrap : MonoBehaviour
             new DialogueLine
             {
                 speakerName = "系统",
-                iconName    = "liuming", // 或 null，会走 SetIcon 清空
+                iconName    = null, // 或 null，会走 SetIcon 清空
                 content     = success
                     ? "【检定成功】刘明的一个主要属性被削减了。"
                     : "【检定失败】削减的是一个无关属性……"

@@ -71,7 +71,7 @@ public class DialogueController
             Debug.LogError("[DialogueController] 未初始化或已被 Dispose，无法开始对话");
             return;
         }
-
+        _talkPanel.CheckDayChangedAndClear();
         _currentData = await DialogueLoader.LoadDialogueData(dialogueAddressableKey);
         if (_currentData == null || _disposed || _talkPanel == null) return;
 
@@ -171,7 +171,7 @@ public class DialogueController
         // 2. 没有选项，也没有下一节点，对话彻底结束
         else if (string.IsNullOrEmpty(stopNode.nextNodeId))
         {
-            TryStartNextVisitorOrEnd();
+            OnDialogueSequenceEnd();
         }
     }
 
@@ -180,19 +180,22 @@ public class DialogueController
     /// - 若今日还有未接待的访客 → 推进到该访客，并用他的对话 key 开始新对话
     /// - 否则 → EndDialogue() 关闭面板
     /// </summary>
-    private void TryStartNextVisitorOrEnd()
+    private void OnDialogueSequenceEnd()
     {
-        var reception = UIManager.Instance.Get<ReceptionPanel>();
-        string nextKey = reception != null ? reception.AdvanceToNextVisitor() : null;
+        var vs = SystemManager.Instance.VisitSystem;
+        bool hasNext = vs.OnVisitorFinished();
 
-        if (!string.IsNullOrEmpty(nextKey))
+        if (hasNext)
         {
-            // 复用同一个 DialogueController，继续跑下一段对话
-            StartDialogue(nextKey);
-            return;
+            string key = vs.GetCurrentDialogueKey();
+            if (!string.IsNullOrEmpty(key))
+            {
+                StartDialogue(key);   // 复用同一个 controller，继续跑下一位
+                return;
+            }
         }
 
-        EndDialogue();
+        EndDialogue();   // 当天结束 / 已触发 NextDayEvent → 关面板
     }
 
     private void ShowOptions(List<DialogueOption> options)
@@ -212,10 +215,12 @@ public class DialogueController
             btnObj.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() =>
             {
                 _optionPanel.SetActive(false);
+                _talkPanel.RecordPlayerChoice(option.text);
                 HandleOptionSelected(option);
             });
         }
     }
+
     /// <summary>
     /// 处理选项选中事件：先尝试执行回调，若有额外台词则先播额外台词，否则直接跳转到目标节点
     /// </summary>

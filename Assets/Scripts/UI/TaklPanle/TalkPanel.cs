@@ -25,11 +25,21 @@ public class DialogueLine
 
 public class TalkPanel : PanelBase, IPointerClickHandler
 {
+    [Header("文件引用")]
+    private TalkIconView _iconView;
+    private DailyHistoryView _historyView;
 
     [Header("UI组件引用")]
     [SerializeField] private MonoBehaviour _typewriterComponent;
     [SerializeField] private Text _speakerNameText;
-    [SerializeField] private Image _iconImage;     //目前挂载的是背景图，后续可改为头像图 另外需要增加背景图的引用，或者直接在对话行里增加背景图字段 背景图进入对话时使用 UpdateBackgroundImage切换背景图，头像图使用 SetIcon 切换头像图
+    [SerializeField] private Image _iconImage;
+    private CharacterArchivePanel _archivePanel;
+
+    private Coroutine _idleSwitchCoroutine;
+
+    [Header("图标后缀约定")]
+    [SerializeField] private string _talkSuffix = "_talk";
+    [SerializeField] private string _idleSuffix = "_idle";
 
     [Header("对话控制器")]
     [SerializeField] private DialogueController _dialogueController = new DialogueController();
@@ -49,6 +59,10 @@ public class TalkPanel : PanelBase, IPointerClickHandler
     [SerializeField] private Button _descriptionButton;//历史对话
     [SerializeField] private Button _characterArchiveButton;//角色档案
 
+    [Header("对话历史")]
+    [SerializeField] private Transform _historyContent;      // ScrollView/Viewport/Content
+    [SerializeField] private GameObject _historyItemPrefab;  // DialogueHistoryItem
+
     public GameObject leftDisplayArea;
     public GameObject RightDisplayArea;
 
@@ -57,17 +71,15 @@ public class TalkPanel : PanelBase, IPointerClickHandler
     //_自动完成协程
     private Coroutine _autoCompleteCoroutine;
 
-    private readonly HashSet<string> _usedIconAddresses = new();  // 本面板用过的地址，销毁时释放
-
 
     /// <summary>
     /// 对话全部播放完毕时触发
     /// </summary>
-    public Action OnDialogueComplete;
+    public event Action OnDialogueComplete;
     /// <summary>
     /// 每条对话开始播放时触发 用于音效、动画等
     /// </summary>
-    public Action<DialogueLine> OnLineStart;
+    public event Action<DialogueLine> OnLineStart;
 
     private int _currentIndex;
     private string _currentSpeaker;
@@ -84,6 +96,9 @@ public class TalkPanel : PanelBase, IPointerClickHandler
     public override void OnInit()
     {
         base.OnInit();
+
+        _iconView = new TalkIconView(this, _iconImage, _talkSuffix, _idleSuffix);
+        _historyView = new DailyHistoryView(_historyContent, _historyItemPrefab);
 
         _dialogueController ??= new DialogueController();
         _dialogueController.Init(this);
@@ -106,6 +121,14 @@ public class TalkPanel : PanelBase, IPointerClickHandler
         {
             Debug.LogException(e, this);
         }
+
+        if (leftDisplayArea != null)
+        {
+            _archivePanel = leftDisplayArea.GetComponentInChildren<CharacterArchivePanel>(true);
+            if (_archivePanel == null)
+                Debug.LogWarning("[TalkPanel] leftDisplayArea 下找不到 CharacterArchivePanel", this);
+        }
+        TodayVisitorsReadyEvent.Register(OnTodayVisitorsReady);
     }
 
     public override void OnDestroy()
@@ -127,9 +150,16 @@ public class TalkPanel : PanelBase, IPointerClickHandler
             _autoCompleteCoroutine = null;
         }
 
-        ClearIconCache();
+        if (_idleSwitchCoroutine != null)
+        {
+            StopCoroutine(_idleSwitchCoroutine);
+            _idleSwitchCoroutine = null;
+        }
+        _iconView?.ReleaseAll();
         OnDialogueComplete = null;
         OnLineStart = null;
+
+        TodayVisitorsReadyEvent.UnRegister(OnTodayVisitorsReady);
     }
 
     /// <summary>
@@ -187,16 +217,19 @@ public class TalkPanel : PanelBase, IPointerClickHandler
             _autoCompleteCoroutine = null;
         }
 
+        if (_idleSwitchCoroutine != null)
+        {
+            StopCoroutine(_idleSwitchCoroutine);
+            _idleSwitchCoroutine = null;
+        }
+
         _currentIndex = 0;
         _currentSpeaker = null;
         _currentIcon = null;
         _speakerNameText.text = string.Empty;
-        // 重置头像显示
-        if (_iconImage != null)
-        {
-            _iconImage.sprite = null;
-            _iconImage.enabled = false;
-        }
+
+        _iconView.Clear();
+        _historyView.BeginSegment();
         Typewriter?.Clear();
     }
     #endregion
@@ -238,34 +271,48 @@ public class TalkPanel : PanelBase, IPointerClickHandler
     /// </summary>
     private void PlayCurrentLine()
     {
+        // 兜底：上一句若还没记（跳过时可能来不及记），补记
+        int prev = _currentIndex - 1;
+        if (prev >= 0 && prev < _dialogueList.Count)
+            _historyView.RecordLineIfNeeded(prev, _dialogueList[prev]);
+
         DialogueLine line = _dialogueList[_currentIndex];
-        //写入历史对话
-        DialogueHistoryModel.Instance?.Add(line);
-        //写入人物档案
-        if (!string.IsNullOrEmpty(line.speakerName))
+        int playingIndex = _currentIndex;   // 捕获给协程
+
+        // 图标切换（只保留一段）
+        if (_currentIcon != line.iconName)
         {
-            CharacterArchiveModel.Instance?.Add(line.speakerName, line);
+            _currentIcon = line.iconName;
+            _iconView.SetCharacter(line.iconName, OnIconLoaded);
         }
-        // 仅在说话人变化时更新文本（减少GC与重绘）
+        else
+        {
+            _iconView.ShowTalk();
+        }
+
+        // 历史对话模型（跨天保留，原逻辑不变）
+        DialogueHistoryModel.Instance?.Add(line);
+
+        // 说话人
         if (_currentSpeaker != line.speakerName)
         {
             _currentSpeaker = line.speakerName;
             _speakerNameText.text = line.speakerName;
         }
-        // 仅在图标变化时更新背景
-        if (_currentIcon != line.iconName)
-        {
-            _currentIcon = line.iconName;
-            SetIcon(line.iconName);
-        }
-        // 触发单条对话开始事件
+
         OnLineStart?.Invoke(line);
-        // 播放打字机效果
+
+        // 打字机
         Typewriter.Play(line.content);
+
+        // idle 切换 + 行号记录
+        if (_idleSwitchCoroutine != null) StopCoroutine(_idleSwitchCoroutine);
+        _idleSwitchCoroutine = StartCoroutine(SwitchToIdleWhenTypingDone(playingIndex));
+
         if (_instantTextMode) Typewriter.Skip();
         _currentIndex++;
 
-        // 最后一句，且外部告知“后面还有选项”，才在打字结束后自动触发完成
+        // 最后一句自动完成
         if (_currentIndex >= _dialogueList.Count && _autoCompleteAtEnd)
         {
             if (_autoCompleteCoroutine != null) StopCoroutine(_autoCompleteCoroutine);
@@ -279,6 +326,41 @@ public class TalkPanel : PanelBase, IPointerClickHandler
         _autoCompleteCoroutine = null;
         OnDialogueComplete?.Invoke();
     }
+    private IEnumerator SwitchToIdleWhenTypingDone(int lineIndex)
+    {
+        yield return null;
+        yield return new WaitUntil(() => !Typewriter.IsTyping);
+
+        if (lineIndex >= 0 && lineIndex < _dialogueList.Count)
+            _historyView.RecordLineIfNeeded(lineIndex, _dialogueList[lineIndex]);
+
+        _iconView.ShowIdle();
+        _idleSwitchCoroutine = null;
+    }
+
+    private void OnIconLoaded()
+    {
+        if (!_isInitialized) return;
+        bool typing = Typewriter != null && Typewriter.IsTyping;
+        if (typing) _iconView.ShowTalk();
+        else _iconView.ShowIdle();
+    }
+
+    private void OnTodayVisitorsReady(List<int> ids)
+    {
+        int today = SystemManager.Instance.RunState.run.currentDay;
+        _historyView.CheckDayChangedAndClear(today);
+    }
+
+    /// <summary>
+    /// 跨天时清空右侧窗口
+    /// </summary>
+    public void CheckDayChangedAndClear()
+    {
+        int today = SystemManager.Instance.RunState.run.currentDay;
+        _historyView.CheckDayChangedAndClear(today);
+    }
+
     #endregion
 
     #region 按钮回调
@@ -297,60 +379,24 @@ public class TalkPanel : PanelBase, IPointerClickHandler
     {
         if (leftDisplayArea == null)
         {
-            Debug.LogWarning("[TalkPanel] leftDisplayArea 未赋值，无法切换显示", this);
+            Debug.LogWarning("[TalkPanel] leftDisplayArea 未赋值", this);
             return;
         }
 
-        // 如果仍需校验说话人，可保留下方注释的判断
-        if (string.IsNullOrEmpty(_currentSpeaker))
+        bool willShow = !leftDisplayArea.activeSelf;
+        leftDisplayArea.SetActive(willShow);
+
+        if (willShow)
         {
-            Debug.LogWarning("[TalkPanel] 当前没有具体说话人，无法打开人物档案", this);
-            return;
-        }
+            int id = SystemManager.Instance.VisitSystem.CurrentVisitorId;
+            if (id < 0)
+            {
+                Debug.LogWarning("[TalkPanel] 当前没有访客，无法刷新档案");
+                return;
+            }
 
-        leftDisplayArea.SetActive(!leftDisplayArea.activeSelf);
-    }
-
-    #endregion
-
-    #region 图标资源管理
-
-    /// <summary>
-    /// 设置头像图标（按需加载 + 自动缓存）
-    /// </summary>
-    private async void SetIcon(string iconName)
-    {
-        if (_iconImage == null) return;
-
-        if (string.IsNullOrEmpty(iconName))
-        {
-            _iconImage.sprite = null;
-            _iconImage.enabled = false;
-            return;
-        }
-        _usedIconAddresses.Add(iconName);
-
-        var sprite = await SpriteLoader.LoadAsync(iconName);
-
-        // await 返回后自身可能已被销毁
-        if (this == null || _iconImage == null) return;
-
-        _iconImage.sprite = sprite;
-        _iconImage.enabled = sprite != null;
-    }
-    /// <summary>
-    /// 释放释放自己用过的Addressables 图标资源地址 
-    /// </summary>
-    public void ClearIconCache()
-    {
-        foreach (var addr in _usedIconAddresses)
-            SpriteLoader.Release(addr);
-        _usedIconAddresses.Clear();
-
-        if (_iconImage != null)
-        {
-            _iconImage.sprite = null;
-            _iconImage.enabled = false;
+            if (_archivePanel != null)
+                _archivePanel.Refresh(id, _iconView.IdleSprite);
         }
     }
 
@@ -389,8 +435,13 @@ public class TalkPanel : PanelBase, IPointerClickHandler
         if (_currentIcon != iconName)
         {
             _currentIcon = iconName;
-            SetIcon(iconName);
+            _iconView.SetCharacter(iconName, OnIconLoaded);
         }
+    }
+
+    public void RecordPlayerChoice(string buttonText)
+    {
+        _historyView.AppendChoice(buttonText);
     }
     #endregion
 

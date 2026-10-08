@@ -22,13 +22,23 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 6e5c82bc40e7bb946bd62741182097e7
-    m_Address: liuming
+  - m_GUID: 20c935f1f45b21043ac2a04ee059b0ab
+    m_Address: MysteriousMage_idle
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: e0f7cc3af6878af4fbabdea6240c1781
-    m_Address: diyage
+  - m_GUID: 4f9d6a027344fc04083ca51a8325f78d
+    m_Address: YoungAdventurer_idle
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6fcff1dd0921d8f409df13c9fb595f04
+    m_Address: YoungAdventurer_talk
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f6501bc6b0de8e34c877aa990d4d563b
+    m_Address: MysteriousMage_talk
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

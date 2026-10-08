@@ -110,7 +110,6 @@ public class UIManager : MonoBehaviour
             _cache[cfg.panelName] = panel;
         }
         UIManager.Instance.Open<HUDPanel>();
-        UIManager.Instance.Open<ReceptionPanel>();
         UIManager.Instance.Open<PreparationPanel>();
 
     }

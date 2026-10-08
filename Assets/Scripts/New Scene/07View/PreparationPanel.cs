@@ -18,8 +18,6 @@ public class PreparationPanel : PanelBase
     [SerializeField] private Button _shopButton;
     [SerializeField] private Button _abyssButton;
 
-    [SerializeField] private string _dialogueKey = "npc_liuming";//json文件名
-
     [Header("槽位")]
     [SerializeField] private MonsterSlot[] _slots;         // 长度 7，对应 Img_Monster1~7
     [SerializeField] private Sprite _emptySprite;
@@ -41,9 +39,11 @@ public class PreparationPanel : PanelBase
         InitSlots();
 
         PartyModel.Instance.OnChanged += OnPartyChanged;
+        SystemManager.Instance.VisitSystem.OnCurrentVisitorChanged += OnVisitorChanged;
     }
     public override void OnDestroy()
     {
+        SystemManager.Instance.VisitSystem.OnCurrentVisitorChanged -= OnVisitorChanged;
         PartyModel.Instance.OnChanged -= OnPartyChanged;   // 退订
         UnbindEvents();
         base.OnDestroy();
@@ -54,6 +54,16 @@ public class PreparationPanel : PanelBase
         base.OnOpen(data);
         _selectedIndex = -1;
         RefreshAll();
+
+        // 打开时按当前访客刷新一次（进对话回来/跨天后重新显示）
+        OnVisitorChanged(SystemManager.Instance.VisitSystem.CurrentVisitorId);
+    }
+
+    private void OnVisitorChanged(int id)
+    {
+        // 这里刷界面上显示"当前访客"的字段，比如来访者名字 / 立绘
+        // 如果整备界面不显示访客信息，这个方法可以留空
+        Debug.Log($"[PreparationPanel] 当前访客: {id}");
     }
 
     public override void OnClose()
@@ -90,9 +100,17 @@ public class PreparationPanel : PanelBase
     /// </summary>
     private void OnStartReceptionClick()
     {
-        Debug.Log("[PreparationPanel] 点击开始接待");
-        UIManager.Instance.Open<TalkPanel>().Dialogue.StartDialogue(_dialogueKey);
-        OnClose();
+        var vs = SystemManager.Instance.VisitSystem;
+        string key = vs.GetCurrentDialogueKey();
+
+        if (string.IsNullOrEmpty(key))
+        {
+            Debug.LogWarning("[PreparationPanel] 当前没有访客，无法开始接待");
+            return;
+        }
+
+        var panel = UIManager.Instance.Open<TalkPanel>();
+        panel.Dialogue.StartDialogue(key);   
     }
 
     /// <summary>
@@ -240,4 +258,6 @@ public class PreparationPanel : PanelBase
         PartyModel.Instance.Set(index, 0);
         _selectedIndex = -1;
     }
+
+
 }

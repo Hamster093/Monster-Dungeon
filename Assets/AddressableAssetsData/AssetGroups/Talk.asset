@@ -17,8 +17,13 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 9875b5ebc8f586f499982f0437fa43b6
   m_SerializeEntries:
+  - m_GUID: b23345c498560ca4ea9859fc6b54a5bf
+    m_Address: "\u795E\u79D8\u9B54\u6CD5\u5E08day1"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: bd5133ad4c2e59c42be363101f4df39c
-    m_Address: npc_liuming
+    m_Address: "\u5E74\u8F7B\u7684\u5192\u9669\u8005day1"
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

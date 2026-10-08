@@ -706,17 +706,13 @@ MonoBehaviour:
     prefab: {fileID: 7492142558209370849, guid: e109e21591e94f541be30013ab9a4ab5, type: 3}
     layer: 1
     preload: 0
-  - panelName: ReceptionPanel
-    prefab: {fileID: 7257336305785664252, guid: 07b8eac71ecf6914683c1176d9928e1b, type: 3}
-    layer: 1
-    preload: 1
   - panelName: TalkPanel
     prefab: {fileID: 8360273349830857868, guid: b7ca5dbe38cb0db4fa6cc1dea5c37a26, type: 3}
     layer: 2
     preload: 1
   - panelName: PreparationPanel
     prefab: {fileID: 7758640722474578561, guid: 6a4585be4df96534d99f27f034ef953a, type: 3}
-    layer: 0
+    layer: 1
     preload: 1
   - panelName: ShopPanel
     prefab: {fileID: 6176473969291783525, guid: 3a0c280b6b6642d4880ee62a1c2c182e, type: 3}
