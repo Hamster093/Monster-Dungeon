@@ -27,6 +27,8 @@ public class ConfigDatabase
     public Dictionary<int, MemoryConfig> Memories = new();
     public Dictionary<int, VisitOrder> VisitOrders = new();
 
+    public List<MonsterDropConfig> MonsterDrops = new();
+
     /// <summary>
     /// 创建 ConfigDatabase 新实例并调用 LoadAll() 加载所有配置表。
     /// </summary>
@@ -52,6 +54,8 @@ public class ConfigDatabase
         Schedules = LoadList<ScheduleConfig>("schedules");
         Memories = LoadDict<MemoryConfig>("memories");
         VisitOrders = LoadDict<VisitOrder>("visitOrders");
+
+        MonsterDrops = LoadList<MonsterDropConfig>("monsterDrops");
 
     }
     /// <summary>
@@ -89,6 +93,11 @@ public class ConfigDatabase
 
         try
         {
+            var settings = new JsonSerializerSettings
+            {
+                Converters = { new Newtonsoft.Json.Converters.StringEnumConverter() }
+            };
+
             return JsonConvert.DeserializeObject<List<T>>(textAsset.text) ?? new List<T>();
         }
         catch (System.Exception e)
@@ -132,5 +141,15 @@ public class ConfigDatabase
     {
         var s = GetSchedule(currentPhase);
         return s != null ? s.installmentAmount : 0;
+    }
+
+    /// <summary>
+    /// 按魔物类型取掉落素材列表，找不到返回空列表
+    /// </summary>
+    public List<string> GetDrops(MonsterType type)
+    {
+        foreach (var d in MonsterDrops)
+            if (d.monsterType == type) return d.materials;
+        return new List<string>();
     }
 }

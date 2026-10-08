@@ -57,8 +57,13 @@ public class AbyssalAltarPanel : PanelBase
     /// <summary>左侧：新魔物</summary>
     private void OnNewMonsterClick()
     {
-        Debug.Log("[AbyssalAltarPanel] 新魔物");
-        // TODO: 打开新魔物面板 / 选择流程
+        int id = UnityEngine.Random.Range(1, 18);
+
+        if (!PartyModel.Instance.TryAddMonster(id))
+        {
+            Debug.Log("[AbyssalAltarPanel] 魔物格子已满");
+            return;
+        }
     }
 
     /// <summary>左侧：归还深渊</summary>

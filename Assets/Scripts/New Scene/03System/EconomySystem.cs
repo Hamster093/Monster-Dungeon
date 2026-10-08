@@ -29,14 +29,9 @@ public class EconomySystem
 
     public int Cash => _runState.run.cash;
     public int Nutrient => _runState.run.nutrient;
-    /// <summary>
-    /// 增加指定数量的现金。
-    /// </summary>
-    public void AddCash(int amount) => _runState.run.cash += amount;
-    /// <summary>
-    /// 增加指定数量的养分
-    /// </summary>
-    public void AddNutrient(int amount) => _runState.run.nutrient += amount;
+    /// <summary>增加指定数量的现金（会刷新顶栏 UI）。</summary>
+    public void AddCash(int amount) => _runState.AddCash(amount);
+
     /// <summary>
     /// 尝试花费指定数量的现金。
     /// </summary>

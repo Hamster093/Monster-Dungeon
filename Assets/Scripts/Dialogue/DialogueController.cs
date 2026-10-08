@@ -171,8 +171,28 @@ public class DialogueController
         // 2. 没有选项，也没有下一节点，对话彻底结束
         else if (string.IsNullOrEmpty(stopNode.nextNodeId))
         {
-            EndDialogue();
+            TryStartNextVisitorOrEnd();
         }
+    }
+
+    /// <summary>
+    /// 一段对话自然结束时：
+    /// - 若今日还有未接待的访客 → 推进到该访客，并用他的对话 key 开始新对话
+    /// - 否则 → EndDialogue() 关闭面板
+    /// </summary>
+    private void TryStartNextVisitorOrEnd()
+    {
+        var reception = UIManager.Instance.Get<ReceptionPanel>();
+        string nextKey = reception != null ? reception.AdvanceToNextVisitor() : null;
+
+        if (!string.IsNullOrEmpty(nextKey))
+        {
+            // 复用同一个 DialogueController，继续跑下一段对话
+            StartDialogue(nextKey);
+            return;
+        }
+
+        EndDialogue();
     }
 
     private void ShowOptions(List<DialogueOption> options)

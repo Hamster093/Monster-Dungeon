@@ -1,0 +1,52 @@
+[
+  {
+    "monsterType": "Slime",
+    "materials": [
+      "史莱姆粘液",
+      "史莱姆凝胶",
+      "史莱姆外壳"
+    ]
+  },
+  {
+    "monsterType": "Goblin",
+    "materials": [
+      "哥布林獠牙",
+      "哥布林部落徽记",
+      "绿色液体"
+    ]
+  },
+  {
+    "monsterType": "Canine",
+    "materials": [
+      "地狱兽皮",
+      "地狱獠牙",
+      "地狱犬核心"
+    ]
+  },
+  {
+    "monsterType": "Plant",
+    "materials": [
+      "植物纤维",
+      "精怪草根",
+      "坚硬毒囊"
+    ]
+  },
+  {
+    "monsterType": "Construct",
+    "materials": [
+      "古代符文石",
+      "构造核心",
+      "精炼矿石"
+    ]
+  },
+  {
+    "monsterType": "Dragon",
+    "materials": [
+      "龙鳞",
+      "龙牙",
+      "龙爪",
+      "龙皮",
+      "龙息结晶"
+    ]
+  }
+]

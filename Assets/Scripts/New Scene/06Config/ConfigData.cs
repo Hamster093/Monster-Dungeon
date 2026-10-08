@@ -67,11 +67,21 @@ public class MonsterConfig
 {
     public int id;
     public string name;
-    public Level level;             // 魔物等级 S/A/B/C/D
-    public int zoneId;              // 所属分区 ID
-    public int nutrientValue;       // 冒险者死亡后产生养分
-    public int materialValue;       // 材料价值
-    public int dailyLimit = 1;      // 每日接待上限
+    public MonsterType monsterType;   // 魔物类型：史莱姆 / 哥布林 / 犬类 / 植物类 / 构造类 / 龙
+    public Level level;               // 魔物等级 S/A/B/C/D
+
+    public int materialValue;         // 分解金币（暂定）
+    public int buyPrice;              // 购买金币（暂定）
+}
+
+/// <summary>
+/// 魔物掉落配置。每种魔物对应一条固定掉落表，掉落素材不随机。
+/// </summary>
+[Serializable]
+public class MonsterDropConfig
+{
+    public MonsterType monsterType;             // 对应 MonsterType 枚举
+    public List<string> materials = new();      // 掉落素材名列表
 }
 /// <summary>
 /// 地牢分区固定配置。
@@ -97,9 +107,14 @@ public class ItemConfig
     public ItemType type;           // 道具类型：调查 / 检定操纵 / 陷阱 / 额外行动点
     public int price;               // 价格
     public CurrencyType currency;   // 货币类型：现金 / 养分
-    public string effect;           // 如 "+1D20"、"Reroll"、"LockMin"
     public int maxPerDay;           // 每日限购数量
-    public string usableIn;         // 可用场景："Reception" 接待界面 / "Prepare" 准备窗口
+
+    // ---------- 商店/背包相关 ----------
+    public string description;          // 物品描述（待文案补充时留空即可）
+    public string iconAddress;          // 物品图片的 Addressables 地址
+    public int stock = -1;              // -1 = 无限库存；>=0 = 初始库存
+    public int restockPerPhase = 0;     // 每个经营阶段补充数量，0 = 不补充
+    public int maxStack = -1;           // 背包堆叠上限，-1 = 无限
 }
 
 // <summary>

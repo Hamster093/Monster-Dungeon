@@ -10,9 +10,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 using UnityEngine.EventSystems;
-using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.UI;
 /// <summary>
 /// 对话行
@@ -54,11 +52,12 @@ public class TalkPanel : PanelBase, IPointerClickHandler
     public GameObject leftDisplayArea;
     public GameObject RightDisplayArea;
 
-    private readonly Dictionary<string, AsyncOperationHandle<Sprite>> _iconHandles = new();
 
     private bool _autoCompleteAtEnd = false; // 由 DialogueController 设置：最后一句打完是否自动触发完成
     //_自动完成协程
     private Coroutine _autoCompleteCoroutine;
+
+    private readonly HashSet<string> _usedIconAddresses = new();  // 本面板用过的地址，销毁时释放
 
 
     /// <summary>
@@ -329,64 +328,24 @@ public class TalkPanel : PanelBase, IPointerClickHandler
             _iconImage.enabled = false;
             return;
         }
+        _usedIconAddresses.Add(iconName);
 
-        // 1. 先查缓存（已加载过的直接命中，零开销）
-        if (_iconHandles.TryGetValue(iconName, out var cachedHandle)
-            && cachedHandle.Status == AsyncOperationStatus.Succeeded)
-        {
-            _iconImage.sprite = cachedHandle.Result;
-            _iconImage.enabled = true;
-            return;
-        }
+        var sprite = await SpriteLoader.LoadAsync(iconName);
 
-        // 2. 未缓存则异步加载（仅首次触发 IO）
-        try
-        {
-            var handle = Addressables.LoadAssetAsync<Sprite>(iconName);
-            _iconHandles[iconName] = handle;
+        // await 返回后自身可能已被销毁
+        if (this == null || _iconImage == null) return;
 
-            await handle.Task;
-
-            // await 返回后检查对象是否仍存活
-            if (this == null || _iconImage == null)
-            {
-                // 对象已销毁，释放刚加载的资源避免泄漏
-                if (handle.IsValid())
-                    Addressables.Release(handle);
-                return;
-            }
-
-            if (handle.Status == AsyncOperationStatus.Succeeded)
-            {
-                _iconImage.sprite = handle.Result;
-                _iconImage.enabled = true;
-            }
-            else
-            {
-                Debug.LogWarning($"[TalkPanel] 图标加载失败: {iconName}", this);
-                _iconImage.sprite = null;
-                _iconImage.enabled = false;
-            }
-        }
-        catch (Exception e)
-        {
-            Debug.LogError($"[TalkPanel] 图标加载异常: {iconName}\n{e}", this);
-            _iconImage.sprite = null;
-            _iconImage.enabled = false;
-        }
+        _iconImage.sprite = sprite;
+        _iconImage.enabled = sprite != null;
     }
-
     /// <summary>
-    /// 释放所有 Addressables 图标资源
+    /// 释放释放自己用过的Addressables 图标资源地址 
     /// </summary>
     public void ClearIconCache()
     {
-        foreach (var handle in _iconHandles.Values)
-        {
-            if (handle.IsValid())
-                Addressables.Release(handle);
-        }
-        _iconHandles.Clear();
+        foreach (var addr in _usedIconAddresses)
+            SpriteLoader.Release(addr);
+        _usedIconAddresses.Clear();
 
         if (_iconImage != null)
         {

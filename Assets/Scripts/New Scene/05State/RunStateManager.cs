@@ -126,6 +126,16 @@ public class RunStateManager
         TopBarRefreshEvent.Trigger();
         return true;
     }
+
+    /// <summary>
+    /// 增加现金，并刷新顶栏 UI。
+    /// </summary>
+    public void AddCash(int amount)
+    {
+        if (run == null || amount == 0) return;
+        run.cash += amount;
+        TopBarRefreshEvent.Trigger();
+    }
 }
 
 

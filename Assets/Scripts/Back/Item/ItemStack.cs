@@ -17,7 +17,7 @@ public class ItemStack
 
     // 便捷转发 .data.sprite
     public string itemName => data?.itemName;
-    public Sprite sprite => data?.sprite;
+    public string iconAddress => data?.iconAddress;
     public string description => data?.description;
 
     public void Clear()

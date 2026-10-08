@@ -17,6 +17,9 @@ public class DescriptionPanel : PanelBase
     [Header("按钮")]
     [SerializeField] private Button _confirmButton;
 
+    // 记录当前正在展示的物品 id，用于异步加载回来后校验
+    private int _currentItemId = -1;
+
     public override bool IsModal => true;
 
     public override void OnInit()
@@ -31,22 +34,54 @@ public class DescriptionPanel : PanelBase
 
         if (data is not ItemData d)
         {
-            // 没传数据时清空
-            _itemNameText.text = "";
-            _itemDescriptionText.text = "";
-            _itemImage.sprite = null;
+            ClearDisplay();
             return;
         }
-
-        // 有数据时填充
         _itemNameText.text = d.itemName;
         _itemDescriptionText.text = d.description;
-        _itemImage.sprite = d.sprite;
+
+        // 图标异步加载
+        _currentItemId = d.id;
+        SetIconAsync(d.id, d.iconAddress);
     }
 
     public override void OnClose()
     {
+        ClearDisplay();
         base.OnClose();
+    }
+
+    private void ClearDisplay()
+    {
+        _currentItemId = -1;
+        _itemNameText.text = "";
+        _itemDescriptionText.text = "";
+        if (_itemImage != null)
+        {
+            _itemImage.sprite = null;
+            _itemImage.enabled = false;
+        }
+    }
+
+    private async void SetIconAsync(int itemId, string address)
+    {
+        if (_itemImage == null) return;
+
+        if (string.IsNullOrEmpty(address))
+        {
+            _itemImage.sprite = null;
+            _itemImage.enabled = false;
+            return;
+        }
+
+        var sp = await SpriteLoader.LoadAsync(address);
+
+        // await 回来后：对象可能已销毁，或面板已经切到别的物品了
+        if (this == null || _itemImage == null) return;
+        if (_currentItemId != itemId) return;
+
+        _itemImage.sprite = sp;
+        _itemImage.enabled = sp != null;
     }
 
     // 点确认关闭

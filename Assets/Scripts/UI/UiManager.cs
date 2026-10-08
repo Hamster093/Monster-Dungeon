@@ -65,7 +65,7 @@ public class UIManager : MonoBehaviour
     private void Awake()
     {
         //todo 背包初始化 后续应移到游戏入口
-        InventoryModel.Initialize(20,2);
+        InventoryModel.Initialize(20,99);
         //历史对话初始化
         DialogueHistoryModel.Initialize();
         CharacterArchiveModel.Initialize();
@@ -110,6 +110,7 @@ public class UIManager : MonoBehaviour
             _cache[cfg.panelName] = panel;
         }
         UIManager.Instance.Open<HUDPanel>();
+        UIManager.Instance.Open<ReceptionPanel>();
         UIManager.Instance.Open<PreparationPanel>();
 
     }
@@ -312,5 +313,18 @@ public class UIManager : MonoBehaviour
         if (idx < 0 || idx >= _layers.Length) return _panelRoot;
         return _layers[idx];
     }
+
     #endregion
+    public T Get<T>() where T : PanelBase
+    {
+        string key = typeof(T).Name;
+
+        if (_cache.TryGetValue(key, out var cached))
+        {
+            if (cached != null) return cached as T;
+            _cache.Remove(key);   // 底层对象已销毁，清掉失效缓存
+        }
+
+        return null;
+    }
 }

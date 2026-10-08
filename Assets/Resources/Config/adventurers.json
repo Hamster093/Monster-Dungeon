@@ -11,7 +11,51 @@
     "successorType": "理智型",
     "mainDimension": 0,
     "secondaryDimension": 1,
-    "initialStats": { 
+    "initialStats": {
+      "Reason": 30,
+      "Courage": 40,
+      "Piety": 80,
+      "Tolerance": 50,
+      "Benevolence": 60,
+      "Resolve": 20,
+      "Diligence": 70
+    }
+  },
+  {
+    "id": 2,
+    "name": "神秘魔法师",
+    "isParty": false,
+    "baseLevel": 2,
+    "personalityAxes": [3, 0],
+    "contractId": 1,
+    "backgrounds": ["曾是某骑士团成员", "因事故退役", "暗中寻找失踪的妹妹"],
+    "briefStory": "一名曾有着坚定信仰的年轻骑士，如今因失去一切而变得疑神疑鬼。",
+    "successorType": "理智型",
+    "mainDimension": 0,
+    "secondaryDimension": 1,
+    "initialStats": {
+      "Reason": 30,
+      "Courage": 40,
+      "Piety": 80,
+      "Tolerance": 50,
+      "Benevolence": 60,
+      "Resolve": 20,
+      "Diligence": 70
+    }
+  },
+  {
+    "id": 3,
+    "name": "矮人小队",
+    "isParty": true,
+    "baseLevel": 2,
+    "personalityAxes": [3, 0],
+    "contractId": 1,
+    "backgrounds": ["曾是某骑士团成员", "因事故退役", "暗中寻找失踪的妹妹"],
+    "briefStory": "一名曾有着坚定信仰的年轻骑士，如今因失去一切而变得疑神疑鬼。",
+    "successorType": "理智型",
+    "mainDimension": 0,
+    "secondaryDimension": 1,
+    "initialStats": {
       "Reason": 30,
       "Courage": 40,
       "Piety": 80,

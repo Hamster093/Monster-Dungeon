@@ -13,15 +13,6 @@ using UnityEngine.UI;
 
 public class ReceptionPanel : PanelBase
 {
-    // ---------- 顶部状态栏 ----------
-    private Text _dayText;
-    private Text _phaseText;
-    private Text _cashText;
-    private Text _nutrientText;
-    private Text _apText;
-    private Text _remainingDays;
-    private Text _installmentPayment;
-
     // ---------- 来客信息 ----------
     private Text _nameText;
     private Text _partyTag;
@@ -183,17 +174,6 @@ public class ReceptionPanel : PanelBase
     {
         if (_currentAdventurerId >= 0) RefreshVisitor();
         else ClearVisitor();
-    }
-    /// <summary>
-    /// 根据当前天数和阶段刷新 RunState 中的 remainingDays 和 installmentPayment
-    /// </summary>
-    private void UpdateRunState()
-    {
-        var run = SystemManager.Instance.RunState.run;
-        var cfg = ConfigDatabase.Instance;
-
-        run.remainingDays = cfg.GetRemainingDays(run.currentDay, run.currentPhase);
-        run.installmentPayment = cfg.GetInstallmentPayment(run.currentPhase);
     }
 
     /// <summary>
@@ -377,5 +357,39 @@ public class ReceptionPanel : PanelBase
         }
         _spawnedOptions.Clear();
     }
+
+    #region 对外接口（供 DialogueController 使用）
+
+    /// <summary>
+    /// 是否还有下一位未接待的访客
+    /// </summary>
+    public bool HasNextVisitor()
+    {
+        return _todayVisitors != null && _visitorIndex + 1 < _todayVisitors.Count;
+    }
+
+    /// <summary>
+    /// 推进到下一位访客并返回其对话 key（一般就是访客名）。
+    /// 没有下一位时返回 null。
+    /// </summary>
+    public string AdvanceToNextVisitor()
+    {
+        if (!HasNextVisitor()) return null;
+
+        _visitorIndex++;
+        ShowCurrentVisitor();
+        TopBarRefreshEvent.Trigger();
+
+        int id = _todayVisitors[_visitorIndex];
+        if (!SystemManager.Instance.Config.Adventurers.TryGetValue(id, out var adv))
+            return null;
+
+        // ★ 换成你实际的“对话 key 字段”
+        // 例如 adv.name / adv.dialogueKey / adv.jsonKey
+        Debug.Log("读取名为"+adv.name+"的对话");
+        return adv.name;
+    }
+
+    #endregion
 
 }

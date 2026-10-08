@@ -11,14 +11,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-// 商店商品：物品 + 价格 + 库存
-[Serializable]
-public class ShopGoodsEntry
-{
-    public ItemData data;
-    public int price = 100;
-    [Tooltip("-1 无限库存")] public int stock = -1;
-}
 
 /// <summary>
 /// 右键商店商品时，传给 ShopItemActionPanel 的数据
@@ -37,18 +29,19 @@ public class ShopPanel : PanelBase
     public ItemSlot[] _itemSlots;
     [SerializeField] private Sprite _emptySprite;
 
-    [Header("商品配置（在编辑器填）")]
-    [SerializeField] private List<ShopGoodsEntry> _goodsConfig = new();
+    [Header("商品配置：填 items.json 里的 id，顺序即槽位顺序")]
+    [SerializeField] private List<int> _goodsIds = new();
 
     /// <summary>运行时槽位数据（配置 + 当前库存）</summary>
     private class ShopSlot
     {
-        public ShopGoodsEntry entry;
+        public ItemConfig config;
+        public ItemData data;
         public ItemStack stack;
         public int stock;
     }
     private readonly List<ShopSlot> _slots = new();
-
+    private readonly Dictionary<string, Sprite> _iconCache = new();   // 本面板已加载的图标
     private int _selectedIndex = -1;
 
     public override bool IsModal => true;
@@ -77,6 +70,7 @@ public class ShopPanel : PanelBase
             slot.OnLeftClickedOverride = null;
             slot.OnRightClickedOverride = null;
         }
+        _iconCache.Clear();
     }
 
     public override void OnOpen(object data = null)
@@ -104,25 +98,34 @@ public class ShopPanel : PanelBase
     // ---------- 数据 ----------
 
     /// <summary>
-    /// 从 Inspector 配置构建运行时槽位
+    /// 从 ConfigDatabase 读取 items.json 构建运行时槽位
     /// </summary>
     private void BuildSlots()
     {
         _slots.Clear();
 
-        foreach (var entry in _goodsConfig)
+        if (ConfigDatabase.Instance == null)
         {
-            var stack = new ItemStack
+            Debug.LogError("[ShopPanel] ConfigDatabase 尚未初始化");
+            return;
+        }
+
+        foreach (var id in _goodsIds)
+        {
+            if (!ConfigDatabase.Instance.Items.TryGetValue(id, out var cfg))
             {
-                data = entry.data, 
-                quantity = 1,
-            };
+                Debug.LogError($"[ShopPanel] items.json 中找不到商品 id = {id}");
+                continue;
+            }
+
+            var data = ItemData.FromConfig(cfg);
 
             _slots.Add(new ShopSlot
             {
-                entry = entry,
-                stack = stack,
-                stock = entry.stock,
+                config = cfg,
+                data = data,
+                stack = new ItemStack { data = data, quantity = 1 },
+                stock = cfg.stock,     // -1 = 无限
             });
         }
     }
@@ -142,26 +145,62 @@ public class ShopPanel : PanelBase
         return _slots[index];
     }
 
+    /// <summary>进入新经营阶段时调用：按配置补充库存</summary>
+    public void RestockForNewPhase()
+    {
+        foreach (var s in _slots)
+            if (s.config.restockPerPhase > 0)
+                s.stock = s.config.restockPerPhase;
+
+        RefreshAll();
+    }
+
     // ---------- 刷新 ----------
 
     private void RefreshAll()
     {
         for (int i = 0; i < _itemSlots.Length; i++)
         {
-            _itemSlots[i].Refresh(GetGoodsStack(i), _emptySprite);
-
             var slot = GetSlot(i);
+
+            _itemSlots[i].Refresh(GetGoodsStack(i), _emptySprite);
             _itemSlots[i].SetSubText(
-                slot != null && slot.stock != 0 ? $"{slot.entry.price}G" : "");
+                slot != null && slot.stock != 0 ? $"{slot.config.price}G" : "");
+
+            if (slot != null && slot.stock != 0)
+                LoadIconAsync(i, slot.data.iconAddress);
+        }
+    }
+
+    /// <summary>按需异步加载图标，命中缓存直接设置</summary>
+    private async void LoadIconAsync(int index, string address)
+    {
+        if (string.IsNullOrEmpty(address)) return;
+        if (index < 0 || index >= _itemSlots.Length) return;
+
+        // 1. 命中本面板缓存
+        if (_iconCache.TryGetValue(address, out var cached))
+        {
+            _itemSlots[index].SetIcon(cached);
+            return;
         }
 
-        //RefreshSelectionUI();
+        // 2. 走全局 SpriteLoader（内部还有一层全局缓存）
+        var sp = await SpriteLoader.LoadAsync(address);
+
+        // await 返回后检查存活
+        if (this == null || _itemSlots == null || index >= _itemSlots.Length) return;
+
+        if (sp != null)
+        {
+            _iconCache[address] = sp;
+            _itemSlots[index].SetIcon(sp);
+        }
     }
 
     public void DeselectAllSlots()
     {
-        foreach (var slot in _itemSlots)
-            slot.SetSelected(false);
+        foreach (var slot in _itemSlots) slot.SetSelected(false);
         _selectedIndex = -1;
     }
 
@@ -195,12 +234,10 @@ public class ShopPanel : PanelBase
         var slot = GetSlot(index);
         if (slot == null || slot.stock == 0) return;
 
-        var entry = slot.entry;
-
         UIManager.Instance.Open<ShopItemActionPanel>(new ShopActionData
         {
-            data = entry.data,
-            price = entry.price,
+            data = slot.data,
+            price = slot.config.price,
             stock = slot.stock,
             onBuy = () => TryBuy(index),
         });
@@ -212,17 +249,37 @@ public class ShopPanel : PanelBase
         var slot = GetSlot(index);
         if (slot == null || slot.stock == 0) return;
 
-        var entry = slot.entry;
-        int remain = InventoryModel.Instance.AddItem( new ItemStack { data = entry.data, quantity = 1 });
+        var cfg = slot.config;
 
-        if (remain > 0) { Debug.Log("背包满了"); return; }
+        // 1. 先扣钱（返回值 false = 现金不够）
+        if (!SystemManager.Instance.Economy.SpendCash(cfg.price)) return;
 
-        if (!SystemManager.Instance.Economy.SpendCash(entry.price)) return;
+        // 2. 再进背包
+        int remain = InventoryModel.Instance.AddItem(
+            new ItemStack { data = slot.data, quantity = 1 });
 
-        // 减库存（-1 表示无限）
+        if (remain > 0)
+        {
+            Debug.Log("背包满了");
+            Refund(cfg);       // 退款
+            return;
+        }
+
+        // 3. 减库存（-1 表示无限）
         if (slot.stock > 0) slot.stock--;
 
         DeselectAllSlots();
         RefreshAll();
+    }
+
+    private void Refund(ItemConfig cfg)
+    {
+        var eco = SystemManager.Instance.Economy;
+        switch (cfg.currency)
+        {
+            case CurrencyType.Cash:
+                 eco.AddCash(cfg.price);
+                break;
+        }
     }
 }

@@ -20,15 +20,25 @@ public enum PersonalityAxis
     Impulse,    // 冲动
     Suspicion   // 多疑
 }
+
+public enum MonsterType
+{
+    Slime,      // 史莱姆
+    Goblin,     // 哥布林
+    Canine,     // 犬类
+    Plant,      // 植物类
+    Construct,  // 构造类
+    Dragon,     // 龙
+}
 /// <summary>
 /// 物品类型枚举。用于区分道具在玩法中的功能分类。
 /// </summary>
 public enum ItemType
 {
-    Investigation,      // 调查道具
-    CheckManipulation,  // 检定操纵工具
+    Investigation,      // 调查
+    CheckManipulate,    // 检定操纵
     Trap,               // 陷阱
-    ExtraAP             // 额外行动点
+    ExtraActionPoint,   // 额外行动点
 }
 /// <summary>
 /// 货币类型枚举。用于区分不同种类的消耗资源。

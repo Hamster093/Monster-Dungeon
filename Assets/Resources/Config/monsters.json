@@ -1,11 +1,138 @@
 [
   {
     "id": 1,
-    "name": "石甲蜥",
-    "level": 2,
-    "zoneId": 1,
-    "nutrientValue": 15,
+    "name": "普通史莱姆",
+    "monsterType": "Slime",
+    "level": "D",
+    "materialValue": 100,
+    "buyPrice": 300
+  },
+  {
+    "id": 2,
+    "name": "有点强壮的史莱姆",
+    "monsterType": "Slime",
+    "level": "C",
     "materialValue": 200,
-    "dailyLimit": 1
+    "buyPrice": 400
+  },
+  {
+    "id": 3,
+    "name": "巨大史莱姆",
+    "monsterType": "Slime",
+    "level": "B",
+    "materialValue": 300,
+    "buyPrice": 500
+  },
+  {
+    "id": 4,
+    "name": "哥布林",
+    "monsterType": "Goblin",
+    "level": "D",
+    "materialValue": 100,
+    "buyPrice": 300
+  },
+  {
+    "id": 5,
+    "name": "健壮哥布林",
+    "monsterType": "Goblin",
+    "level": "C",
+    "materialValue": 200,
+    "buyPrice": 400
+  },
+  {
+    "id": 6,
+    "name": "哥布林首领",
+    "monsterType": "Goblin",
+    "level": "B",
+    "materialValue": 300,
+    "buyPrice": 500
+  },
+  {
+    "id": 7,
+    "name": "地狱犬",
+    "monsterType": "Canine",
+    "level": "D",
+    "materialValue": 100,
+    "buyPrice": 300
+  },
+  {
+    "id": 8,
+    "name": "三头地狱犬",
+    "monsterType": "Canine",
+    "level": "C",
+    "materialValue": 200,
+    "buyPrice": 400
+  },
+  {
+    "id": 9,
+    "name": "灰烬地狱犬",
+    "monsterType": "Canine",
+    "level": "B",
+    "materialValue": 300,
+    "buyPrice": 500
+  },
+  {
+    "id": 10,
+    "name": "曼德拉草",
+    "monsterType": "Plant",
+    "level": "D",
+    "materialValue": 100,
+    "buyPrice": 300
+  },
+  {
+    "id": 11,
+    "name": "树精",
+    "monsterType": "Plant",
+    "level": "C",
+    "materialValue": 200,
+    "buyPrice": 400
+  },
+  {
+    "id": 12,
+    "name": "食人花",
+    "monsterType": "Plant",
+    "level": "B",
+    "materialValue": 300,
+    "buyPrice": 500
+  },
+  {
+    "id": 13,
+    "name": "石巨人",
+    "monsterType": "Construct",
+    "level": "D",
+    "materialValue": 100,
+    "buyPrice": 300
+  },
+  {
+    "id": 14,
+    "name": "水晶魔像",
+    "monsterType": "Construct",
+    "level": "C",
+    "materialValue": 200,
+    "buyPrice": 400
+  },
+  {
+    "id": 15,
+    "name": "璀璨魔像",
+    "monsterType": "Construct",
+    "level": "B",
+    "materialValue": 300,
+    "buyPrice": 500
+  },
+  {
+    "id": 16,
+    "name": "双足飞龙",
+    "monsterType": "Dragon",
+    "level": "B",
+    "materialValue": 300,
+    "buyPrice": 500
+  },
+  {
+    "id": 17,
+    "name": "暗黑龙",
+    "monsterType": "Dragon",
+    "level": "A",
+    "materialValue": 400,
+    "buyPrice": 600
   }
 ]

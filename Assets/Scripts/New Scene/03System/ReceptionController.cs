@@ -192,10 +192,6 @@ public class ReceptionController
             if (isTruth) _economy.RewardHonest(contract.baseReward);
             else _economy.RewardLied(contract.baseReward);
         }
-        else if (result == AdventureResult.Death || result == AdventureResult.HeavyRetreat)
-        {
-            _economy.AddNutrient(monster.nutrientValue);
-        }
 
         // 记忆
         var trigger = MapResultToMemoryTrigger(result, isTruth);
