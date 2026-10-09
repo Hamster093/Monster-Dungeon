@@ -9,6 +9,7 @@
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 public class ConfigDatabase
 {
@@ -28,6 +29,7 @@ public class ConfigDatabase
     public Dictionary<int, VisitOrder> VisitOrders = new();
 
     public List<MonsterDropConfig> MonsterDrops = new();
+    public ShapeDatabase ShapeDb { get; private set; }
 
     /// <summary>
     /// 创建 ConfigDatabase 新实例并调用 LoadAll() 加载所有配置表。
@@ -36,6 +38,9 @@ public class ConfigDatabase
     {
         Instance = new ConfigDatabase();
         Instance.LoadAll();
+
+        var handle = Addressables.LoadAssetAsync<ShapeDatabase>("ShapeDatabase");
+        Instance.ShapeDb = handle.WaitForCompletion();
     }
     /// <summary>
     /// 批量加载所有配置表。

@@ -32,6 +32,13 @@ public class ShopPanel : PanelBase
     [Header("商品配置：填 items.json 里的 id，顺序即槽位顺序")]
     [SerializeField] private List<int> _goodsIds = new();
 
+    [Header("拖拽配置")]
+    [SerializeField] private ItemView _itemViewPrefab;
+    [SerializeField] private float _cellSize;
+    [SerializeField] private float _spacing;
+
+    [SerializeField] private RectTransform _dragLayer;
+
     /// <summary>运行时槽位数据（配置 + 当前库存）</summary>
     private class ShopSlot
     {
@@ -44,11 +51,13 @@ public class ShopPanel : PanelBase
     private readonly Dictionary<string, Sprite> _iconCache = new();   // 本面板已加载的图标
     private int _selectedIndex = -1;
 
-    public override bool IsModal => true;
+    public override bool IsModal => false;
 
     public override void OnInit()
     {
         BuildSlots();
+
+        var dragLayer = GetOrCreateDragLayer();   // 创建拖拽层（Canvas 顶层）
 
         for (int i = 0; i < _itemSlots.Length; i++)
         {
@@ -58,7 +67,20 @@ public class ShopPanel : PanelBase
             _itemSlots[i].OnLeftClickedOverride = OnSlotLeftClicked;
             // 右键：弹自己的商店操作面板
             _itemSlots[i].OnRightClickedOverride = OnSlotRightClicked;
+
+            // 挂拖拽器
+            var dragger = _itemSlots[i].GetComponent<ShopSlotDragger>();
+            if (dragger == null) dragger = _itemSlots[i].gameObject.AddComponent<ShopSlotDragger>();
+
+            dragger.SlotIndex = i;
+            dragger.Panel = this;
+            dragger.Board = FindObjectOfType<BackpackBoard>();
+            dragger.DragLayer = dragLayer;
+            dragger.ItemViewPrefab = _itemViewPrefab;
+            dragger.CellSize = 95f;
+            dragger.Spacing = 5f;
         }
+
 
     }
 
@@ -282,4 +304,74 @@ public class ShopPanel : PanelBase
                 break;
         }
     }
+    /// <summary>给 ShopSlotDragger 拿数据用</summary>
+    public ItemData GetSlotData(int index)
+    {
+        var s = GetSlot(index);
+        return s?.data;
+    }
+    public ItemShapeDefinition GetSlotShape(int index)
+    {
+        var s = GetSlot(index);
+        return s?.data?.shape;
+    }
+
+    /// <summary>库存是否允许购买</summary>
+    public bool CanBuy(int index)
+    {
+        var s = GetSlot(index);
+        return s != null && s.stock != 0;
+    }
+
+    /// <summary>给外部用的购买入口（复用 TryBuy，但改成返回 bool）</summary>
+    public bool TryBuyForDrag(int index)
+    {
+        var slot = GetSlot(index);
+        if (slot == null || slot.stock == 0) return false;
+
+        var cfg = slot.config;
+        if (!SystemManager.Instance.Economy.SpendCash(cfg.price)) return false;
+
+        // 注意：这里不再往 InventoryModel 加物品了！
+        // 因为现在是拖拽到棋盘，物品由 ShopSlotDragger 直接生成到棋盘
+        if (slot.stock > 0) slot.stock--;
+
+        DeselectAllSlots();
+        RefreshAll();
+        return true;
+    }
+
+    //创建、获取 拖拽层 DragLayer 的方法 确保存在一个独立的顶层 DragLayer，用于挂拖拽幽灵
+    private RectTransform GetOrCreateDragLayer()
+    {
+        if (_dragLayer != null) return _dragLayer;
+
+        var rootCanvas = GetComponentInParent<Canvas>();
+        if (rootCanvas == null)
+        {
+            Debug.LogError("[ShopPanel] 找不到 Canvas");
+            return null;
+        }
+
+        var t = rootCanvas.transform.Find("DragLayer_Runtime");
+        if (t != null)
+        {
+            _dragLayer = t as RectTransform;
+            return _dragLayer;
+        }
+
+        // 只传 RectTransform，不传 Canvas
+        var go = new GameObject("DragLayer_Runtime", typeof(RectTransform));
+        var rect = (RectTransform)go.transform;
+        rect.SetParent(rootCanvas.transform, false);
+        rect.anchorMin = Vector2.zero;
+        rect.anchorMax = Vector2.one;
+        rect.offsetMin = Vector2.zero;
+        rect.offsetMax = Vector2.zero;
+        rect.SetAsLastSibling();
+
+        _dragLayer = rect;
+        return _dragLayer;
+    }
+
 }

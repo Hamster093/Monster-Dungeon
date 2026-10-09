@@ -22,12 +22,20 @@ public static class DialogueCallbackRegistry
 
     public static void Unregister(string key) => _callbacks.Remove(key);
 
-    public static bool TryInvoke(string key, DialogueOption option, out DialogueOptionResult result)
+    public static bool TryInvoke(string callbackKey, DialogueOption option, out DialogueOptionResult result)
     {
-        result = null;
-        return !string.IsNullOrEmpty(key)
-            && _callbacks.TryGetValue(key, out var cb)
-            && (result = cb(option)) != null;
+        result = default;
+
+        if (string.IsNullOrEmpty(callbackKey))
+            return false;
+
+        if (!_callbacks.TryGetValue(callbackKey, out var callback))
+        {
+            return false;
+        }
+
+        result = callback(option);
+        return true;
     }
 }
 

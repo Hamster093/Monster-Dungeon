@@ -12,15 +12,6 @@ using UnityEngine;
 [Serializable]
 public class DialogueController
 {
-    [Tooltip("选项按钮的父节点")]
-    [SerializeField] private GameObject _optionPanel;
-
-    [Tooltip("选项按钮生成位置")]
-    [SerializeField] private Transform _optionButtonRoot;
-
-    [Tooltip("选项按钮预制体")]
-    [SerializeField] private GameObject _optionButtonPrefab;
-
     // 运行时绑定，不参与序列化
     [NonSerialized] private TalkPanel _talkPanel;
     [NonSerialized] private bool _disposed;
@@ -112,10 +103,6 @@ public class DialogueController
                     });
                 }
             }
-            else
-            {
-                Debug.LogWarning($"[DialogueController] 节点 {node.id} 的 contents 为空！");
-            }
 
             // 判断该节点是否有选项，或者没有下一节点
             if ((node.options != null && node.options.Count > 0) || string.IsNullOrEmpty(node.nextNodeId))
@@ -127,17 +114,21 @@ public class DialogueController
             currentNodeId = node.nextNodeId;
         }
 
-        if (linearLines.Count > 0)
+        // 找到停止节点
+        if (!_nodeDict.TryGetValue(_currentStopNodeId, out var stopNode))
         {
-            DialogueNode stopNode = _nodeDict[_currentStopNodeId];
-            bool hasOptions = stopNode.options != null && stopNode.options.Count > 0;
-
-            _talkPanel.gameObject.SetActive(true);
-            _talkPanel.Init(linearLines);
-            _talkPanel.ResetDialogue();
-            _talkPanel.SetAutoCompleteAtEnd(hasOptions);
-            _talkPanel.MoveNext();
+            Debug.LogError($"[DialogueController] 找不到停止节点：{_currentStopNodeId}");
+            EndDialogue();
+            return;
         }
+
+        bool hasOptions = stopNode.options != null && stopNode.options.Count > 0;
+
+        _talkPanel.gameObject.SetActive(true);
+        _talkPanel.Init(linearLines);              // 空列表也初始化
+        _talkPanel.ResetDialogue();
+        _talkPanel.SetAutoCompleteAtEnd(hasOptions);
+        _talkPanel.MoveNext();                     // 空列表会立即触发 OnDialogueComplete
     }
 
     /// <summary>
@@ -200,25 +191,11 @@ public class DialogueController
 
     private void ShowOptions(List<DialogueOption> options)
     {
-        _optionPanel.SetActive(true);
-        // 清理旧按钮
-        foreach (Transform child in _optionButtonRoot)
-            UnityEngine.Object.Destroy(child.gameObject);
-
-        foreach (var option in options)
+        _talkPanel.ShowOptions(options, option =>
         {
-            GameObject btnObj = UnityEngine.Object.Instantiate(_optionButtonPrefab, _optionButtonRoot);
-            // 假设按钮上有 Text 和 Button 组件
-            btnObj.GetComponentInChildren<UnityEngine.UI.Text>().text = option.text;
-            string targetId = option.targetNodeId; // 闭包捕获
-
-            btnObj.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() =>
-            {
-                _optionPanel.SetActive(false);
-                _talkPanel.RecordPlayerChoice(option.text);
-                HandleOptionSelected(option);
-            });
-        }
+            _talkPanel.RecordPlayerChoice(option.text);
+            HandleOptionSelected(option);
+        });
     }
 
     /// <summary>

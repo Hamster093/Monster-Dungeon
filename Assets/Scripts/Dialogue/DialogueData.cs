@@ -31,10 +31,10 @@ public class DialogueNode
     public string id;           // 节点唯一ID
     public string speakerName;  //说话人
     public string iconName;     //图片名称
-    public List<string> contents;       // 对话内容
+    public List<string> contents = new List<string>();       // 对话内容
 
     public string nextNodeId;   // 自动跳转的下一节点ID（没有选项时使用）
-    public List<DialogueOption> options; // 玩家选项（如果有，则覆盖 nextNodeId）
+    public List<DialogueOption> options = new List<DialogueOption>(); // 玩家选项（如果有，则覆盖 nextNodeId）
 }
 
 /// <summary>

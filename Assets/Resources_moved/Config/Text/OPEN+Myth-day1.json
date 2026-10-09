@@ -1,0 +1,8913 @@
+{
+  "dialogueId": "Myth",
+  "startNodeId": "1",
+  "nodes": [
+    {
+      "id": "1",
+      "speakerName": "系统告知",
+      "iconName": "",
+      "contents": [
+        "27天后，你必须为祂献上xxxx币的盛宴。",
+        "祂会在3天后视察你的经营状况，必须上交xxxx币。"
+      ],
+      "nextNodeId": "2"
+    },
+    {
+      "id": "2",
+      "speakerName": "旁白",
+      "iconName": "",
+      "contents": [
+        "一个冒险者走了进来。这是你今天第一个客人。"
+      ],
+      "nextNodeId": "3"
+    },
+    {
+      "id": "3",
+      "speakerName": "粗重的声音",
+      "iconName": "",
+      "contents": [
+        "多么年轻的血肉。"
+      ],
+      "nextNodeId": "4"
+    },
+    {
+      "id": "4",
+      "speakerName": "轻柔的声音",
+      "iconName": "",
+      "contents": [
+        "值得招待的美食。"
+      ],
+      "nextNodeId": "5"
+    },
+    {
+      "id": "5",
+      "speakerName": "旁白",
+      "iconName": "",
+      "contents": [
+        "他的宣传画在这个城镇里处处可见。"
+      ],
+      "nextNodeId": "6"
+    },
+    {
+      "id": "6",
+      "speakerName": "轻柔的声音",
+      "iconName": "",
+      "contents": [
+        "你认识他，他不认识你。好开局。"
+      ],
+      "nextNodeId": "7"
+    },
+    {
+      "id": "7",
+      "speakerName": "粗重的声音",
+      "iconName": "",
+      "contents": [
+        "明星们总有一堆陌生的熟人。"
+      ],
+      "nextNodeId": "8"
+    },
+    {
+      "id": "8",
+      "speakerName": "旁白",
+      "iconName": "",
+      "contents": [
+        "不。你只是在刚到哈耳摩尼亚的时候瞥过一眼那浮夸的画像。你当时还怀疑过此地居民的品味。"
+      ],
+      "nextNodeId": "9"
+    },
+    {
+      "id": "9",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“这里的地牢经理换人了？新面孔啊。”"
+      ],
+      "nextNodeId": "10"
+    },
+    {
+      "id": "10",
+      "speakerName": "旁白",
+      "iconName": "",
+      "contents": [
+        "地牢经理并非好差事。哈耳摩尼亚在几十年前就不适合久居。你的同僚们大多只会驻扎一个季度。当然，<b>你</b>不一样。"
+      ],
+      "nextNodeId": "11"
+    },
+    {
+      "id": "11",
+      "speakerName": "你",
+      "iconName": "",
+      "contents": [
+        "你注意到他略尖的牙齿和微长的耳朵。"
+      ],
+      "nextNodeId": "12"
+    },
+    {
+      "id": "12",
+      "speakerName": "你",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "-“聪明人都往上跑。难说你下次还能见到我。”（调皮地挤挤眼。）",
+          "targetNodeId": "13",
+          "callbackKey": "myd1_intro_mask1"
+        },
+        {
+          "text": "-“这年头谁还愿意冒着风险干这活？都是身不由己。”",
+          "targetNodeId": "17"
+        },
+        {
+          "text": "-“该死的，我是被——”",
+          "targetNodeId": "21"
+        },
+        {
+          "text": "-（保持沉默。）",
+          "targetNodeId": "24"
+        }
+      ]
+    },
+    {
+      "id": "13",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“那可说不准，我是这里的常客。”"
+      ],
+      "nextNodeId": "14"
+    },
+    {
+      "id": "14",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“我还需要向你做个自我介绍吗？嗯，就是——我想想——对，我的‘冒险者档案’应该还在吧？”"
+      ],
+      "nextNodeId": "15"
+    },
+    {
+      "id": "15",
+      "speakerName": "旁白",
+      "iconName": "",
+      "contents": [
+        "那个可怜人有保存档案的好习惯吗？你不得而知。说实话，你和这位“前辈”只有一面之缘——TA死的时候，你刚好站在接待桌前，仅此而已。"
+      ],
+      "nextNodeId": "16"
+    },
+    {
+      "id": "16",
+      "speakerName": "你",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "（搜寻身后的架子。）",
+          "targetNodeId": "27"
+        },
+        {
+          "text": "（翻找接待桌的抽屉。）",
+          "targetNodeId": "33"
+        },
+        {
+          "text": "（穿上你过去的冒险装备。）“稍等！我怀疑那玩意落在下面了，我这就下去找！”",
+          "targetNodeId": "39"
+        },
+        {
+          "text": "“不好意思，工作交接得匆忙，能麻烦你再给我一份吗？”",
+          "targetNodeId": "45",
+          "callbackKey": "myd1_intro_archive_correct"
+        }
+      ]
+    },
+    {
+      "id": "17",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“……也是。”"
+      ],
+      "nextNodeId": "18"
+    },
+    {
+      "id": "18",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“我还需要向你做个自我介绍吗？嗯，就是——我想想——对，我的‘冒险者档案’应该还在吧？”"
+      ],
+      "nextNodeId": "19"
+    },
+    {
+      "id": "19",
+      "speakerName": "旁白",
+      "iconName": "",
+      "contents": [
+        "那个可怜人有保存档案的好习惯吗？你不得而知。说实话，你和这位“前辈”只有一面之缘——TA死的时候，你刚好站在接待桌前，仅此而已。"
+      ],
+      "nextNodeId": "20"
+    },
+    {
+      "id": "20",
+      "speakerName": "你",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "（搜寻身后的架子。）",
+          "targetNodeId": "27"
+        },
+        {
+          "text": "（翻找接待桌的抽屉。）",
+          "targetNodeId": "33"
+        },
+        {
+          "text": "（穿上你过去的冒险装备。）“稍等！我怀疑那玩意落在下面了，我这就下去找！”",
+          "targetNodeId": "39"
+        },
+        {
+          "text": "“不好意思，工作交接得匆忙，能麻烦你再给我一份吗？”",
+          "targetNodeId": "45",
+          "callbackKey": "myd1_intro_archive_correct"
+        }
+      ]
+    },
+    {
+      "id": "21",
+      "speakerName": "轻柔的声音",
+      "iconName": "",
+      "contents": [
+        "嘘。"
+      ],
+      "nextNodeId": "22"
+    },
+    {
+      "id": "22",
+      "speakerName": "粗重的声音",
+      "iconName": "",
+      "contents": [
+        "不长记性。"
+      ],
+      "nextNodeId": "23"
+    },
+    {
+      "id": "23",
+      "speakerName": "你",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "-“我接班有一段时间了，你很少来这座地牢吧？”",
+          "targetNodeId": "51"
+        }
+      ]
+    },
+    {
+      "id": "24",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“我还需要向你做个自我介绍吗？嗯，就是——我想想——对，我的‘冒险者档案’应该还在吧？”"
+      ],
+      "nextNodeId": "25"
+    },
+    {
+      "id": "25",
+      "speakerName": "旁白",
+      "iconName": "",
+      "contents": [
+        "那个可怜人有保存档案的好习惯吗？你不得而知。说实话，你和这位“前辈”只有一面之缘——TA死的时候，你刚好站在接待桌前，仅此而已。"
+      ],
+      "nextNodeId": "26"
+    },
+    {
+      "id": "26",
+      "speakerName": "你",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "（搜寻身后的架子。）",
+          "targetNodeId": "27"
+        },
+        {
+          "text": "（翻找接待桌的抽屉。）",
+          "targetNodeId": "33"
+        },
+        {
+          "text": "（穿上你过去的冒险装备。）“稍等！我怀疑那玩意落在下面了，我这就下去找！”",
+          "targetNodeId": "39"
+        },
+        {
+          "text": "“不好意思，工作交接得匆忙，能麻烦你再给我一份吗？”",
+          "targetNodeId": "45",
+          "callbackKey": "myd1_intro_archive_correct"
+        }
+      ]
+    },
+    {
+      "id": "27",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "他克制住疑惑的神情，对你的举动不发一言。"
+      ],
+      "nextNodeId": "28"
+    },
+    {
+      "id": "28",
+      "speakerName": "你",
+      "iconName": "",
+      "contents": [
+        "你最终一无所获。等你转过身来，你的接待桌上多了一张新的羊皮纸。"
+      ],
+      "nextNodeId": "29"
+    },
+    {
+      "id": "29",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“我们每次来都要带一份档案，这是行规。”"
+      ],
+      "nextNodeId": "30"
+    },
+    {
+      "id": "30",
+      "speakerName": "粗重的声音",
+      "iconName": "",
+      "contents": [
+        "如果是我，这时候会嘲笑你，但他没有。"
+      ],
+      "nextNodeId": "31"
+    },
+    {
+      "id": "31",
+      "speakerName": "轻柔的声音",
+      "iconName": "",
+      "contents": [
+        "你不记得了吗？勇者下地牢，档案要带好。回回回回带，别落在门外。",
+        "——耳熟能详的哈耳摩尼亚歌谣。"
+      ],
+      "nextNodeId": "32"
+    },
+    {
+      "id": "32",
+      "speakerName": "旁白",
+      "iconName": "",
+      "contents": [
+        "拙劣极了。你可以断定这是它现编的。"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "（真诚）“谢谢，哈耳摩尼亚就应该多一些你这样的冒险者。”",
+          "targetNodeId": "55",
+          "callbackKey": "myd1_final_firmness_up"
+        },
+        {
+          "text": "（浮夸）“今天运气真好，竟然能碰上咱们伟大的城镇新星！”",
+          "targetNodeId": "57",
+          "callbackKey": "myd1_final_check"
+        },
+        {
+          "text": "（焦虑）“抱歉，我会记住的。”",
+          "targetNodeId": "64",
+          "callbackKey": "myd1_final_tolerance_up"
+        }
+      ]
+    },
+    {
+      "id": "33",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "他克制住疑惑的神情，对你的举动不发一言。"
+      ],
+      "nextNodeId": "34"
+    },
+    {
+      "id": "34",
+      "speakerName": "你",
+      "iconName": "",
+      "contents": [
+        "你最终一无所获。等你抬起头来，你的接待桌上多了一张新的羊皮纸。"
+      ],
+      "nextNodeId": "35"
+    },
+    {
+      "id": "35",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“我们每次来都要带一份档案，这是行规。”"
+      ],
+      "nextNodeId": "36"
+    },
+    {
+      "id": "36",
+      "speakerName": "粗重的声音",
+      "iconName": "",
+      "contents": [
+        "如果是我，这时候会嘲笑你，但他没有。"
+      ],
+      "nextNodeId": "37"
+    },
+    {
+      "id": "37",
+      "speakerName": "轻柔的声音",
+      "iconName": "",
+      "contents": [
+        "你不记得了吗？勇者下地牢，档案要带好。回回回回带，别落在门外。",
+        "——耳熟能详的哈耳摩尼亚歌谣。"
+      ],
+      "nextNodeId": "38"
+    },
+    {
+      "id": "38",
+      "speakerName": "旁白",
+      "iconName": "",
+      "contents": [
+        "拙劣极了。你可以断定这是它现编的。"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "（真诚）“谢谢，哈耳摩尼亚就应该多一些你这样的冒险者。”",
+          "targetNodeId": "55",
+          "callbackKey": "myd1_final_firmness_up"
+        },
+        {
+          "text": "（浮夸）“今天运气真好，竟然能碰上咱们伟大的城镇新星！”",
+          "targetNodeId": "57",
+          "callbackKey": "myd1_final_check"
+        },
+        {
+          "text": "（焦虑）“抱歉，我会记住的。”",
+          "targetNodeId": "64",
+          "callbackKey": "myd1_final_tolerance_up"
+        }
+      ]
+    },
+    {
+      "id": "39",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“抱歉，我开玩笑的。”他按住你从抽屉里拿出来的匕首。",
+        "他看着你，递过来一张崭新的羊皮纸：“看来你干这行还没多久。”"
+      ],
+      "nextNodeId": "40"
+    },
+    {
+      "id": "40",
+      "speakerName": "旁白",
+      "iconName": "",
+      "contents": [
+        "他的速度太快，你没来得及看清他抽出那张纸的动作。"
+      ],
+      "nextNodeId": "41"
+    },
+    {
+      "id": "41",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“我们每次来都要带一份档案，这是行规。”"
+      ],
+      "nextNodeId": "42"
+    },
+    {
+      "id": "42",
+      "speakerName": "粗重的声音",
+      "iconName": "",
+      "contents": [
+        "如果是我，这时候会嘲笑你，但他没有。"
+      ],
+      "nextNodeId": "43"
+    },
+    {
+      "id": "43",
+      "speakerName": "轻柔的声音",
+      "iconName": "",
+      "contents": [
+        "你不记得了吗？勇者下地牢，档案要带好。回回回回带，别落在门外。",
+        "——耳熟能详的哈耳摩尼亚歌谣。"
+      ],
+      "nextNodeId": "44"
+    },
+    {
+      "id": "44",
+      "speakerName": "旁白",
+      "iconName": "",
+      "contents": [
+        "拙劣极了。你可以断定这是它现编的。"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "（真诚）“谢谢，哈耳摩尼亚就应该多一些你这样的冒险者。”",
+          "targetNodeId": "55",
+          "callbackKey": "myd1_final_firmness_up"
+        },
+        {
+          "text": "（浮夸）“今天运气真好，竟然能碰上咱们伟大的城镇新星！”",
+          "targetNodeId": "57",
+          "callbackKey": "myd1_final_check"
+        },
+        {
+          "text": "（焦虑）“抱歉，我会记住的。”",
+          "targetNodeId": "64",
+          "callbackKey": "myd1_final_tolerance_up"
+        }
+      ]
+    },
+    {
+      "id": "45",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“分内事。”"
+      ],
+      "nextNodeId": "46"
+    },
+    {
+      "id": "46",
+      "speakerName": "旁白",
+      "iconName": "",
+      "contents": [
+        "你的接待桌上多了一张新的羊皮纸。"
+      ],
+      "nextNodeId": "47"
+    },
+    {
+      "id": "47",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“我们每次来都要带一份档案，这是行规。”"
+      ],
+      "nextNodeId": "48"
+    },
+    {
+      "id": "48",
+      "speakerName": "粗重的声音",
+      "iconName": "",
+      "contents": [
+        "如果是我，这时候会嘲笑你，但他没有。"
+      ],
+      "nextNodeId": "49"
+    },
+    {
+      "id": "49",
+      "speakerName": "轻柔的声音",
+      "iconName": "",
+      "contents": [
+        "你不记得了吗？勇者下地牢，档案要带好。回回回回带，别落在门外。",
+        "——耳熟能详的哈耳摩尼亚歌谣。"
+      ],
+      "nextNodeId": "50"
+    },
+    {
+      "id": "50",
+      "speakerName": "旁白",
+      "iconName": "",
+      "contents": [
+        "拙劣极了。你可以断定这是它现编的。"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "（真诚）“谢谢，哈耳摩尼亚就应该多一些你这样的冒险者。”",
+          "targetNodeId": "55",
+          "callbackKey": "myd1_final_firmness_up"
+        },
+        {
+          "text": "（浮夸）“今天运气真好，竟然能碰上咱们伟大的城镇新星！”",
+          "targetNodeId": "57",
+          "callbackKey": "myd1_final_check"
+        },
+        {
+          "text": "（焦虑）“抱歉，我会记住的。”",
+          "targetNodeId": "64",
+          "callbackKey": "myd1_final_tolerance_up"
+        }
+      ]
+    },
+    {
+      "id": "51",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "他笑了一下。“之后你会经常见到我。”"
+      ],
+      "nextNodeId": "52"
+    },
+    {
+      "id": "52",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“我还需要向你做个自我介绍吗？嗯，就是——我想想——对，我的‘冒险者档案’应该还在吧？”"
+      ],
+      "nextNodeId": "53"
+    },
+    {
+      "id": "53",
+      "speakerName": "旁白",
+      "iconName": "",
+      "contents": [
+        "那个可怜人有保存档案的好习惯吗？你不得而知。说实话，你和这位“前辈”只有一面之缘——TA死的时候，你刚好站在接待桌前，仅此而已。"
+      ],
+      "nextNodeId": "54"
+    },
+    {
+      "id": "54",
+      "speakerName": "你",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "（搜寻身后的架子。）",
+          "targetNodeId": "27"
+        },
+        {
+          "text": "（翻找接待桌的抽屉。）",
+          "targetNodeId": "33"
+        },
+        {
+          "text": "（穿上你过去的冒险装备。）“稍等！我怀疑那玩意落在下面了，我这就下去找！”",
+          "targetNodeId": "39"
+        },
+        {
+          "text": "“不好意思，工作交接得匆忙，能麻烦你再给我一份吗？”",
+          "targetNodeId": "45",
+          "callbackKey": "myd1_intro_archive_correct"
+        }
+      ]
+    },
+    {
+      "id": "55",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“我也希望如此。”"
+      ],
+      "nextNodeId": "56"
+    },
+    {
+      "id": "56",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“看看委托内容，没什么问题我就先下去了。”",
+        "你深吸一口气，决定："
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-查看委托",
+          "targetNodeId": "66"
+        },
+        {
+          "text": "2.-选择搭话",
+          "targetNodeId": "68"
+        },
+        {
+          "text": "3.-使用道具",
+          "targetNodeId": "69"
+        },
+        {
+          "text": "4.-直接拒绝",
+          "targetNodeId": "70",
+          "callbackKey": "myd1_refuse"
+        },
+        {
+          "text": "5.-特殊委托",
+          "targetNodeId": "72"
+        }
+      ]
+    },
+    {
+      "id": "57",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“谢谢你的夸奖。”"
+      ],
+      "nextNodeId": "58"
+    },
+    {
+      "id": "58",
+      "speakerName": "轻柔的声音",
+      "iconName": "",
+      "contents": [
+        "真有礼貌？"
+      ],
+      "nextNodeId": "59"
+    },
+    {
+      "id": "59",
+      "speakerName": "旁白",
+      "iconName": "",
+      "contents": [
+        "他看起来不怎么高兴。"
+      ],
+      "nextNodeId": "60"
+    },
+    {
+      "id": "60",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“看看委托内容，没什么问题我就先下去了。”",
+        "你深吸一口气，决定："
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-查看委托",
+          "targetNodeId": "66"
+        },
+        {
+          "text": "2.-选择搭话",
+          "targetNodeId": "68"
+        },
+        {
+          "text": "3.-使用道具",
+          "targetNodeId": "69"
+        },
+        {
+          "text": "4.-直接拒绝",
+          "targetNodeId": "70",
+          "callbackKey": "myd1_refuse"
+        },
+        {
+          "text": "5.-特殊委托",
+          "targetNodeId": "72"
+        }
+      ]
+    },
+    {
+      "id": "61",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“谢谢你的夸奖。”"
+      ],
+      "nextNodeId": "62"
+    },
+    {
+      "id": "62",
+      "speakerName": "粗重的声音",
+      "iconName": "",
+      "contents": [
+        "真有礼貌。"
+      ],
+      "nextNodeId": "63"
+    },
+    {
+      "id": "63",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“看看委托内容，没什么问题我就先下去了。”",
+        "你深吸一口气，决定："
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-查看委托",
+          "targetNodeId": "66"
+        },
+        {
+          "text": "2.-选择搭话",
+          "targetNodeId": "68"
+        },
+        {
+          "text": "3.-使用道具",
+          "targetNodeId": "69"
+        },
+        {
+          "text": "4.-直接拒绝",
+          "targetNodeId": "70",
+          "callbackKey": "myd1_refuse"
+        },
+        {
+          "text": "5.-特殊委托",
+          "targetNodeId": "72"
+        }
+      ]
+    },
+    {
+      "id": "64",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "他点点头，表示理解。"
+      ],
+      "nextNodeId": "65"
+    },
+    {
+      "id": "65",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“看看委托内容，没什么问题我就先下去了。”",
+        "你深吸一口气，决定："
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-查看委托",
+          "targetNodeId": "66"
+        },
+        {
+          "text": "2.-选择搭话",
+          "targetNodeId": "68"
+        },
+        {
+          "text": "3.-使用道具",
+          "targetNodeId": "69"
+        },
+        {
+          "text": "4.-直接拒绝",
+          "targetNodeId": "70",
+          "callbackKey": "myd1_refuse"
+        },
+        {
+          "text": "5.-特殊委托",
+          "targetNodeId": "72"
+        }
+      ]
+    },
+    {
+      "id": "66",
+      "speakerName": "委托名称",
+      "iconName": "",
+      "contents": [
+        "【维护灾区】"
+      ],
+      "nextNodeId": "67"
+    },
+    {
+      "id": "67",
+      "speakerName": "委托描述",
+      "iconName": "",
+      "contents": [
+        "【在几十年前的那次大型战争之后，过量的魔力污染了哈耳摩尼亚的许多角落。居民们出行普遍需要佩戴专用防具，魔物的肢体是制作此物的最佳材料。城主为此每年会雇佣一些冒险者讨伐魔物。",
+        "目标需求：【待主策配置】",
+        "报酬展示：【待主策配置】"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "接取委托",
+          "targetNodeId": "73",
+          "callbackKey": "myd1_accept_quest"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "74"
+        }
+      ]
+    },
+    {
+      "id": "68",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "75",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "77",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "3.-“我们的城主是谁来着？”",
+          "targetNodeId": "79",
+          "callbackKey": "myd1_talk3_begin"
+        },
+        {
+          "text": "4.-“作为一个人类，我真羡慕你的血统。”",
+          "targetNodeId": "81",
+          "callbackKey": "myd1_talk4_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "74"
+        }
+      ]
+    },
+    {
+      "id": "69",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "返回",
+          "targetNodeId": "74"
+        }
+      ]
+    },
+    {
+      "id": "70",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“理解，‘新官’上任总是需要多适应几天。”"
+      ],
+      "nextNodeId": "71"
+    },
+    {
+      "id": "71",
+      "speakerName": "旁白",
+      "iconName": "",
+      "contents": [
+        "他平静地离开了。"
+      ],
+      "nextNodeId": ""
+    },
+    {
+      "id": "72",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "返回",
+          "targetNodeId": "74"
+        }
+      ]
+    },
+    {
+      "id": "73",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“那我就出发了。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "指路",
+          "targetNodeId": "82",
+          "callbackKey": "myd1_guide_check"
+        }
+      ]
+    },
+    {
+      "id": "74",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [
+        "你深吸一口气，决定："
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-查看委托",
+          "targetNodeId": "66"
+        },
+        {
+          "text": "2.-选择搭话",
+          "targetNodeId": "68"
+        },
+        {
+          "text": "3.-使用道具",
+          "targetNodeId": "69"
+        },
+        {
+          "text": "4.-直接拒绝",
+          "targetNodeId": "70",
+          "callbackKey": "myd1_refuse"
+        },
+        {
+          "text": "5.-特殊委托",
+          "targetNodeId": "72"
+        }
+      ]
+    },
+    {
+      "id": "75",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“……我可(b)只为自己工作(/b)，钱还是多多益善。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "84",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "3.-“我们的城主是谁来着？”",
+          "targetNodeId": "86",
+          "callbackKey": "myd1_talk3_begin"
+        },
+        {
+          "text": "4.-“作为一个人类，我真羡慕你的血统。”",
+          "targetNodeId": "88",
+          "callbackKey": "myd1_talk4_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "89"
+        }
+      ]
+    },
+    {
+      "id": "76",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“城主就需要我这种上赶着的榜样。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "84",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "3.-“我们的城主是谁来着？”",
+          "targetNodeId": "86",
+          "callbackKey": "myd1_talk3_begin"
+        },
+        {
+          "text": "4.-“作为一个人类，我真羡慕你的血统。”",
+          "targetNodeId": "88",
+          "callbackKey": "myd1_talk4_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "89"
+        }
+      ]
+    },
+    {
+      "id": "77",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“……本地人。”他叹了口气，“(b)人类(/b)的视力还是太差了，我是混血啦。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "90",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "3.-“我们的城主是谁来着？”",
+          "targetNodeId": "92",
+          "callbackKey": "myd1_talk3_begin"
+        },
+        {
+          "text": "4.-“作为一个人类，我真羡慕你的血统。”",
+          "targetNodeId": "94",
+          "callbackKey": "myd1_talk4_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "95"
+        }
+      ]
+    },
+    {
+      "id": "78",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“难道你不会自己看档案吗？”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "90",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "3.-“我们的城主是谁来着？”",
+          "targetNodeId": "92",
+          "callbackKey": "myd1_talk3_begin"
+        },
+        {
+          "text": "4.-“作为一个人类，我真羡慕你的血统。”",
+          "targetNodeId": "94",
+          "callbackKey": "myd1_talk4_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "95"
+        }
+      ]
+    },
+    {
+      "id": "79",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“这不重要，年年都会变。”",
+        "“你费尽心思记牢了一个有好几行的名字，明年还要再来一遍的话那就太不划算了。”"
+      ],
+      "nextNodeId": "80"
+    },
+    {
+      "id": "80",
+      "speakerName": "你",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "“所以今年是谁？”",
+          "targetNodeId": "96",
+          "callbackKey": "myd1_talk3_answer1_check"
+        },
+        {
+          "text": "“那这东西是怎么变成一个固定委托的？”",
+          "targetNodeId": "104",
+          "callbackKey": "myd1_talk3_answer2_check"
+        },
+        {
+          "text": "（开玩笑）“既然如此，说不定哪年就是你呢？”",
+          "targetNodeId": "114",
+          "callbackKey": "myd1_talk3_answer3_check"
+        }
+      ]
+    },
+    {
+      "id": "81",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“为什么？”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "“长相。你不觉得你的耳朵很漂亮，牙齿很可爱吗？”",
+          "targetNodeId": "120",
+          "callbackKey": "myd1_talk4_answer1_check"
+        },
+        {
+          "text": "“见识。我也想多认识点精灵和兽人。”",
+          "targetNodeId": "126",
+          "callbackKey": "myd1_talk4_answer2_check"
+        },
+        {
+          "text": "“抗污染能力。唉，人类想在哈耳摩尼亚正常生活实在太难了。”",
+          "targetNodeId": "130",
+          "callbackKey": "myd1_talk4_answer3_check"
+        }
+      ]
+    },
+    {
+      "id": "82",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“合作愉快。”"
+      ],
+      "nextNodeId": ""
+    },
+    {
+      "id": "83",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“……你让我对人类很失望。记住这件事。”"
+      ],
+      "nextNodeId": ""
+    },
+    {
+      "id": "84",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“……本地人。”他叹了口气，“(b)人类(/b)的视力还是太差了，我是混血啦。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "3.-“我们的城主是谁来着？”",
+          "targetNodeId": "134",
+          "callbackKey": "myd1_talk3_begin"
+        },
+        {
+          "text": "4.-“作为一个人类，我真羡慕你的血统。”",
+          "targetNodeId": "136",
+          "callbackKey": "myd1_talk4_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "137"
+        }
+      ]
+    },
+    {
+      "id": "85",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“难道你不会自己看档案吗？”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "3.-“我们的城主是谁来着？”",
+          "targetNodeId": "134",
+          "callbackKey": "myd1_talk3_begin"
+        },
+        {
+          "text": "4.-“作为一个人类，我真羡慕你的血统。”",
+          "targetNodeId": "136",
+          "callbackKey": "myd1_talk4_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "137"
+        }
+      ]
+    },
+    {
+      "id": "86",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“这不重要，年年都会变。”",
+        "“你费尽心思记牢了一个有好几行的名字，明年还要再来一遍的话那就太不划算了。”"
+      ],
+      "nextNodeId": "87"
+    },
+    {
+      "id": "87",
+      "speakerName": "你",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "“所以今年是谁？”",
+          "targetNodeId": "138",
+          "callbackKey": "myd1_talk3_answer1_check"
+        },
+        {
+          "text": "“那这东西是怎么变成一个固定委托的？”",
+          "targetNodeId": "146",
+          "callbackKey": "myd1_talk3_answer2_check"
+        },
+        {
+          "text": "（开玩笑）“既然如此，说不定哪年就是你呢？”",
+          "targetNodeId": "156",
+          "callbackKey": "myd1_talk3_answer3_check"
+        }
+      ]
+    },
+    {
+      "id": "88",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“为什么？”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "“长相。你不觉得你的耳朵很漂亮，牙齿很可爱吗？”",
+          "targetNodeId": "162",
+          "callbackKey": "myd1_talk4_answer1_check"
+        },
+        {
+          "text": "“见识。我也想多认识点精灵和兽人。”",
+          "targetNodeId": "168",
+          "callbackKey": "myd1_talk4_answer2_check"
+        },
+        {
+          "text": "“抗污染能力。唉，人类想在哈耳摩尼亚正常生活实在太难了。”",
+          "targetNodeId": "172",
+          "callbackKey": "myd1_talk4_answer3_check"
+        }
+      ]
+    },
+    {
+      "id": "89",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [
+        "你深吸一口气，决定："
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-查看委托",
+          "targetNodeId": "176"
+        },
+        {
+          "text": "2.-选择搭话",
+          "targetNodeId": "178"
+        },
+        {
+          "text": "3.-使用道具",
+          "targetNodeId": "179"
+        },
+        {
+          "text": "4.-直接拒绝",
+          "targetNodeId": "180",
+          "callbackKey": "myd1_refuse"
+        },
+        {
+          "text": "5.-特殊委托",
+          "targetNodeId": "182"
+        }
+      ]
+    },
+    {
+      "id": "90",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“……我可(b)只为自己工作(/b)，钱还是多多益善。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "3.-“我们的城主是谁来着？”",
+          "targetNodeId": "134",
+          "callbackKey": "myd1_talk3_begin"
+        },
+        {
+          "text": "4.-“作为一个人类，我真羡慕你的血统。”",
+          "targetNodeId": "136",
+          "callbackKey": "myd1_talk4_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "137"
+        }
+      ]
+    },
+    {
+      "id": "91",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“城主就需要我这种上赶着的榜样。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "3.-“我们的城主是谁来着？”",
+          "targetNodeId": "134",
+          "callbackKey": "myd1_talk3_begin"
+        },
+        {
+          "text": "4.-“作为一个人类，我真羡慕你的血统。”",
+          "targetNodeId": "136",
+          "callbackKey": "myd1_talk4_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "137"
+        }
+      ]
+    },
+    {
+      "id": "92",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“这不重要，年年都会变。”",
+        "“你费尽心思记牢了一个有好几行的名字，明年还要再来一遍的话那就太不划算了。”"
+      ],
+      "nextNodeId": "93"
+    },
+    {
+      "id": "93",
+      "speakerName": "你",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "“所以今年是谁？”",
+          "targetNodeId": "183",
+          "callbackKey": "myd1_talk3_answer1_check"
+        },
+        {
+          "text": "“那这东西是怎么变成一个固定委托的？”",
+          "targetNodeId": "191",
+          "callbackKey": "myd1_talk3_answer2_check"
+        },
+        {
+          "text": "（开玩笑）“既然如此，说不定哪年就是你呢？”",
+          "targetNodeId": "201",
+          "callbackKey": "myd1_talk3_answer3_check"
+        }
+      ]
+    },
+    {
+      "id": "94",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“为什么？”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "“长相。你不觉得你的耳朵很漂亮，牙齿很可爱吗？”",
+          "targetNodeId": "207",
+          "callbackKey": "myd1_talk4_answer1_check"
+        },
+        {
+          "text": "“见识。我也想多认识点精灵和兽人。”",
+          "targetNodeId": "213",
+          "callbackKey": "myd1_talk4_answer2_check"
+        },
+        {
+          "text": "“抗污染能力。唉，人类想在哈耳摩尼亚正常生活实在太难了。”",
+          "targetNodeId": "217",
+          "callbackKey": "myd1_talk4_answer3_check"
+        }
+      ]
+    },
+    {
+      "id": "95",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [
+        "你深吸一口气，决定："
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-查看委托",
+          "targetNodeId": "221"
+        },
+        {
+          "text": "2.-选择搭话",
+          "targetNodeId": "223"
+        },
+        {
+          "text": "3.-使用道具",
+          "targetNodeId": "224"
+        },
+        {
+          "text": "4.-直接拒绝",
+          "targetNodeId": "225",
+          "callbackKey": "myd1_refuse"
+        },
+        {
+          "text": "5.-特殊委托",
+          "targetNodeId": "227"
+        }
+      ]
+    },
+    {
+      "id": "96",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "他报了一个很长很长的名字。"
+      ],
+      "nextNodeId": "97"
+    },
+    {
+      "id": "97",
+      "speakerName": "你",
+      "iconName": "",
+      "contents": [
+        "你没有记住。人类在这方面劣势太大了！"
+      ],
+      "nextNodeId": "98"
+    },
+    {
+      "id": "98",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“不管怎样，在地下没必要知道太多地上的事。”"
+      ],
+      "nextNodeId": "99"
+    },
+    {
+      "id": "99",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“地上有家(b)欢迎所有人(/b)的酒馆，等你下班了再去打探也不迟。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "228",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "230",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "4.-“作为一个人类，我真羡慕你的血统。”",
+          "targetNodeId": "232",
+          "callbackKey": "myd1_talk4_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "233"
+        }
+      ]
+    },
+    {
+      "id": "100",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "他报了一个很长很长的名字。"
+      ],
+      "nextNodeId": "101"
+    },
+    {
+      "id": "101",
+      "speakerName": "你",
+      "iconName": "",
+      "contents": [
+        "你没有记住。人类在这方面劣势太大了！"
+      ],
+      "nextNodeId": "102"
+    },
+    {
+      "id": "102",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“不管怎样，在地下没必要知道太多地上的事。”"
+      ],
+      "nextNodeId": "103"
+    },
+    {
+      "id": "103",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“你想知道的话，到了地上自有办法。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "228",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "230",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "4.-“作为一个人类，我真羡慕你的血统。”",
+          "targetNodeId": "232",
+          "callbackKey": "myd1_talk4_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "233"
+        }
+      ]
+    },
+    {
+      "id": "104",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“城里怎么可能只有一个大人物？”他笑起来，“这事对大家都好，当然要一直做下去。”"
+      ],
+      "nextNodeId": "105"
+    },
+    {
+      "id": "105",
+      "speakerName": "粗重的声音",
+      "iconName": "",
+      "contents": [
+        "哈哈，知无不言的小杂种，是吧？"
+      ],
+      "nextNodeId": "106"
+    },
+    {
+      "id": "106",
+      "speakerName": "轻柔的声音",
+      "iconName": "",
+      "contents": [
+        "哈耳摩尼亚的灿烂小星星。"
+      ],
+      "nextNodeId": "107"
+    },
+    {
+      "id": "107",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“不管怎样，在地下没必要知道太多地上的事。”"
+      ],
+      "nextNodeId": "108"
+    },
+    {
+      "id": "108",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“地上有家(b)欢迎所有人(/b)的酒馆，等你下班了再去打探也不迟。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "228",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "230",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "4.-“作为一个人类，我真羡慕你的血统。”",
+          "targetNodeId": "232",
+          "callbackKey": "myd1_talk4_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "233"
+        }
+      ]
+    },
+    {
+      "id": "109",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“城里怎么可能只有一个大人物？”他笑起来，“这事对大家都好，当然要一直做下去。”"
+      ],
+      "nextNodeId": "110"
+    },
+    {
+      "id": "110",
+      "speakerName": "粗重的声音",
+      "iconName": "",
+      "contents": [
+        "哈哈，知无不言的小杂种，是吧？"
+      ],
+      "nextNodeId": "111"
+    },
+    {
+      "id": "111",
+      "speakerName": "轻柔的声音",
+      "iconName": "",
+      "contents": [
+        "哈耳摩尼亚的灿烂小星星。"
+      ],
+      "nextNodeId": "112"
+    },
+    {
+      "id": "112",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“不管怎样，在地下没必要知道太多地上的事。”"
+      ],
+      "nextNodeId": "113"
+    },
+    {
+      "id": "113",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“你想知道的话，到了地上自有办法。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "228",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "230",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "4.-“作为一个人类，我真羡慕你的血统。”",
+          "targetNodeId": "232",
+          "callbackKey": "myd1_talk4_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "233"
+        }
+      ]
+    },
+    {
+      "id": "114",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "他用手捏了捏自己略长的耳朵，毫不掩饰地笑了。"
+      ],
+      "nextNodeId": "115"
+    },
+    {
+      "id": "115",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“不管怎样，在地下没必要知道太多地上的事。”"
+      ],
+      "nextNodeId": "116"
+    },
+    {
+      "id": "116",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“地上有家(b)欢迎所有人(/b)的酒馆，等你下班了再去打探也不迟。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "228",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "230",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "4.-“作为一个人类，我真羡慕你的血统。”",
+          "targetNodeId": "232",
+          "callbackKey": "myd1_talk4_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "233"
+        }
+      ]
+    },
+    {
+      "id": "117",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "他用手捏了捏自己略长的耳朵，毫不掩饰地笑了。"
+      ],
+      "nextNodeId": "118"
+    },
+    {
+      "id": "118",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“不管怎样，在地下没必要知道太多地上的事。”"
+      ],
+      "nextNodeId": "119"
+    },
+    {
+      "id": "119",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“你想知道的话，到了地上自有办法。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "228",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "230",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "4.-“作为一个人类，我真羡慕你的血统。”",
+          "targetNodeId": "232",
+          "callbackKey": "myd1_talk4_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "233"
+        }
+      ]
+    },
+    {
+      "id": "120",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“我觉得你的耳朵也很漂亮，牙齿也很可爱。”"
+      ],
+      "nextNodeId": "121"
+    },
+    {
+      "id": "121",
+      "speakerName": "旁白",
+      "iconName": "",
+      "contents": [
+        "他说这话是认真的。"
+      ],
+      "nextNodeId": "122"
+    },
+    {
+      "id": "122",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“人类值得羡慕之处也有很多。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "234",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "236",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "3.-“我们的城主是谁来着？”",
+          "targetNodeId": "238",
+          "callbackKey": "myd1_talk3_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "240"
+        }
+      ]
+    },
+    {
+      "id": "123",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“我觉得你的耳朵也很漂亮，牙齿也很可爱。”"
+      ],
+      "nextNodeId": "124"
+    },
+    {
+      "id": "124",
+      "speakerName": "旁白",
+      "iconName": "",
+      "contents": [
+        "他说这话是认真的。"
+      ],
+      "nextNodeId": "125"
+    },
+    {
+      "id": "125",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“作为一个混血种，我有时候也会羡慕你们的纯粹。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "234",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "236",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "3.-“我们的城主是谁来着？”",
+          "targetNodeId": "238",
+          "callbackKey": "myd1_talk3_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "240"
+        }
+      ]
+    },
+    {
+      "id": "126",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“虽然我确实……但我还是想问，难道你作为人类，就认识很多人类吗？”"
+      ],
+      "nextNodeId": "127"
+    },
+    {
+      "id": "127",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“人类值得羡慕之处也有很多。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "234",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "236",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "3.-“我们的城主是谁来着？”",
+          "targetNodeId": "238",
+          "callbackKey": "myd1_talk3_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "240"
+        }
+      ]
+    },
+    {
+      "id": "128",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“虽然我确实……但我还是想问，难道你作为人类，就认识很多人类吗？”"
+      ],
+      "nextNodeId": "129"
+    },
+    {
+      "id": "129",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“作为一个混血种，我有时候也会羡慕你们的纯粹。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "234",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "236",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "3.-“我们的城主是谁来着？”",
+          "targetNodeId": "238",
+          "callbackKey": "myd1_talk3_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "240"
+        }
+      ]
+    },
+    {
+      "id": "130",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“……你们防护魔力污染的能力确实差了点。”"
+      ],
+      "nextNodeId": "131"
+    },
+    {
+      "id": "131",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“人类值得羡慕之处也有很多。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "234",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "236",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "3.-“我们的城主是谁来着？”",
+          "targetNodeId": "238",
+          "callbackKey": "myd1_talk3_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "240"
+        }
+      ]
+    },
+    {
+      "id": "132",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“……你们防护魔力污染的能力确实差了点。”"
+      ],
+      "nextNodeId": "133"
+    },
+    {
+      "id": "133",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“作为一个混血种，我有时候也会羡慕你们的纯粹。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "234",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "236",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "3.-“我们的城主是谁来着？”",
+          "targetNodeId": "238",
+          "callbackKey": "myd1_talk3_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "240"
+        }
+      ]
+    },
+    {
+      "id": "134",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“这不重要，年年都会变。”",
+        "“你费尽心思记牢了一个有好几行的名字，明年还要再来一遍的话那就太不划算了。”"
+      ],
+      "nextNodeId": "135"
+    },
+    {
+      "id": "135",
+      "speakerName": "你",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "“所以今年是谁？”",
+          "targetNodeId": "241",
+          "callbackKey": "myd1_talk3_answer1_check"
+        },
+        {
+          "text": "“那这东西是怎么变成一个固定委托的？”",
+          "targetNodeId": "249",
+          "callbackKey": "myd1_talk3_answer2_check"
+        },
+        {
+          "text": "（开玩笑）“既然如此，说不定哪年就是你呢？”",
+          "targetNodeId": "259",
+          "callbackKey": "myd1_talk3_answer3_check"
+        }
+      ]
+    },
+    {
+      "id": "136",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“为什么？”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "“长相。你不觉得你的耳朵很漂亮，牙齿很可爱吗？”",
+          "targetNodeId": "265",
+          "callbackKey": "myd1_talk4_answer1_check"
+        },
+        {
+          "text": "“见识。我也想多认识点精灵和兽人。”",
+          "targetNodeId": "271",
+          "callbackKey": "myd1_talk4_answer2_check"
+        },
+        {
+          "text": "“抗污染能力。唉，人类想在哈耳摩尼亚正常生活实在太难了。”",
+          "targetNodeId": "275",
+          "callbackKey": "myd1_talk4_answer3_check"
+        }
+      ]
+    },
+    {
+      "id": "137",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [
+        "你深吸一口气，决定："
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-查看委托",
+          "targetNodeId": "279"
+        },
+        {
+          "text": "2.-选择搭话",
+          "targetNodeId": "281"
+        },
+        {
+          "text": "3.-使用道具",
+          "targetNodeId": "282"
+        },
+        {
+          "text": "4.-直接拒绝",
+          "targetNodeId": "283",
+          "callbackKey": "myd1_refuse"
+        },
+        {
+          "text": "5.-特殊委托",
+          "targetNodeId": "285"
+        }
+      ]
+    },
+    {
+      "id": "138",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "他报了一个很长很长的名字。"
+      ],
+      "nextNodeId": "139"
+    },
+    {
+      "id": "139",
+      "speakerName": "你",
+      "iconName": "",
+      "contents": [
+        "你没有记住。人类在这方面劣势太大了！"
+      ],
+      "nextNodeId": "140"
+    },
+    {
+      "id": "140",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“不管怎样，在地下没必要知道太多地上的事。”"
+      ],
+      "nextNodeId": "141"
+    },
+    {
+      "id": "141",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“地上有家(b)欢迎所有人(/b)的酒馆，等你下班了再去打探也不迟。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "286",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "4.-“作为一个人类，我真羡慕你的血统。”",
+          "targetNodeId": "288",
+          "callbackKey": "myd1_talk4_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "289"
+        }
+      ]
+    },
+    {
+      "id": "142",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "他报了一个很长很长的名字。"
+      ],
+      "nextNodeId": "143"
+    },
+    {
+      "id": "143",
+      "speakerName": "你",
+      "iconName": "",
+      "contents": [
+        "你没有记住。人类在这方面劣势太大了！"
+      ],
+      "nextNodeId": "144"
+    },
+    {
+      "id": "144",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“不管怎样，在地下没必要知道太多地上的事。”"
+      ],
+      "nextNodeId": "145"
+    },
+    {
+      "id": "145",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“你想知道的话，到了地上自有办法。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "286",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "4.-“作为一个人类，我真羡慕你的血统。”",
+          "targetNodeId": "288",
+          "callbackKey": "myd1_talk4_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "289"
+        }
+      ]
+    },
+    {
+      "id": "146",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“城里怎么可能只有一个大人物？”他笑起来，“这事对大家都好，当然要一直做下去。”"
+      ],
+      "nextNodeId": "147"
+    },
+    {
+      "id": "147",
+      "speakerName": "粗重的声音",
+      "iconName": "",
+      "contents": [
+        "哈哈，知无不言的小杂种，是吧？"
+      ],
+      "nextNodeId": "148"
+    },
+    {
+      "id": "148",
+      "speakerName": "轻柔的声音",
+      "iconName": "",
+      "contents": [
+        "哈耳摩尼亚的灿烂小星星。"
+      ],
+      "nextNodeId": "149"
+    },
+    {
+      "id": "149",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“不管怎样，在地下没必要知道太多地上的事。”"
+      ],
+      "nextNodeId": "150"
+    },
+    {
+      "id": "150",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“地上有家(b)欢迎所有人(/b)的酒馆，等你下班了再去打探也不迟。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "286",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "4.-“作为一个人类，我真羡慕你的血统。”",
+          "targetNodeId": "288",
+          "callbackKey": "myd1_talk4_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "289"
+        }
+      ]
+    },
+    {
+      "id": "151",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“城里怎么可能只有一个大人物？”他笑起来，“这事对大家都好，当然要一直做下去。”"
+      ],
+      "nextNodeId": "152"
+    },
+    {
+      "id": "152",
+      "speakerName": "粗重的声音",
+      "iconName": "",
+      "contents": [
+        "哈哈，知无不言的小杂种，是吧？"
+      ],
+      "nextNodeId": "153"
+    },
+    {
+      "id": "153",
+      "speakerName": "轻柔的声音",
+      "iconName": "",
+      "contents": [
+        "哈耳摩尼亚的灿烂小星星。"
+      ],
+      "nextNodeId": "154"
+    },
+    {
+      "id": "154",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“不管怎样，在地下没必要知道太多地上的事。”"
+      ],
+      "nextNodeId": "155"
+    },
+    {
+      "id": "155",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“你想知道的话，到了地上自有办法。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "286",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "4.-“作为一个人类，我真羡慕你的血统。”",
+          "targetNodeId": "288",
+          "callbackKey": "myd1_talk4_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "289"
+        }
+      ]
+    },
+    {
+      "id": "156",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "他用手捏了捏自己略长的耳朵，毫不掩饰地笑了。"
+      ],
+      "nextNodeId": "157"
+    },
+    {
+      "id": "157",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“不管怎样，在地下没必要知道太多地上的事。”"
+      ],
+      "nextNodeId": "158"
+    },
+    {
+      "id": "158",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“地上有家(b)欢迎所有人(/b)的酒馆，等你下班了再去打探也不迟。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "286",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "4.-“作为一个人类，我真羡慕你的血统。”",
+          "targetNodeId": "288",
+          "callbackKey": "myd1_talk4_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "289"
+        }
+      ]
+    },
+    {
+      "id": "159",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "他用手捏了捏自己略长的耳朵，毫不掩饰地笑了。"
+      ],
+      "nextNodeId": "160"
+    },
+    {
+      "id": "160",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“不管怎样，在地下没必要知道太多地上的事。”"
+      ],
+      "nextNodeId": "161"
+    },
+    {
+      "id": "161",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“你想知道的话，到了地上自有办法。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "286",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "4.-“作为一个人类，我真羡慕你的血统。”",
+          "targetNodeId": "288",
+          "callbackKey": "myd1_talk4_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "289"
+        }
+      ]
+    },
+    {
+      "id": "162",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“我觉得你的耳朵也很漂亮，牙齿也很可爱。”"
+      ],
+      "nextNodeId": "163"
+    },
+    {
+      "id": "163",
+      "speakerName": "旁白",
+      "iconName": "",
+      "contents": [
+        "他说这话是认真的。"
+      ],
+      "nextNodeId": "164"
+    },
+    {
+      "id": "164",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“人类值得羡慕之处也有很多。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "290",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "3.-“我们的城主是谁来着？”",
+          "targetNodeId": "292",
+          "callbackKey": "myd1_talk3_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "294"
+        }
+      ]
+    },
+    {
+      "id": "165",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“我觉得你的耳朵也很漂亮，牙齿也很可爱。”"
+      ],
+      "nextNodeId": "166"
+    },
+    {
+      "id": "166",
+      "speakerName": "旁白",
+      "iconName": "",
+      "contents": [
+        "他说这话是认真的。"
+      ],
+      "nextNodeId": "167"
+    },
+    {
+      "id": "167",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“作为一个混血种，我有时候也会羡慕你们的纯粹。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "290",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "3.-“我们的城主是谁来着？”",
+          "targetNodeId": "292",
+          "callbackKey": "myd1_talk3_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "294"
+        }
+      ]
+    },
+    {
+      "id": "168",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“虽然我确实……但我还是想问，难道你作为人类，就认识很多人类吗？”"
+      ],
+      "nextNodeId": "169"
+    },
+    {
+      "id": "169",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“人类值得羡慕之处也有很多。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "290",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "3.-“我们的城主是谁来着？”",
+          "targetNodeId": "292",
+          "callbackKey": "myd1_talk3_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "294"
+        }
+      ]
+    },
+    {
+      "id": "170",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“虽然我确实……但我还是想问，难道你作为人类，就认识很多人类吗？”"
+      ],
+      "nextNodeId": "171"
+    },
+    {
+      "id": "171",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“作为一个混血种，我有时候也会羡慕你们的纯粹。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "290",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "3.-“我们的城主是谁来着？”",
+          "targetNodeId": "292",
+          "callbackKey": "myd1_talk3_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "294"
+        }
+      ]
+    },
+    {
+      "id": "172",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“……你们防护魔力污染的能力确实差了点。”"
+      ],
+      "nextNodeId": "173"
+    },
+    {
+      "id": "173",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“人类值得羡慕之处也有很多。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "290",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "3.-“我们的城主是谁来着？”",
+          "targetNodeId": "292",
+          "callbackKey": "myd1_talk3_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "294"
+        }
+      ]
+    },
+    {
+      "id": "174",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“……你们防护魔力污染的能力确实差了点。”"
+      ],
+      "nextNodeId": "175"
+    },
+    {
+      "id": "175",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“作为一个混血种，我有时候也会羡慕你们的纯粹。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "290",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "3.-“我们的城主是谁来着？”",
+          "targetNodeId": "292",
+          "callbackKey": "myd1_talk3_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "294"
+        }
+      ]
+    },
+    {
+      "id": "176",
+      "speakerName": "委托名称",
+      "iconName": "",
+      "contents": [
+        "【维护灾区】"
+      ],
+      "nextNodeId": "177"
+    },
+    {
+      "id": "177",
+      "speakerName": "委托描述",
+      "iconName": "",
+      "contents": [
+        "【在几十年前的那次大型战争之后，过量的魔力污染了哈耳摩尼亚的许多角落。居民们出行普遍需要佩戴专用防具，魔物的肢体是制作此物的最佳材料。城主为此每年会雇佣一些冒险者讨伐魔物。",
+        "目标需求：【待主策配置】",
+        "报酬展示：【待主策配置】"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "接取委托",
+          "targetNodeId": "295",
+          "callbackKey": "myd1_accept_quest"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "89"
+        }
+      ]
+    },
+    {
+      "id": "178",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "84",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "3.-“我们的城主是谁来着？”",
+          "targetNodeId": "86",
+          "callbackKey": "myd1_talk3_begin"
+        },
+        {
+          "text": "4.-“作为一个人类，我真羡慕你的血统。”",
+          "targetNodeId": "88",
+          "callbackKey": "myd1_talk4_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "89"
+        }
+      ]
+    },
+    {
+      "id": "179",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "返回",
+          "targetNodeId": "89"
+        }
+      ]
+    },
+    {
+      "id": "180",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“理解，‘新官’上任总是需要多适应几天。”"
+      ],
+      "nextNodeId": "181"
+    },
+    {
+      "id": "181",
+      "speakerName": "旁白",
+      "iconName": "",
+      "contents": [
+        "他平静地离开了。"
+      ],
+      "nextNodeId": ""
+    },
+    {
+      "id": "182",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "返回",
+          "targetNodeId": "89"
+        }
+      ]
+    },
+    {
+      "id": "183",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "他报了一个很长很长的名字。"
+      ],
+      "nextNodeId": "184"
+    },
+    {
+      "id": "184",
+      "speakerName": "你",
+      "iconName": "",
+      "contents": [
+        "你没有记住。人类在这方面劣势太大了！"
+      ],
+      "nextNodeId": "185"
+    },
+    {
+      "id": "185",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“不管怎样，在地下没必要知道太多地上的事。”"
+      ],
+      "nextNodeId": "186"
+    },
+    {
+      "id": "186",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“地上有家(b)欢迎所有人(/b)的酒馆，等你下班了再去打探也不迟。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "296",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "4.-“作为一个人类，我真羡慕你的血统。”",
+          "targetNodeId": "298",
+          "callbackKey": "myd1_talk4_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "299"
+        }
+      ]
+    },
+    {
+      "id": "187",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "他报了一个很长很长的名字。"
+      ],
+      "nextNodeId": "188"
+    },
+    {
+      "id": "188",
+      "speakerName": "你",
+      "iconName": "",
+      "contents": [
+        "你没有记住。人类在这方面劣势太大了！"
+      ],
+      "nextNodeId": "189"
+    },
+    {
+      "id": "189",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“不管怎样，在地下没必要知道太多地上的事。”"
+      ],
+      "nextNodeId": "190"
+    },
+    {
+      "id": "190",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“你想知道的话，到了地上自有办法。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "296",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "4.-“作为一个人类，我真羡慕你的血统。”",
+          "targetNodeId": "298",
+          "callbackKey": "myd1_talk4_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "299"
+        }
+      ]
+    },
+    {
+      "id": "191",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“城里怎么可能只有一个大人物？”他笑起来，“这事对大家都好，当然要一直做下去。”"
+      ],
+      "nextNodeId": "192"
+    },
+    {
+      "id": "192",
+      "speakerName": "粗重的声音",
+      "iconName": "",
+      "contents": [
+        "哈哈，知无不言的小杂种，是吧？"
+      ],
+      "nextNodeId": "193"
+    },
+    {
+      "id": "193",
+      "speakerName": "轻柔的声音",
+      "iconName": "",
+      "contents": [
+        "哈耳摩尼亚的灿烂小星星。"
+      ],
+      "nextNodeId": "194"
+    },
+    {
+      "id": "194",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“不管怎样，在地下没必要知道太多地上的事。”"
+      ],
+      "nextNodeId": "195"
+    },
+    {
+      "id": "195",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“地上有家(b)欢迎所有人(/b)的酒馆，等你下班了再去打探也不迟。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "296",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "4.-“作为一个人类，我真羡慕你的血统。”",
+          "targetNodeId": "298",
+          "callbackKey": "myd1_talk4_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "299"
+        }
+      ]
+    },
+    {
+      "id": "196",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“城里怎么可能只有一个大人物？”他笑起来，“这事对大家都好，当然要一直做下去。”"
+      ],
+      "nextNodeId": "197"
+    },
+    {
+      "id": "197",
+      "speakerName": "粗重的声音",
+      "iconName": "",
+      "contents": [
+        "哈哈，知无不言的小杂种，是吧？"
+      ],
+      "nextNodeId": "198"
+    },
+    {
+      "id": "198",
+      "speakerName": "轻柔的声音",
+      "iconName": "",
+      "contents": [
+        "哈耳摩尼亚的灿烂小星星。"
+      ],
+      "nextNodeId": "199"
+    },
+    {
+      "id": "199",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“不管怎样，在地下没必要知道太多地上的事。”"
+      ],
+      "nextNodeId": "200"
+    },
+    {
+      "id": "200",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“你想知道的话，到了地上自有办法。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "296",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "4.-“作为一个人类，我真羡慕你的血统。”",
+          "targetNodeId": "298",
+          "callbackKey": "myd1_talk4_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "299"
+        }
+      ]
+    },
+    {
+      "id": "201",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "他用手捏了捏自己略长的耳朵，毫不掩饰地笑了。"
+      ],
+      "nextNodeId": "202"
+    },
+    {
+      "id": "202",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“不管怎样，在地下没必要知道太多地上的事。”"
+      ],
+      "nextNodeId": "203"
+    },
+    {
+      "id": "203",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“地上有家(b)欢迎所有人(/b)的酒馆，等你下班了再去打探也不迟。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "296",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "4.-“作为一个人类，我真羡慕你的血统。”",
+          "targetNodeId": "298",
+          "callbackKey": "myd1_talk4_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "299"
+        }
+      ]
+    },
+    {
+      "id": "204",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "他用手捏了捏自己略长的耳朵，毫不掩饰地笑了。"
+      ],
+      "nextNodeId": "205"
+    },
+    {
+      "id": "205",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“不管怎样，在地下没必要知道太多地上的事。”"
+      ],
+      "nextNodeId": "206"
+    },
+    {
+      "id": "206",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“你想知道的话，到了地上自有办法。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "296",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "4.-“作为一个人类，我真羡慕你的血统。”",
+          "targetNodeId": "298",
+          "callbackKey": "myd1_talk4_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "299"
+        }
+      ]
+    },
+    {
+      "id": "207",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“我觉得你的耳朵也很漂亮，牙齿也很可爱。”"
+      ],
+      "nextNodeId": "208"
+    },
+    {
+      "id": "208",
+      "speakerName": "旁白",
+      "iconName": "",
+      "contents": [
+        "他说这话是认真的。"
+      ],
+      "nextNodeId": "209"
+    },
+    {
+      "id": "209",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“人类值得羡慕之处也有很多。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "300",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "3.-“我们的城主是谁来着？”",
+          "targetNodeId": "302",
+          "callbackKey": "myd1_talk3_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "304"
+        }
+      ]
+    },
+    {
+      "id": "210",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“我觉得你的耳朵也很漂亮，牙齿也很可爱。”"
+      ],
+      "nextNodeId": "211"
+    },
+    {
+      "id": "211",
+      "speakerName": "旁白",
+      "iconName": "",
+      "contents": [
+        "他说这话是认真的。"
+      ],
+      "nextNodeId": "212"
+    },
+    {
+      "id": "212",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“作为一个混血种，我有时候也会羡慕你们的纯粹。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "300",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "3.-“我们的城主是谁来着？”",
+          "targetNodeId": "302",
+          "callbackKey": "myd1_talk3_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "304"
+        }
+      ]
+    },
+    {
+      "id": "213",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“虽然我确实……但我还是想问，难道你作为人类，就认识很多人类吗？”"
+      ],
+      "nextNodeId": "214"
+    },
+    {
+      "id": "214",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“人类值得羡慕之处也有很多。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "300",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "3.-“我们的城主是谁来着？”",
+          "targetNodeId": "302",
+          "callbackKey": "myd1_talk3_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "304"
+        }
+      ]
+    },
+    {
+      "id": "215",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“虽然我确实……但我还是想问，难道你作为人类，就认识很多人类吗？”"
+      ],
+      "nextNodeId": "216"
+    },
+    {
+      "id": "216",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“作为一个混血种，我有时候也会羡慕你们的纯粹。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "300",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "3.-“我们的城主是谁来着？”",
+          "targetNodeId": "302",
+          "callbackKey": "myd1_talk3_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "304"
+        }
+      ]
+    },
+    {
+      "id": "217",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“……你们防护魔力污染的能力确实差了点。”"
+      ],
+      "nextNodeId": "218"
+    },
+    {
+      "id": "218",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“人类值得羡慕之处也有很多。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "300",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "3.-“我们的城主是谁来着？”",
+          "targetNodeId": "302",
+          "callbackKey": "myd1_talk3_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "304"
+        }
+      ]
+    },
+    {
+      "id": "219",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“……你们防护魔力污染的能力确实差了点。”"
+      ],
+      "nextNodeId": "220"
+    },
+    {
+      "id": "220",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“作为一个混血种，我有时候也会羡慕你们的纯粹。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "300",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "3.-“我们的城主是谁来着？”",
+          "targetNodeId": "302",
+          "callbackKey": "myd1_talk3_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "304"
+        }
+      ]
+    },
+    {
+      "id": "221",
+      "speakerName": "委托名称",
+      "iconName": "",
+      "contents": [
+        "【维护灾区】"
+      ],
+      "nextNodeId": "222"
+    },
+    {
+      "id": "222",
+      "speakerName": "委托描述",
+      "iconName": "",
+      "contents": [
+        "【在几十年前的那次大型战争之后，过量的魔力污染了哈耳摩尼亚的许多角落。居民们出行普遍需要佩戴专用防具，魔物的肢体是制作此物的最佳材料。城主为此每年会雇佣一些冒险者讨伐魔物。",
+        "目标需求：【待主策配置】",
+        "报酬展示：【待主策配置】"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "接取委托",
+          "targetNodeId": "305",
+          "callbackKey": "myd1_accept_quest"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "95"
+        }
+      ]
+    },
+    {
+      "id": "223",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "90",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "3.-“我们的城主是谁来着？”",
+          "targetNodeId": "92",
+          "callbackKey": "myd1_talk3_begin"
+        },
+        {
+          "text": "4.-“作为一个人类，我真羡慕你的血统。”",
+          "targetNodeId": "94",
+          "callbackKey": "myd1_talk4_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "95"
+        }
+      ]
+    },
+    {
+      "id": "224",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "返回",
+          "targetNodeId": "95"
+        }
+      ]
+    },
+    {
+      "id": "225",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“理解，‘新官’上任总是需要多适应几天。”"
+      ],
+      "nextNodeId": "226"
+    },
+    {
+      "id": "226",
+      "speakerName": "旁白",
+      "iconName": "",
+      "contents": [
+        "他平静地离开了。"
+      ],
+      "nextNodeId": ""
+    },
+    {
+      "id": "227",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "返回",
+          "targetNodeId": "95"
+        }
+      ]
+    },
+    {
+      "id": "228",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“……我可(b)只为自己工作(/b)，钱还是多多益善。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "286",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "4.-“作为一个人类，我真羡慕你的血统。”",
+          "targetNodeId": "288",
+          "callbackKey": "myd1_talk4_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "289"
+        }
+      ]
+    },
+    {
+      "id": "229",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“城主就需要我这种上赶着的榜样。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "286",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "4.-“作为一个人类，我真羡慕你的血统。”",
+          "targetNodeId": "288",
+          "callbackKey": "myd1_talk4_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "289"
+        }
+      ]
+    },
+    {
+      "id": "230",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“……本地人。”他叹了口气，“(b)人类(/b)的视力还是太差了，我是混血啦。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "296",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "4.-“作为一个人类，我真羡慕你的血统。”",
+          "targetNodeId": "298",
+          "callbackKey": "myd1_talk4_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "299"
+        }
+      ]
+    },
+    {
+      "id": "231",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“难道你不会自己看档案吗？”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "296",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "4.-“作为一个人类，我真羡慕你的血统。”",
+          "targetNodeId": "298",
+          "callbackKey": "myd1_talk4_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "299"
+        }
+      ]
+    },
+    {
+      "id": "232",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“为什么？”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "“长相。你不觉得你的耳朵很漂亮，牙齿很可爱吗？”",
+          "targetNodeId": "306",
+          "callbackKey": "myd1_talk4_answer1_check"
+        },
+        {
+          "text": "“见识。我也想多认识点精灵和兽人。”",
+          "targetNodeId": "312",
+          "callbackKey": "myd1_talk4_answer2_check"
+        },
+        {
+          "text": "“抗污染能力。唉，人类想在哈耳摩尼亚正常生活实在太难了。”",
+          "targetNodeId": "316",
+          "callbackKey": "myd1_talk4_answer3_check"
+        }
+      ]
+    },
+    {
+      "id": "233",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [
+        "你深吸一口气，决定："
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-查看委托",
+          "targetNodeId": "320"
+        },
+        {
+          "text": "2.-选择搭话",
+          "targetNodeId": "322"
+        },
+        {
+          "text": "3.-使用道具",
+          "targetNodeId": "323"
+        },
+        {
+          "text": "4.-直接拒绝",
+          "targetNodeId": "324",
+          "callbackKey": "myd1_refuse"
+        },
+        {
+          "text": "5.-特殊委托",
+          "targetNodeId": "326"
+        }
+      ]
+    },
+    {
+      "id": "234",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“……我可(b)只为自己工作(/b)，钱还是多多益善。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "290",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "3.-“我们的城主是谁来着？”",
+          "targetNodeId": "292",
+          "callbackKey": "myd1_talk3_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "294"
+        }
+      ]
+    },
+    {
+      "id": "235",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“城主就需要我这种上赶着的榜样。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "290",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "3.-“我们的城主是谁来着？”",
+          "targetNodeId": "292",
+          "callbackKey": "myd1_talk3_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "294"
+        }
+      ]
+    },
+    {
+      "id": "236",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“……本地人。”他叹了口气，“(b)人类(/b)的视力还是太差了，我是混血啦。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "300",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "3.-“我们的城主是谁来着？”",
+          "targetNodeId": "302",
+          "callbackKey": "myd1_talk3_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "304"
+        }
+      ]
+    },
+    {
+      "id": "237",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“难道你不会自己看档案吗？”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "300",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "3.-“我们的城主是谁来着？”",
+          "targetNodeId": "302",
+          "callbackKey": "myd1_talk3_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "304"
+        }
+      ]
+    },
+    {
+      "id": "238",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“这不重要，年年都会变。”",
+        "“你费尽心思记牢了一个有好几行的名字，明年还要再来一遍的话那就太不划算了。”"
+      ],
+      "nextNodeId": "239"
+    },
+    {
+      "id": "239",
+      "speakerName": "你",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "“所以今年是谁？”",
+          "targetNodeId": "327",
+          "callbackKey": "myd1_talk3_answer1_check"
+        },
+        {
+          "text": "“那这东西是怎么变成一个固定委托的？”",
+          "targetNodeId": "335",
+          "callbackKey": "myd1_talk3_answer2_check"
+        },
+        {
+          "text": "（开玩笑）“既然如此，说不定哪年就是你呢？”",
+          "targetNodeId": "345",
+          "callbackKey": "myd1_talk3_answer3_check"
+        }
+      ]
+    },
+    {
+      "id": "240",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [
+        "你深吸一口气，决定："
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-查看委托",
+          "targetNodeId": "351"
+        },
+        {
+          "text": "2.-选择搭话",
+          "targetNodeId": "353"
+        },
+        {
+          "text": "3.-使用道具",
+          "targetNodeId": "354"
+        },
+        {
+          "text": "4.-直接拒绝",
+          "targetNodeId": "355",
+          "callbackKey": "myd1_refuse"
+        },
+        {
+          "text": "5.-特殊委托",
+          "targetNodeId": "357"
+        }
+      ]
+    },
+    {
+      "id": "241",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "他报了一个很长很长的名字。"
+      ],
+      "nextNodeId": "242"
+    },
+    {
+      "id": "242",
+      "speakerName": "你",
+      "iconName": "",
+      "contents": [
+        "你没有记住。人类在这方面劣势太大了！"
+      ],
+      "nextNodeId": "243"
+    },
+    {
+      "id": "243",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“不管怎样，在地下没必要知道太多地上的事。”"
+      ],
+      "nextNodeId": "244"
+    },
+    {
+      "id": "244",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“地上有家(b)欢迎所有人(/b)的酒馆，等你下班了再去打探也不迟。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "4.-“作为一个人类，我真羡慕你的血统。”",
+          "targetNodeId": "358",
+          "callbackKey": "myd1_talk4_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "359"
+        }
+      ]
+    },
+    {
+      "id": "245",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "他报了一个很长很长的名字。"
+      ],
+      "nextNodeId": "246"
+    },
+    {
+      "id": "246",
+      "speakerName": "你",
+      "iconName": "",
+      "contents": [
+        "你没有记住。人类在这方面劣势太大了！"
+      ],
+      "nextNodeId": "247"
+    },
+    {
+      "id": "247",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“不管怎样，在地下没必要知道太多地上的事。”"
+      ],
+      "nextNodeId": "248"
+    },
+    {
+      "id": "248",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“你想知道的话，到了地上自有办法。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "4.-“作为一个人类，我真羡慕你的血统。”",
+          "targetNodeId": "358",
+          "callbackKey": "myd1_talk4_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "359"
+        }
+      ]
+    },
+    {
+      "id": "249",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“城里怎么可能只有一个大人物？”他笑起来，“这事对大家都好，当然要一直做下去。”"
+      ],
+      "nextNodeId": "250"
+    },
+    {
+      "id": "250",
+      "speakerName": "粗重的声音",
+      "iconName": "",
+      "contents": [
+        "哈哈，知无不言的小杂种，是吧？"
+      ],
+      "nextNodeId": "251"
+    },
+    {
+      "id": "251",
+      "speakerName": "轻柔的声音",
+      "iconName": "",
+      "contents": [
+        "哈耳摩尼亚的灿烂小星星。"
+      ],
+      "nextNodeId": "252"
+    },
+    {
+      "id": "252",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“不管怎样，在地下没必要知道太多地上的事。”"
+      ],
+      "nextNodeId": "253"
+    },
+    {
+      "id": "253",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“地上有家(b)欢迎所有人(/b)的酒馆，等你下班了再去打探也不迟。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "4.-“作为一个人类，我真羡慕你的血统。”",
+          "targetNodeId": "358",
+          "callbackKey": "myd1_talk4_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "359"
+        }
+      ]
+    },
+    {
+      "id": "254",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“城里怎么可能只有一个大人物？”他笑起来，“这事对大家都好，当然要一直做下去。”"
+      ],
+      "nextNodeId": "255"
+    },
+    {
+      "id": "255",
+      "speakerName": "粗重的声音",
+      "iconName": "",
+      "contents": [
+        "哈哈，知无不言的小杂种，是吧？"
+      ],
+      "nextNodeId": "256"
+    },
+    {
+      "id": "256",
+      "speakerName": "轻柔的声音",
+      "iconName": "",
+      "contents": [
+        "哈耳摩尼亚的灿烂小星星。"
+      ],
+      "nextNodeId": "257"
+    },
+    {
+      "id": "257",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“不管怎样，在地下没必要知道太多地上的事。”"
+      ],
+      "nextNodeId": "258"
+    },
+    {
+      "id": "258",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“你想知道的话，到了地上自有办法。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "4.-“作为一个人类，我真羡慕你的血统。”",
+          "targetNodeId": "358",
+          "callbackKey": "myd1_talk4_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "359"
+        }
+      ]
+    },
+    {
+      "id": "259",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "他用手捏了捏自己略长的耳朵，毫不掩饰地笑了。"
+      ],
+      "nextNodeId": "260"
+    },
+    {
+      "id": "260",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“不管怎样，在地下没必要知道太多地上的事。”"
+      ],
+      "nextNodeId": "261"
+    },
+    {
+      "id": "261",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“地上有家(b)欢迎所有人(/b)的酒馆，等你下班了再去打探也不迟。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "4.-“作为一个人类，我真羡慕你的血统。”",
+          "targetNodeId": "358",
+          "callbackKey": "myd1_talk4_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "359"
+        }
+      ]
+    },
+    {
+      "id": "262",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "他用手捏了捏自己略长的耳朵，毫不掩饰地笑了。"
+      ],
+      "nextNodeId": "263"
+    },
+    {
+      "id": "263",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“不管怎样，在地下没必要知道太多地上的事。”"
+      ],
+      "nextNodeId": "264"
+    },
+    {
+      "id": "264",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“你想知道的话，到了地上自有办法。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "4.-“作为一个人类，我真羡慕你的血统。”",
+          "targetNodeId": "358",
+          "callbackKey": "myd1_talk4_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "359"
+        }
+      ]
+    },
+    {
+      "id": "265",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“我觉得你的耳朵也很漂亮，牙齿也很可爱。”"
+      ],
+      "nextNodeId": "266"
+    },
+    {
+      "id": "266",
+      "speakerName": "旁白",
+      "iconName": "",
+      "contents": [
+        "他说这话是认真的。"
+      ],
+      "nextNodeId": "267"
+    },
+    {
+      "id": "267",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“人类值得羡慕之处也有很多。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "3.-“我们的城主是谁来着？”",
+          "targetNodeId": "360",
+          "callbackKey": "myd1_talk3_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "362"
+        }
+      ]
+    },
+    {
+      "id": "268",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“我觉得你的耳朵也很漂亮，牙齿也很可爱。”"
+      ],
+      "nextNodeId": "269"
+    },
+    {
+      "id": "269",
+      "speakerName": "旁白",
+      "iconName": "",
+      "contents": [
+        "他说这话是认真的。"
+      ],
+      "nextNodeId": "270"
+    },
+    {
+      "id": "270",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“作为一个混血种，我有时候也会羡慕你们的纯粹。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "3.-“我们的城主是谁来着？”",
+          "targetNodeId": "360",
+          "callbackKey": "myd1_talk3_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "362"
+        }
+      ]
+    },
+    {
+      "id": "271",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“虽然我确实……但我还是想问，难道你作为人类，就认识很多人类吗？”"
+      ],
+      "nextNodeId": "272"
+    },
+    {
+      "id": "272",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“人类值得羡慕之处也有很多。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "3.-“我们的城主是谁来着？”",
+          "targetNodeId": "360",
+          "callbackKey": "myd1_talk3_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "362"
+        }
+      ]
+    },
+    {
+      "id": "273",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“虽然我确实……但我还是想问，难道你作为人类，就认识很多人类吗？”"
+      ],
+      "nextNodeId": "274"
+    },
+    {
+      "id": "274",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“作为一个混血种，我有时候也会羡慕你们的纯粹。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "3.-“我们的城主是谁来着？”",
+          "targetNodeId": "360",
+          "callbackKey": "myd1_talk3_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "362"
+        }
+      ]
+    },
+    {
+      "id": "275",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“……你们防护魔力污染的能力确实差了点。”"
+      ],
+      "nextNodeId": "276"
+    },
+    {
+      "id": "276",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“人类值得羡慕之处也有很多。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "3.-“我们的城主是谁来着？”",
+          "targetNodeId": "360",
+          "callbackKey": "myd1_talk3_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "362"
+        }
+      ]
+    },
+    {
+      "id": "277",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“……你们防护魔力污染的能力确实差了点。”"
+      ],
+      "nextNodeId": "278"
+    },
+    {
+      "id": "278",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“作为一个混血种，我有时候也会羡慕你们的纯粹。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "3.-“我们的城主是谁来着？”",
+          "targetNodeId": "360",
+          "callbackKey": "myd1_talk3_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "362"
+        }
+      ]
+    },
+    {
+      "id": "279",
+      "speakerName": "委托名称",
+      "iconName": "",
+      "contents": [
+        "【维护灾区】"
+      ],
+      "nextNodeId": "280"
+    },
+    {
+      "id": "280",
+      "speakerName": "委托描述",
+      "iconName": "",
+      "contents": [
+        "【在几十年前的那次大型战争之后，过量的魔力污染了哈耳摩尼亚的许多角落。居民们出行普遍需要佩戴专用防具，魔物的肢体是制作此物的最佳材料。城主为此每年会雇佣一些冒险者讨伐魔物。",
+        "目标需求：【待主策配置】",
+        "报酬展示：【待主策配置】"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "接取委托",
+          "targetNodeId": "363",
+          "callbackKey": "myd1_accept_quest"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "137"
+        }
+      ]
+    },
+    {
+      "id": "281",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "3.-“我们的城主是谁来着？”",
+          "targetNodeId": "134",
+          "callbackKey": "myd1_talk3_begin"
+        },
+        {
+          "text": "4.-“作为一个人类，我真羡慕你的血统。”",
+          "targetNodeId": "136",
+          "callbackKey": "myd1_talk4_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "137"
+        }
+      ]
+    },
+    {
+      "id": "282",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "返回",
+          "targetNodeId": "137"
+        }
+      ]
+    },
+    {
+      "id": "283",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“理解，‘新官’上任总是需要多适应几天。”"
+      ],
+      "nextNodeId": "284"
+    },
+    {
+      "id": "284",
+      "speakerName": "旁白",
+      "iconName": "",
+      "contents": [
+        "他平静地离开了。"
+      ],
+      "nextNodeId": ""
+    },
+    {
+      "id": "285",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "返回",
+          "targetNodeId": "137"
+        }
+      ]
+    },
+    {
+      "id": "286",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“……本地人。”他叹了口气，“(b)人类(/b)的视力还是太差了，我是混血啦。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "4.-“作为一个人类，我真羡慕你的血统。”",
+          "targetNodeId": "358",
+          "callbackKey": "myd1_talk4_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "359"
+        }
+      ]
+    },
+    {
+      "id": "287",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“难道你不会自己看档案吗？”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "4.-“作为一个人类，我真羡慕你的血统。”",
+          "targetNodeId": "358",
+          "callbackKey": "myd1_talk4_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "359"
+        }
+      ]
+    },
+    {
+      "id": "288",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“为什么？”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "“长相。你不觉得你的耳朵很漂亮，牙齿很可爱吗？”",
+          "targetNodeId": "364",
+          "callbackKey": "myd1_talk4_answer1_check"
+        },
+        {
+          "text": "“见识。我也想多认识点精灵和兽人。”",
+          "targetNodeId": "370",
+          "callbackKey": "myd1_talk4_answer2_check"
+        },
+        {
+          "text": "“抗污染能力。唉，人类想在哈耳摩尼亚正常生活实在太难了。”",
+          "targetNodeId": "374",
+          "callbackKey": "myd1_talk4_answer3_check"
+        }
+      ]
+    },
+    {
+      "id": "289",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [
+        "你深吸一口气，决定："
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-查看委托",
+          "targetNodeId": "378"
+        },
+        {
+          "text": "2.-选择搭话",
+          "targetNodeId": "380"
+        },
+        {
+          "text": "3.-使用道具",
+          "targetNodeId": "381"
+        },
+        {
+          "text": "4.-直接拒绝",
+          "targetNodeId": "382",
+          "callbackKey": "myd1_refuse"
+        },
+        {
+          "text": "5.-特殊委托",
+          "targetNodeId": "384"
+        }
+      ]
+    },
+    {
+      "id": "290",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“……本地人。”他叹了口气，“(b)人类(/b)的视力还是太差了，我是混血啦。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "3.-“我们的城主是谁来着？”",
+          "targetNodeId": "360",
+          "callbackKey": "myd1_talk3_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "362"
+        }
+      ]
+    },
+    {
+      "id": "291",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“难道你不会自己看档案吗？”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "3.-“我们的城主是谁来着？”",
+          "targetNodeId": "360",
+          "callbackKey": "myd1_talk3_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "362"
+        }
+      ]
+    },
+    {
+      "id": "292",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“这不重要，年年都会变。”",
+        "“你费尽心思记牢了一个有好几行的名字，明年还要再来一遍的话那就太不划算了。”"
+      ],
+      "nextNodeId": "293"
+    },
+    {
+      "id": "293",
+      "speakerName": "你",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "“所以今年是谁？”",
+          "targetNodeId": "385",
+          "callbackKey": "myd1_talk3_answer1_check"
+        },
+        {
+          "text": "“那这东西是怎么变成一个固定委托的？”",
+          "targetNodeId": "393",
+          "callbackKey": "myd1_talk3_answer2_check"
+        },
+        {
+          "text": "（开玩笑）“既然如此，说不定哪年就是你呢？”",
+          "targetNodeId": "403",
+          "callbackKey": "myd1_talk3_answer3_check"
+        }
+      ]
+    },
+    {
+      "id": "294",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [
+        "你深吸一口气，决定："
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-查看委托",
+          "targetNodeId": "409"
+        },
+        {
+          "text": "2.-选择搭话",
+          "targetNodeId": "411"
+        },
+        {
+          "text": "3.-使用道具",
+          "targetNodeId": "412"
+        },
+        {
+          "text": "4.-直接拒绝",
+          "targetNodeId": "413",
+          "callbackKey": "myd1_refuse"
+        },
+        {
+          "text": "5.-特殊委托",
+          "targetNodeId": "415"
+        }
+      ]
+    },
+    {
+      "id": "295",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“那我就出发了。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "指路",
+          "targetNodeId": "416",
+          "callbackKey": "myd1_guide_check"
+        }
+      ]
+    },
+    {
+      "id": "296",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“……我可(b)只为自己工作(/b)，钱还是多多益善。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "4.-“作为一个人类，我真羡慕你的血统。”",
+          "targetNodeId": "358",
+          "callbackKey": "myd1_talk4_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "359"
+        }
+      ]
+    },
+    {
+      "id": "297",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“城主就需要我这种上赶着的榜样。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "4.-“作为一个人类，我真羡慕你的血统。”",
+          "targetNodeId": "358",
+          "callbackKey": "myd1_talk4_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "359"
+        }
+      ]
+    },
+    {
+      "id": "298",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“为什么？”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "“长相。你不觉得你的耳朵很漂亮，牙齿很可爱吗？”",
+          "targetNodeId": "418",
+          "callbackKey": "myd1_talk4_answer1_check"
+        },
+        {
+          "text": "“见识。我也想多认识点精灵和兽人。”",
+          "targetNodeId": "424",
+          "callbackKey": "myd1_talk4_answer2_check"
+        },
+        {
+          "text": "“抗污染能力。唉，人类想在哈耳摩尼亚正常生活实在太难了。”",
+          "targetNodeId": "428",
+          "callbackKey": "myd1_talk4_answer3_check"
+        }
+      ]
+    },
+    {
+      "id": "299",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [
+        "你深吸一口气，决定："
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-查看委托",
+          "targetNodeId": "432"
+        },
+        {
+          "text": "2.-选择搭话",
+          "targetNodeId": "434"
+        },
+        {
+          "text": "3.-使用道具",
+          "targetNodeId": "435"
+        },
+        {
+          "text": "4.-直接拒绝",
+          "targetNodeId": "436",
+          "callbackKey": "myd1_refuse"
+        },
+        {
+          "text": "5.-特殊委托",
+          "targetNodeId": "438"
+        }
+      ]
+    },
+    {
+      "id": "300",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“……我可(b)只为自己工作(/b)，钱还是多多益善。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "3.-“我们的城主是谁来着？”",
+          "targetNodeId": "360",
+          "callbackKey": "myd1_talk3_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "362"
+        }
+      ]
+    },
+    {
+      "id": "301",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“城主就需要我这种上赶着的榜样。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "3.-“我们的城主是谁来着？”",
+          "targetNodeId": "360",
+          "callbackKey": "myd1_talk3_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "362"
+        }
+      ]
+    },
+    {
+      "id": "302",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“这不重要，年年都会变。”",
+        "“你费尽心思记牢了一个有好几行的名字，明年还要再来一遍的话那就太不划算了。”"
+      ],
+      "nextNodeId": "303"
+    },
+    {
+      "id": "303",
+      "speakerName": "你",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "“所以今年是谁？”",
+          "targetNodeId": "439",
+          "callbackKey": "myd1_talk3_answer1_check"
+        },
+        {
+          "text": "“那这东西是怎么变成一个固定委托的？”",
+          "targetNodeId": "447",
+          "callbackKey": "myd1_talk3_answer2_check"
+        },
+        {
+          "text": "（开玩笑）“既然如此，说不定哪年就是你呢？”",
+          "targetNodeId": "457",
+          "callbackKey": "myd1_talk3_answer3_check"
+        }
+      ]
+    },
+    {
+      "id": "304",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [
+        "你深吸一口气，决定："
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-查看委托",
+          "targetNodeId": "463"
+        },
+        {
+          "text": "2.-选择搭话",
+          "targetNodeId": "465"
+        },
+        {
+          "text": "3.-使用道具",
+          "targetNodeId": "466"
+        },
+        {
+          "text": "4.-直接拒绝",
+          "targetNodeId": "467",
+          "callbackKey": "myd1_refuse"
+        },
+        {
+          "text": "5.-特殊委托",
+          "targetNodeId": "469"
+        }
+      ]
+    },
+    {
+      "id": "305",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“那我就出发了。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "指路",
+          "targetNodeId": "470",
+          "callbackKey": "myd1_guide_check"
+        }
+      ]
+    },
+    {
+      "id": "306",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“我觉得你的耳朵也很漂亮，牙齿也很可爱。”"
+      ],
+      "nextNodeId": "307"
+    },
+    {
+      "id": "307",
+      "speakerName": "旁白",
+      "iconName": "",
+      "contents": [
+        "他说这话是认真的。"
+      ],
+      "nextNodeId": "308"
+    },
+    {
+      "id": "308",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“人类值得羡慕之处也有很多。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "472",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "474",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "476"
+        }
+      ]
+    },
+    {
+      "id": "309",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“我觉得你的耳朵也很漂亮，牙齿也很可爱。”"
+      ],
+      "nextNodeId": "310"
+    },
+    {
+      "id": "310",
+      "speakerName": "旁白",
+      "iconName": "",
+      "contents": [
+        "他说这话是认真的。"
+      ],
+      "nextNodeId": "311"
+    },
+    {
+      "id": "311",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“作为一个混血种，我有时候也会羡慕你们的纯粹。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "472",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "474",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "476"
+        }
+      ]
+    },
+    {
+      "id": "312",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“虽然我确实……但我还是想问，难道你作为人类，就认识很多人类吗？”"
+      ],
+      "nextNodeId": "313"
+    },
+    {
+      "id": "313",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“人类值得羡慕之处也有很多。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "472",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "474",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "476"
+        }
+      ]
+    },
+    {
+      "id": "314",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“虽然我确实……但我还是想问，难道你作为人类，就认识很多人类吗？”"
+      ],
+      "nextNodeId": "315"
+    },
+    {
+      "id": "315",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“作为一个混血种，我有时候也会羡慕你们的纯粹。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "472",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "474",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "476"
+        }
+      ]
+    },
+    {
+      "id": "316",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“……你们防护魔力污染的能力确实差了点。”"
+      ],
+      "nextNodeId": "317"
+    },
+    {
+      "id": "317",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“人类值得羡慕之处也有很多。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "472",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "474",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "476"
+        }
+      ]
+    },
+    {
+      "id": "318",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“……你们防护魔力污染的能力确实差了点。”"
+      ],
+      "nextNodeId": "319"
+    },
+    {
+      "id": "319",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“作为一个混血种，我有时候也会羡慕你们的纯粹。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "472",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "474",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "476"
+        }
+      ]
+    },
+    {
+      "id": "320",
+      "speakerName": "委托名称",
+      "iconName": "",
+      "contents": [
+        "【维护灾区】"
+      ],
+      "nextNodeId": "321"
+    },
+    {
+      "id": "321",
+      "speakerName": "委托描述",
+      "iconName": "",
+      "contents": [
+        "【在几十年前的那次大型战争之后，过量的魔力污染了哈耳摩尼亚的许多角落。居民们出行普遍需要佩戴专用防具，魔物的肢体是制作此物的最佳材料。城主为此每年会雇佣一些冒险者讨伐魔物。",
+        "目标需求：【待主策配置】",
+        "报酬展示：【待主策配置】"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "接取委托",
+          "targetNodeId": "477",
+          "callbackKey": "myd1_accept_quest"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "233"
+        }
+      ]
+    },
+    {
+      "id": "322",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "228",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "230",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "4.-“作为一个人类，我真羡慕你的血统。”",
+          "targetNodeId": "232",
+          "callbackKey": "myd1_talk4_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "233"
+        }
+      ]
+    },
+    {
+      "id": "323",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "返回",
+          "targetNodeId": "233"
+        }
+      ]
+    },
+    {
+      "id": "324",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“理解，‘新官’上任总是需要多适应几天。”"
+      ],
+      "nextNodeId": "325"
+    },
+    {
+      "id": "325",
+      "speakerName": "旁白",
+      "iconName": "",
+      "contents": [
+        "他平静地离开了。"
+      ],
+      "nextNodeId": ""
+    },
+    {
+      "id": "326",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "返回",
+          "targetNodeId": "233"
+        }
+      ]
+    },
+    {
+      "id": "327",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "他报了一个很长很长的名字。"
+      ],
+      "nextNodeId": "328"
+    },
+    {
+      "id": "328",
+      "speakerName": "你",
+      "iconName": "",
+      "contents": [
+        "你没有记住。人类在这方面劣势太大了！"
+      ],
+      "nextNodeId": "329"
+    },
+    {
+      "id": "329",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“不管怎样，在地下没必要知道太多地上的事。”"
+      ],
+      "nextNodeId": "330"
+    },
+    {
+      "id": "330",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“地上有家(b)欢迎所有人(/b)的酒馆，等你下班了再去打探也不迟。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "472",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "474",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "476"
+        }
+      ]
+    },
+    {
+      "id": "331",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "他报了一个很长很长的名字。"
+      ],
+      "nextNodeId": "332"
+    },
+    {
+      "id": "332",
+      "speakerName": "你",
+      "iconName": "",
+      "contents": [
+        "你没有记住。人类在这方面劣势太大了！"
+      ],
+      "nextNodeId": "333"
+    },
+    {
+      "id": "333",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“不管怎样，在地下没必要知道太多地上的事。”"
+      ],
+      "nextNodeId": "334"
+    },
+    {
+      "id": "334",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“你想知道的话，到了地上自有办法。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "472",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "474",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "476"
+        }
+      ]
+    },
+    {
+      "id": "335",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“城里怎么可能只有一个大人物？”他笑起来，“这事对大家都好，当然要一直做下去。”"
+      ],
+      "nextNodeId": "336"
+    },
+    {
+      "id": "336",
+      "speakerName": "粗重的声音",
+      "iconName": "",
+      "contents": [
+        "哈哈，知无不言的小杂种，是吧？"
+      ],
+      "nextNodeId": "337"
+    },
+    {
+      "id": "337",
+      "speakerName": "轻柔的声音",
+      "iconName": "",
+      "contents": [
+        "哈耳摩尼亚的灿烂小星星。"
+      ],
+      "nextNodeId": "338"
+    },
+    {
+      "id": "338",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“不管怎样，在地下没必要知道太多地上的事。”"
+      ],
+      "nextNodeId": "339"
+    },
+    {
+      "id": "339",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“地上有家(b)欢迎所有人(/b)的酒馆，等你下班了再去打探也不迟。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "472",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "474",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "476"
+        }
+      ]
+    },
+    {
+      "id": "340",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“城里怎么可能只有一个大人物？”他笑起来，“这事对大家都好，当然要一直做下去。”"
+      ],
+      "nextNodeId": "341"
+    },
+    {
+      "id": "341",
+      "speakerName": "粗重的声音",
+      "iconName": "",
+      "contents": [
+        "哈哈，知无不言的小杂种，是吧？"
+      ],
+      "nextNodeId": "342"
+    },
+    {
+      "id": "342",
+      "speakerName": "轻柔的声音",
+      "iconName": "",
+      "contents": [
+        "哈耳摩尼亚的灿烂小星星。"
+      ],
+      "nextNodeId": "343"
+    },
+    {
+      "id": "343",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“不管怎样，在地下没必要知道太多地上的事。”"
+      ],
+      "nextNodeId": "344"
+    },
+    {
+      "id": "344",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“你想知道的话，到了地上自有办法。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "472",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "474",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "476"
+        }
+      ]
+    },
+    {
+      "id": "345",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "他用手捏了捏自己略长的耳朵，毫不掩饰地笑了。"
+      ],
+      "nextNodeId": "346"
+    },
+    {
+      "id": "346",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“不管怎样，在地下没必要知道太多地上的事。”"
+      ],
+      "nextNodeId": "347"
+    },
+    {
+      "id": "347",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“地上有家(b)欢迎所有人(/b)的酒馆，等你下班了再去打探也不迟。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "472",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "474",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "476"
+        }
+      ]
+    },
+    {
+      "id": "348",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "他用手捏了捏自己略长的耳朵，毫不掩饰地笑了。"
+      ],
+      "nextNodeId": "349"
+    },
+    {
+      "id": "349",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“不管怎样，在地下没必要知道太多地上的事。”"
+      ],
+      "nextNodeId": "350"
+    },
+    {
+      "id": "350",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“你想知道的话，到了地上自有办法。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "472",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "474",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "476"
+        }
+      ]
+    },
+    {
+      "id": "351",
+      "speakerName": "委托名称",
+      "iconName": "",
+      "contents": [
+        "【维护灾区】"
+      ],
+      "nextNodeId": "352"
+    },
+    {
+      "id": "352",
+      "speakerName": "委托描述",
+      "iconName": "",
+      "contents": [
+        "【在几十年前的那次大型战争之后，过量的魔力污染了哈耳摩尼亚的许多角落。居民们出行普遍需要佩戴专用防具，魔物的肢体是制作此物的最佳材料。城主为此每年会雇佣一些冒险者讨伐魔物。",
+        "目标需求：【待主策配置】",
+        "报酬展示：【待主策配置】"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "接取委托",
+          "targetNodeId": "478",
+          "callbackKey": "myd1_accept_quest"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "240"
+        }
+      ]
+    },
+    {
+      "id": "353",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "234",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "236",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "3.-“我们的城主是谁来着？”",
+          "targetNodeId": "238",
+          "callbackKey": "myd1_talk3_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "240"
+        }
+      ]
+    },
+    {
+      "id": "354",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "返回",
+          "targetNodeId": "240"
+        }
+      ]
+    },
+    {
+      "id": "355",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“理解，‘新官’上任总是需要多适应几天。”"
+      ],
+      "nextNodeId": "356"
+    },
+    {
+      "id": "356",
+      "speakerName": "旁白",
+      "iconName": "",
+      "contents": [
+        "他平静地离开了。"
+      ],
+      "nextNodeId": ""
+    },
+    {
+      "id": "357",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "返回",
+          "targetNodeId": "240"
+        }
+      ]
+    },
+    {
+      "id": "358",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“为什么？”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "“长相。你不觉得你的耳朵很漂亮，牙齿很可爱吗？”",
+          "targetNodeId": "479",
+          "callbackKey": "myd1_talk4_answer1_check"
+        },
+        {
+          "text": "“见识。我也想多认识点精灵和兽人。”",
+          "targetNodeId": "485",
+          "callbackKey": "myd1_talk4_answer2_check"
+        },
+        {
+          "text": "“抗污染能力。唉，人类想在哈耳摩尼亚正常生活实在太难了。”",
+          "targetNodeId": "489",
+          "callbackKey": "myd1_talk4_answer3_check"
+        }
+      ]
+    },
+    {
+      "id": "359",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [
+        "你深吸一口气，决定："
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-查看委托",
+          "targetNodeId": "493"
+        },
+        {
+          "text": "2.-选择搭话",
+          "targetNodeId": "495"
+        },
+        {
+          "text": "3.-使用道具",
+          "targetNodeId": "496"
+        },
+        {
+          "text": "4.-直接拒绝",
+          "targetNodeId": "497",
+          "callbackKey": "myd1_refuse"
+        },
+        {
+          "text": "5.-特殊委托",
+          "targetNodeId": "499"
+        }
+      ]
+    },
+    {
+      "id": "360",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“这不重要，年年都会变。”",
+        "“你费尽心思记牢了一个有好几行的名字，明年还要再来一遍的话那就太不划算了。”"
+      ],
+      "nextNodeId": "361"
+    },
+    {
+      "id": "361",
+      "speakerName": "你",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "“所以今年是谁？”",
+          "targetNodeId": "500",
+          "callbackKey": "myd1_talk3_answer1_check"
+        },
+        {
+          "text": "“那这东西是怎么变成一个固定委托的？”",
+          "targetNodeId": "508",
+          "callbackKey": "myd1_talk3_answer2_check"
+        },
+        {
+          "text": "（开玩笑）“既然如此，说不定哪年就是你呢？”",
+          "targetNodeId": "518",
+          "callbackKey": "myd1_talk3_answer3_check"
+        }
+      ]
+    },
+    {
+      "id": "362",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [
+        "你深吸一口气，决定："
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-查看委托",
+          "targetNodeId": "524"
+        },
+        {
+          "text": "2.-选择搭话",
+          "targetNodeId": "526"
+        },
+        {
+          "text": "3.-使用道具",
+          "targetNodeId": "527"
+        },
+        {
+          "text": "4.-直接拒绝",
+          "targetNodeId": "528",
+          "callbackKey": "myd1_refuse"
+        },
+        {
+          "text": "5.-特殊委托",
+          "targetNodeId": "530"
+        }
+      ]
+    },
+    {
+      "id": "363",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“那我就出发了。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "指路",
+          "targetNodeId": "531",
+          "callbackKey": "myd1_guide_check"
+        }
+      ]
+    },
+    {
+      "id": "364",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“我觉得你的耳朵也很漂亮，牙齿也很可爱。”"
+      ],
+      "nextNodeId": "365"
+    },
+    {
+      "id": "365",
+      "speakerName": "旁白",
+      "iconName": "",
+      "contents": [
+        "他说这话是认真的。"
+      ],
+      "nextNodeId": "366"
+    },
+    {
+      "id": "366",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“人类值得羡慕之处也有很多。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "533",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "535"
+        }
+      ]
+    },
+    {
+      "id": "367",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“我觉得你的耳朵也很漂亮，牙齿也很可爱。”"
+      ],
+      "nextNodeId": "368"
+    },
+    {
+      "id": "368",
+      "speakerName": "旁白",
+      "iconName": "",
+      "contents": [
+        "他说这话是认真的。"
+      ],
+      "nextNodeId": "369"
+    },
+    {
+      "id": "369",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“作为一个混血种，我有时候也会羡慕你们的纯粹。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "533",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "535"
+        }
+      ]
+    },
+    {
+      "id": "370",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“虽然我确实……但我还是想问，难道你作为人类，就认识很多人类吗？”"
+      ],
+      "nextNodeId": "371"
+    },
+    {
+      "id": "371",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“人类值得羡慕之处也有很多。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "533",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "535"
+        }
+      ]
+    },
+    {
+      "id": "372",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“虽然我确实……但我还是想问，难道你作为人类，就认识很多人类吗？”"
+      ],
+      "nextNodeId": "373"
+    },
+    {
+      "id": "373",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“作为一个混血种，我有时候也会羡慕你们的纯粹。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "533",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "535"
+        }
+      ]
+    },
+    {
+      "id": "374",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“……你们防护魔力污染的能力确实差了点。”"
+      ],
+      "nextNodeId": "375"
+    },
+    {
+      "id": "375",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“人类值得羡慕之处也有很多。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "533",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "535"
+        }
+      ]
+    },
+    {
+      "id": "376",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“……你们防护魔力污染的能力确实差了点。”"
+      ],
+      "nextNodeId": "377"
+    },
+    {
+      "id": "377",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“作为一个混血种，我有时候也会羡慕你们的纯粹。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "533",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "535"
+        }
+      ]
+    },
+    {
+      "id": "378",
+      "speakerName": "委托名称",
+      "iconName": "",
+      "contents": [
+        "【维护灾区】"
+      ],
+      "nextNodeId": "379"
+    },
+    {
+      "id": "379",
+      "speakerName": "委托描述",
+      "iconName": "",
+      "contents": [
+        "【在几十年前的那次大型战争之后，过量的魔力污染了哈耳摩尼亚的许多角落。居民们出行普遍需要佩戴专用防具，魔物的肢体是制作此物的最佳材料。城主为此每年会雇佣一些冒险者讨伐魔物。",
+        "目标需求：【待主策配置】",
+        "报酬展示：【待主策配置】"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "接取委托",
+          "targetNodeId": "536",
+          "callbackKey": "myd1_accept_quest"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "289"
+        }
+      ]
+    },
+    {
+      "id": "380",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "286",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "4.-“作为一个人类，我真羡慕你的血统。”",
+          "targetNodeId": "288",
+          "callbackKey": "myd1_talk4_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "289"
+        }
+      ]
+    },
+    {
+      "id": "381",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "返回",
+          "targetNodeId": "289"
+        }
+      ]
+    },
+    {
+      "id": "382",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“理解，‘新官’上任总是需要多适应几天。”"
+      ],
+      "nextNodeId": "383"
+    },
+    {
+      "id": "383",
+      "speakerName": "旁白",
+      "iconName": "",
+      "contents": [
+        "他平静地离开了。"
+      ],
+      "nextNodeId": ""
+    },
+    {
+      "id": "384",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "返回",
+          "targetNodeId": "289"
+        }
+      ]
+    },
+    {
+      "id": "385",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "他报了一个很长很长的名字。"
+      ],
+      "nextNodeId": "386"
+    },
+    {
+      "id": "386",
+      "speakerName": "你",
+      "iconName": "",
+      "contents": [
+        "你没有记住。人类在这方面劣势太大了！"
+      ],
+      "nextNodeId": "387"
+    },
+    {
+      "id": "387",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“不管怎样，在地下没必要知道太多地上的事。”"
+      ],
+      "nextNodeId": "388"
+    },
+    {
+      "id": "388",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“地上有家(b)欢迎所有人(/b)的酒馆，等你下班了再去打探也不迟。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "533",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "535"
+        }
+      ]
+    },
+    {
+      "id": "389",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "他报了一个很长很长的名字。"
+      ],
+      "nextNodeId": "390"
+    },
+    {
+      "id": "390",
+      "speakerName": "你",
+      "iconName": "",
+      "contents": [
+        "你没有记住。人类在这方面劣势太大了！"
+      ],
+      "nextNodeId": "391"
+    },
+    {
+      "id": "391",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“不管怎样，在地下没必要知道太多地上的事。”"
+      ],
+      "nextNodeId": "392"
+    },
+    {
+      "id": "392",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“你想知道的话，到了地上自有办法。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "533",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "535"
+        }
+      ]
+    },
+    {
+      "id": "393",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“城里怎么可能只有一个大人物？”他笑起来，“这事对大家都好，当然要一直做下去。”"
+      ],
+      "nextNodeId": "394"
+    },
+    {
+      "id": "394",
+      "speakerName": "粗重的声音",
+      "iconName": "",
+      "contents": [
+        "哈哈，知无不言的小杂种，是吧？"
+      ],
+      "nextNodeId": "395"
+    },
+    {
+      "id": "395",
+      "speakerName": "轻柔的声音",
+      "iconName": "",
+      "contents": [
+        "哈耳摩尼亚的灿烂小星星。"
+      ],
+      "nextNodeId": "396"
+    },
+    {
+      "id": "396",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“不管怎样，在地下没必要知道太多地上的事。”"
+      ],
+      "nextNodeId": "397"
+    },
+    {
+      "id": "397",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“地上有家(b)欢迎所有人(/b)的酒馆，等你下班了再去打探也不迟。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "533",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "535"
+        }
+      ]
+    },
+    {
+      "id": "398",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“城里怎么可能只有一个大人物？”他笑起来，“这事对大家都好，当然要一直做下去。”"
+      ],
+      "nextNodeId": "399"
+    },
+    {
+      "id": "399",
+      "speakerName": "粗重的声音",
+      "iconName": "",
+      "contents": [
+        "哈哈，知无不言的小杂种，是吧？"
+      ],
+      "nextNodeId": "400"
+    },
+    {
+      "id": "400",
+      "speakerName": "轻柔的声音",
+      "iconName": "",
+      "contents": [
+        "哈耳摩尼亚的灿烂小星星。"
+      ],
+      "nextNodeId": "401"
+    },
+    {
+      "id": "401",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“不管怎样，在地下没必要知道太多地上的事。”"
+      ],
+      "nextNodeId": "402"
+    },
+    {
+      "id": "402",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“你想知道的话，到了地上自有办法。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "533",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "535"
+        }
+      ]
+    },
+    {
+      "id": "403",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "他用手捏了捏自己略长的耳朵，毫不掩饰地笑了。"
+      ],
+      "nextNodeId": "404"
+    },
+    {
+      "id": "404",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“不管怎样，在地下没必要知道太多地上的事。”"
+      ],
+      "nextNodeId": "405"
+    },
+    {
+      "id": "405",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“地上有家(b)欢迎所有人(/b)的酒馆，等你下班了再去打探也不迟。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "533",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "535"
+        }
+      ]
+    },
+    {
+      "id": "406",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "他用手捏了捏自己略长的耳朵，毫不掩饰地笑了。"
+      ],
+      "nextNodeId": "407"
+    },
+    {
+      "id": "407",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“不管怎样，在地下没必要知道太多地上的事。”"
+      ],
+      "nextNodeId": "408"
+    },
+    {
+      "id": "408",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“你想知道的话，到了地上自有办法。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "533",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "535"
+        }
+      ]
+    },
+    {
+      "id": "409",
+      "speakerName": "委托名称",
+      "iconName": "",
+      "contents": [
+        "【维护灾区】"
+      ],
+      "nextNodeId": "410"
+    },
+    {
+      "id": "410",
+      "speakerName": "委托描述",
+      "iconName": "",
+      "contents": [
+        "【在几十年前的那次大型战争之后，过量的魔力污染了哈耳摩尼亚的许多角落。居民们出行普遍需要佩戴专用防具，魔物的肢体是制作此物的最佳材料。城主为此每年会雇佣一些冒险者讨伐魔物。",
+        "目标需求：【待主策配置】",
+        "报酬展示：【待主策配置】"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "接取委托",
+          "targetNodeId": "537",
+          "callbackKey": "myd1_accept_quest"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "294"
+        }
+      ]
+    },
+    {
+      "id": "411",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "290",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "3.-“我们的城主是谁来着？”",
+          "targetNodeId": "292",
+          "callbackKey": "myd1_talk3_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "294"
+        }
+      ]
+    },
+    {
+      "id": "412",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "返回",
+          "targetNodeId": "294"
+        }
+      ]
+    },
+    {
+      "id": "413",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“理解，‘新官’上任总是需要多适应几天。”"
+      ],
+      "nextNodeId": "414"
+    },
+    {
+      "id": "414",
+      "speakerName": "旁白",
+      "iconName": "",
+      "contents": [
+        "他平静地离开了。"
+      ],
+      "nextNodeId": ""
+    },
+    {
+      "id": "415",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "返回",
+          "targetNodeId": "294"
+        }
+      ]
+    },
+    {
+      "id": "416",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“合作愉快。”"
+      ],
+      "nextNodeId": ""
+    },
+    {
+      "id": "417",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“……你让我对人类很失望。记住这件事。”"
+      ],
+      "nextNodeId": ""
+    },
+    {
+      "id": "418",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“我觉得你的耳朵也很漂亮，牙齿也很可爱。”"
+      ],
+      "nextNodeId": "419"
+    },
+    {
+      "id": "419",
+      "speakerName": "旁白",
+      "iconName": "",
+      "contents": [
+        "他说这话是认真的。"
+      ],
+      "nextNodeId": "420"
+    },
+    {
+      "id": "420",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“人类值得羡慕之处也有很多。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "538",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "540"
+        }
+      ]
+    },
+    {
+      "id": "421",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“我觉得你的耳朵也很漂亮，牙齿也很可爱。”"
+      ],
+      "nextNodeId": "422"
+    },
+    {
+      "id": "422",
+      "speakerName": "旁白",
+      "iconName": "",
+      "contents": [
+        "他说这话是认真的。"
+      ],
+      "nextNodeId": "423"
+    },
+    {
+      "id": "423",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“作为一个混血种，我有时候也会羡慕你们的纯粹。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "538",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "540"
+        }
+      ]
+    },
+    {
+      "id": "424",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“虽然我确实……但我还是想问，难道你作为人类，就认识很多人类吗？”"
+      ],
+      "nextNodeId": "425"
+    },
+    {
+      "id": "425",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“人类值得羡慕之处也有很多。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "538",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "540"
+        }
+      ]
+    },
+    {
+      "id": "426",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“虽然我确实……但我还是想问，难道你作为人类，就认识很多人类吗？”"
+      ],
+      "nextNodeId": "427"
+    },
+    {
+      "id": "427",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“作为一个混血种，我有时候也会羡慕你们的纯粹。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "538",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "540"
+        }
+      ]
+    },
+    {
+      "id": "428",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“……你们防护魔力污染的能力确实差了点。”"
+      ],
+      "nextNodeId": "429"
+    },
+    {
+      "id": "429",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“人类值得羡慕之处也有很多。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "538",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "540"
+        }
+      ]
+    },
+    {
+      "id": "430",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“……你们防护魔力污染的能力确实差了点。”"
+      ],
+      "nextNodeId": "431"
+    },
+    {
+      "id": "431",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“作为一个混血种，我有时候也会羡慕你们的纯粹。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "538",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "540"
+        }
+      ]
+    },
+    {
+      "id": "432",
+      "speakerName": "委托名称",
+      "iconName": "",
+      "contents": [
+        "【维护灾区】"
+      ],
+      "nextNodeId": "433"
+    },
+    {
+      "id": "433",
+      "speakerName": "委托描述",
+      "iconName": "",
+      "contents": [
+        "【在几十年前的那次大型战争之后，过量的魔力污染了哈耳摩尼亚的许多角落。居民们出行普遍需要佩戴专用防具，魔物的肢体是制作此物的最佳材料。城主为此每年会雇佣一些冒险者讨伐魔物。",
+        "目标需求：【待主策配置】",
+        "报酬展示：【待主策配置】"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "接取委托",
+          "targetNodeId": "541",
+          "callbackKey": "myd1_accept_quest"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "299"
+        }
+      ]
+    },
+    {
+      "id": "434",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "296",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "4.-“作为一个人类，我真羡慕你的血统。”",
+          "targetNodeId": "298",
+          "callbackKey": "myd1_talk4_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "299"
+        }
+      ]
+    },
+    {
+      "id": "435",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "返回",
+          "targetNodeId": "299"
+        }
+      ]
+    },
+    {
+      "id": "436",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“理解，‘新官’上任总是需要多适应几天。”"
+      ],
+      "nextNodeId": "437"
+    },
+    {
+      "id": "437",
+      "speakerName": "旁白",
+      "iconName": "",
+      "contents": [
+        "他平静地离开了。"
+      ],
+      "nextNodeId": ""
+    },
+    {
+      "id": "438",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "返回",
+          "targetNodeId": "299"
+        }
+      ]
+    },
+    {
+      "id": "439",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "他报了一个很长很长的名字。"
+      ],
+      "nextNodeId": "440"
+    },
+    {
+      "id": "440",
+      "speakerName": "你",
+      "iconName": "",
+      "contents": [
+        "你没有记住。人类在这方面劣势太大了！"
+      ],
+      "nextNodeId": "441"
+    },
+    {
+      "id": "441",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“不管怎样，在地下没必要知道太多地上的事。”"
+      ],
+      "nextNodeId": "442"
+    },
+    {
+      "id": "442",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“地上有家(b)欢迎所有人(/b)的酒馆，等你下班了再去打探也不迟。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "538",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "540"
+        }
+      ]
+    },
+    {
+      "id": "443",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "他报了一个很长很长的名字。"
+      ],
+      "nextNodeId": "444"
+    },
+    {
+      "id": "444",
+      "speakerName": "你",
+      "iconName": "",
+      "contents": [
+        "你没有记住。人类在这方面劣势太大了！"
+      ],
+      "nextNodeId": "445"
+    },
+    {
+      "id": "445",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“不管怎样，在地下没必要知道太多地上的事。”"
+      ],
+      "nextNodeId": "446"
+    },
+    {
+      "id": "446",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“你想知道的话，到了地上自有办法。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "538",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "540"
+        }
+      ]
+    },
+    {
+      "id": "447",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“城里怎么可能只有一个大人物？”他笑起来，“这事对大家都好，当然要一直做下去。”"
+      ],
+      "nextNodeId": "448"
+    },
+    {
+      "id": "448",
+      "speakerName": "粗重的声音",
+      "iconName": "",
+      "contents": [
+        "哈哈，知无不言的小杂种，是吧？"
+      ],
+      "nextNodeId": "449"
+    },
+    {
+      "id": "449",
+      "speakerName": "轻柔的声音",
+      "iconName": "",
+      "contents": [
+        "哈耳摩尼亚的灿烂小星星。"
+      ],
+      "nextNodeId": "450"
+    },
+    {
+      "id": "450",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“不管怎样，在地下没必要知道太多地上的事。”"
+      ],
+      "nextNodeId": "451"
+    },
+    {
+      "id": "451",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“地上有家(b)欢迎所有人(/b)的酒馆，等你下班了再去打探也不迟。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "538",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "540"
+        }
+      ]
+    },
+    {
+      "id": "452",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“城里怎么可能只有一个大人物？”他笑起来，“这事对大家都好，当然要一直做下去。”"
+      ],
+      "nextNodeId": "453"
+    },
+    {
+      "id": "453",
+      "speakerName": "粗重的声音",
+      "iconName": "",
+      "contents": [
+        "哈哈，知无不言的小杂种，是吧？"
+      ],
+      "nextNodeId": "454"
+    },
+    {
+      "id": "454",
+      "speakerName": "轻柔的声音",
+      "iconName": "",
+      "contents": [
+        "哈耳摩尼亚的灿烂小星星。"
+      ],
+      "nextNodeId": "455"
+    },
+    {
+      "id": "455",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“不管怎样，在地下没必要知道太多地上的事。”"
+      ],
+      "nextNodeId": "456"
+    },
+    {
+      "id": "456",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“你想知道的话，到了地上自有办法。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "538",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "540"
+        }
+      ]
+    },
+    {
+      "id": "457",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "他用手捏了捏自己略长的耳朵，毫不掩饰地笑了。"
+      ],
+      "nextNodeId": "458"
+    },
+    {
+      "id": "458",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“不管怎样，在地下没必要知道太多地上的事。”"
+      ],
+      "nextNodeId": "459"
+    },
+    {
+      "id": "459",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“地上有家(b)欢迎所有人(/b)的酒馆，等你下班了再去打探也不迟。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "538",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "540"
+        }
+      ]
+    },
+    {
+      "id": "460",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "他用手捏了捏自己略长的耳朵，毫不掩饰地笑了。"
+      ],
+      "nextNodeId": "461"
+    },
+    {
+      "id": "461",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“不管怎样，在地下没必要知道太多地上的事。”"
+      ],
+      "nextNodeId": "462"
+    },
+    {
+      "id": "462",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“你想知道的话，到了地上自有办法。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "538",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "540"
+        }
+      ]
+    },
+    {
+      "id": "463",
+      "speakerName": "委托名称",
+      "iconName": "",
+      "contents": [
+        "【维护灾区】"
+      ],
+      "nextNodeId": "464"
+    },
+    {
+      "id": "464",
+      "speakerName": "委托描述",
+      "iconName": "",
+      "contents": [
+        "【在几十年前的那次大型战争之后，过量的魔力污染了哈耳摩尼亚的许多角落。居民们出行普遍需要佩戴专用防具，魔物的肢体是制作此物的最佳材料。城主为此每年会雇佣一些冒险者讨伐魔物。",
+        "目标需求：【待主策配置】",
+        "报酬展示：【待主策配置】"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "接取委托",
+          "targetNodeId": "542",
+          "callbackKey": "myd1_accept_quest"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "304"
+        }
+      ]
+    },
+    {
+      "id": "465",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "300",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "3.-“我们的城主是谁来着？”",
+          "targetNodeId": "302",
+          "callbackKey": "myd1_talk3_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "304"
+        }
+      ]
+    },
+    {
+      "id": "466",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "返回",
+          "targetNodeId": "304"
+        }
+      ]
+    },
+    {
+      "id": "467",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“理解，‘新官’上任总是需要多适应几天。”"
+      ],
+      "nextNodeId": "468"
+    },
+    {
+      "id": "468",
+      "speakerName": "旁白",
+      "iconName": "",
+      "contents": [
+        "他平静地离开了。"
+      ],
+      "nextNodeId": ""
+    },
+    {
+      "id": "469",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "返回",
+          "targetNodeId": "304"
+        }
+      ]
+    },
+    {
+      "id": "470",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“合作愉快。”"
+      ],
+      "nextNodeId": ""
+    },
+    {
+      "id": "471",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“……你让我对人类很失望。记住这件事。”"
+      ],
+      "nextNodeId": ""
+    },
+    {
+      "id": "472",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“……我可(b)只为自己工作(/b)，钱还是多多益善。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "533",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "535"
+        }
+      ]
+    },
+    {
+      "id": "473",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“城主就需要我这种上赶着的榜样。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "533",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "535"
+        }
+      ]
+    },
+    {
+      "id": "474",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“……本地人。”他叹了口气，“(b)人类(/b)的视力还是太差了，我是混血啦。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "538",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "540"
+        }
+      ]
+    },
+    {
+      "id": "475",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“难道你不会自己看档案吗？”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "538",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "540"
+        }
+      ]
+    },
+    {
+      "id": "476",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [
+        "你深吸一口气，决定："
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-查看委托",
+          "targetNodeId": "543"
+        },
+        {
+          "text": "2.-选择搭话",
+          "targetNodeId": "545"
+        },
+        {
+          "text": "3.-使用道具",
+          "targetNodeId": "546"
+        },
+        {
+          "text": "4.-直接拒绝",
+          "targetNodeId": "547",
+          "callbackKey": "myd1_refuse"
+        },
+        {
+          "text": "5.-特殊委托",
+          "targetNodeId": "549"
+        }
+      ]
+    },
+    {
+      "id": "477",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“那我就出发了。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "指路",
+          "targetNodeId": "550",
+          "callbackKey": "myd1_guide_check"
+        }
+      ]
+    },
+    {
+      "id": "478",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“那我就出发了。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "指路",
+          "targetNodeId": "552",
+          "callbackKey": "myd1_guide_check"
+        }
+      ]
+    },
+    {
+      "id": "479",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“我觉得你的耳朵也很漂亮，牙齿也很可爱。”"
+      ],
+      "nextNodeId": "480"
+    },
+    {
+      "id": "480",
+      "speakerName": "旁白",
+      "iconName": "",
+      "contents": [
+        "他说这话是认真的。"
+      ],
+      "nextNodeId": "481"
+    },
+    {
+      "id": "481",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“人类值得羡慕之处也有很多。”",
+        "你深吸一口气，决定："
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-查看委托",
+          "targetNodeId": "554"
+        },
+        {
+          "text": "3.-使用道具",
+          "targetNodeId": "556"
+        },
+        {
+          "text": "4.-直接拒绝",
+          "targetNodeId": "557",
+          "callbackKey": "myd1_refuse"
+        },
+        {
+          "text": "5.-特殊委托",
+          "targetNodeId": "559"
+        }
+      ]
+    },
+    {
+      "id": "482",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“我觉得你的耳朵也很漂亮，牙齿也很可爱。”"
+      ],
+      "nextNodeId": "483"
+    },
+    {
+      "id": "483",
+      "speakerName": "旁白",
+      "iconName": "",
+      "contents": [
+        "他说这话是认真的。"
+      ],
+      "nextNodeId": "484"
+    },
+    {
+      "id": "484",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“作为一个混血种，我有时候也会羡慕你们的纯粹。”",
+        "你深吸一口气，决定："
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-查看委托",
+          "targetNodeId": "554"
+        },
+        {
+          "text": "3.-使用道具",
+          "targetNodeId": "556"
+        },
+        {
+          "text": "4.-直接拒绝",
+          "targetNodeId": "557",
+          "callbackKey": "myd1_refuse"
+        },
+        {
+          "text": "5.-特殊委托",
+          "targetNodeId": "559"
+        }
+      ]
+    },
+    {
+      "id": "485",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“虽然我确实……但我还是想问，难道你作为人类，就认识很多人类吗？”"
+      ],
+      "nextNodeId": "486"
+    },
+    {
+      "id": "486",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“人类值得羡慕之处也有很多。”",
+        "你深吸一口气，决定："
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-查看委托",
+          "targetNodeId": "554"
+        },
+        {
+          "text": "3.-使用道具",
+          "targetNodeId": "556"
+        },
+        {
+          "text": "4.-直接拒绝",
+          "targetNodeId": "557",
+          "callbackKey": "myd1_refuse"
+        },
+        {
+          "text": "5.-特殊委托",
+          "targetNodeId": "559"
+        }
+      ]
+    },
+    {
+      "id": "487",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“虽然我确实……但我还是想问，难道你作为人类，就认识很多人类吗？”"
+      ],
+      "nextNodeId": "488"
+    },
+    {
+      "id": "488",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“作为一个混血种，我有时候也会羡慕你们的纯粹。”",
+        "你深吸一口气，决定："
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-查看委托",
+          "targetNodeId": "554"
+        },
+        {
+          "text": "3.-使用道具",
+          "targetNodeId": "556"
+        },
+        {
+          "text": "4.-直接拒绝",
+          "targetNodeId": "557",
+          "callbackKey": "myd1_refuse"
+        },
+        {
+          "text": "5.-特殊委托",
+          "targetNodeId": "559"
+        }
+      ]
+    },
+    {
+      "id": "489",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“……你们防护魔力污染的能力确实差了点。”"
+      ],
+      "nextNodeId": "490"
+    },
+    {
+      "id": "490",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“人类值得羡慕之处也有很多。”",
+        "你深吸一口气，决定："
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-查看委托",
+          "targetNodeId": "554"
+        },
+        {
+          "text": "3.-使用道具",
+          "targetNodeId": "556"
+        },
+        {
+          "text": "4.-直接拒绝",
+          "targetNodeId": "557",
+          "callbackKey": "myd1_refuse"
+        },
+        {
+          "text": "5.-特殊委托",
+          "targetNodeId": "559"
+        }
+      ]
+    },
+    {
+      "id": "491",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“……你们防护魔力污染的能力确实差了点。”"
+      ],
+      "nextNodeId": "492"
+    },
+    {
+      "id": "492",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“作为一个混血种，我有时候也会羡慕你们的纯粹。”",
+        "你深吸一口气，决定："
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-查看委托",
+          "targetNodeId": "554"
+        },
+        {
+          "text": "3.-使用道具",
+          "targetNodeId": "556"
+        },
+        {
+          "text": "4.-直接拒绝",
+          "targetNodeId": "557",
+          "callbackKey": "myd1_refuse"
+        },
+        {
+          "text": "5.-特殊委托",
+          "targetNodeId": "559"
+        }
+      ]
+    },
+    {
+      "id": "493",
+      "speakerName": "委托名称",
+      "iconName": "",
+      "contents": [
+        "【维护灾区】"
+      ],
+      "nextNodeId": "494"
+    },
+    {
+      "id": "494",
+      "speakerName": "委托描述",
+      "iconName": "",
+      "contents": [
+        "【在几十年前的那次大型战争之后，过量的魔力污染了哈耳摩尼亚的许多角落。居民们出行普遍需要佩戴专用防具，魔物的肢体是制作此物的最佳材料。城主为此每年会雇佣一些冒险者讨伐魔物。",
+        "目标需求：【待主策配置】",
+        "报酬展示：【待主策配置】"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "接取委托",
+          "targetNodeId": "560",
+          "callbackKey": "myd1_accept_quest"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "359"
+        }
+      ]
+    },
+    {
+      "id": "495",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "4.-“作为一个人类，我真羡慕你的血统。”",
+          "targetNodeId": "358",
+          "callbackKey": "myd1_talk4_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "359"
+        }
+      ]
+    },
+    {
+      "id": "496",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "返回",
+          "targetNodeId": "359"
+        }
+      ]
+    },
+    {
+      "id": "497",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“理解，‘新官’上任总是需要多适应几天。”"
+      ],
+      "nextNodeId": "498"
+    },
+    {
+      "id": "498",
+      "speakerName": "旁白",
+      "iconName": "",
+      "contents": [
+        "他平静地离开了。"
+      ],
+      "nextNodeId": ""
+    },
+    {
+      "id": "499",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "返回",
+          "targetNodeId": "359"
+        }
+      ]
+    },
+    {
+      "id": "500",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "他报了一个很长很长的名字。"
+      ],
+      "nextNodeId": "501"
+    },
+    {
+      "id": "501",
+      "speakerName": "你",
+      "iconName": "",
+      "contents": [
+        "你没有记住。人类在这方面劣势太大了！"
+      ],
+      "nextNodeId": "502"
+    },
+    {
+      "id": "502",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“不管怎样，在地下没必要知道太多地上的事。”"
+      ],
+      "nextNodeId": "503"
+    },
+    {
+      "id": "503",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“地上有家(b)欢迎所有人(/b)的酒馆，等你下班了再去打探也不迟。”",
+        "你深吸一口气，决定："
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-查看委托",
+          "targetNodeId": "554"
+        },
+        {
+          "text": "3.-使用道具",
+          "targetNodeId": "556"
+        },
+        {
+          "text": "4.-直接拒绝",
+          "targetNodeId": "557",
+          "callbackKey": "myd1_refuse"
+        },
+        {
+          "text": "5.-特殊委托",
+          "targetNodeId": "559"
+        }
+      ]
+    },
+    {
+      "id": "504",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "他报了一个很长很长的名字。"
+      ],
+      "nextNodeId": "505"
+    },
+    {
+      "id": "505",
+      "speakerName": "你",
+      "iconName": "",
+      "contents": [
+        "你没有记住。人类在这方面劣势太大了！"
+      ],
+      "nextNodeId": "506"
+    },
+    {
+      "id": "506",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“不管怎样，在地下没必要知道太多地上的事。”"
+      ],
+      "nextNodeId": "507"
+    },
+    {
+      "id": "507",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“你想知道的话，到了地上自有办法。”",
+        "你深吸一口气，决定："
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-查看委托",
+          "targetNodeId": "554"
+        },
+        {
+          "text": "3.-使用道具",
+          "targetNodeId": "556"
+        },
+        {
+          "text": "4.-直接拒绝",
+          "targetNodeId": "557",
+          "callbackKey": "myd1_refuse"
+        },
+        {
+          "text": "5.-特殊委托",
+          "targetNodeId": "559"
+        }
+      ]
+    },
+    {
+      "id": "508",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“城里怎么可能只有一个大人物？”他笑起来，“这事对大家都好，当然要一直做下去。”"
+      ],
+      "nextNodeId": "509"
+    },
+    {
+      "id": "509",
+      "speakerName": "粗重的声音",
+      "iconName": "",
+      "contents": [
+        "哈哈，知无不言的小杂种，是吧？"
+      ],
+      "nextNodeId": "510"
+    },
+    {
+      "id": "510",
+      "speakerName": "轻柔的声音",
+      "iconName": "",
+      "contents": [
+        "哈耳摩尼亚的灿烂小星星。"
+      ],
+      "nextNodeId": "511"
+    },
+    {
+      "id": "511",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“不管怎样，在地下没必要知道太多地上的事。”"
+      ],
+      "nextNodeId": "512"
+    },
+    {
+      "id": "512",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“地上有家(b)欢迎所有人(/b)的酒馆，等你下班了再去打探也不迟。”",
+        "你深吸一口气，决定："
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-查看委托",
+          "targetNodeId": "554"
+        },
+        {
+          "text": "3.-使用道具",
+          "targetNodeId": "556"
+        },
+        {
+          "text": "4.-直接拒绝",
+          "targetNodeId": "557",
+          "callbackKey": "myd1_refuse"
+        },
+        {
+          "text": "5.-特殊委托",
+          "targetNodeId": "559"
+        }
+      ]
+    },
+    {
+      "id": "513",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“城里怎么可能只有一个大人物？”他笑起来，“这事对大家都好，当然要一直做下去。”"
+      ],
+      "nextNodeId": "514"
+    },
+    {
+      "id": "514",
+      "speakerName": "粗重的声音",
+      "iconName": "",
+      "contents": [
+        "哈哈，知无不言的小杂种，是吧？"
+      ],
+      "nextNodeId": "515"
+    },
+    {
+      "id": "515",
+      "speakerName": "轻柔的声音",
+      "iconName": "",
+      "contents": [
+        "哈耳摩尼亚的灿烂小星星。"
+      ],
+      "nextNodeId": "516"
+    },
+    {
+      "id": "516",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“不管怎样，在地下没必要知道太多地上的事。”"
+      ],
+      "nextNodeId": "517"
+    },
+    {
+      "id": "517",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“你想知道的话，到了地上自有办法。”",
+        "你深吸一口气，决定："
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-查看委托",
+          "targetNodeId": "554"
+        },
+        {
+          "text": "3.-使用道具",
+          "targetNodeId": "556"
+        },
+        {
+          "text": "4.-直接拒绝",
+          "targetNodeId": "557",
+          "callbackKey": "myd1_refuse"
+        },
+        {
+          "text": "5.-特殊委托",
+          "targetNodeId": "559"
+        }
+      ]
+    },
+    {
+      "id": "518",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "他用手捏了捏自己略长的耳朵，毫不掩饰地笑了。"
+      ],
+      "nextNodeId": "519"
+    },
+    {
+      "id": "519",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“不管怎样，在地下没必要知道太多地上的事。”"
+      ],
+      "nextNodeId": "520"
+    },
+    {
+      "id": "520",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“地上有家(b)欢迎所有人(/b)的酒馆，等你下班了再去打探也不迟。”",
+        "你深吸一口气，决定："
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-查看委托",
+          "targetNodeId": "554"
+        },
+        {
+          "text": "3.-使用道具",
+          "targetNodeId": "556"
+        },
+        {
+          "text": "4.-直接拒绝",
+          "targetNodeId": "557",
+          "callbackKey": "myd1_refuse"
+        },
+        {
+          "text": "5.-特殊委托",
+          "targetNodeId": "559"
+        }
+      ]
+    },
+    {
+      "id": "521",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "他用手捏了捏自己略长的耳朵，毫不掩饰地笑了。"
+      ],
+      "nextNodeId": "522"
+    },
+    {
+      "id": "522",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“不管怎样，在地下没必要知道太多地上的事。”"
+      ],
+      "nextNodeId": "523"
+    },
+    {
+      "id": "523",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“你想知道的话，到了地上自有办法。”",
+        "你深吸一口气，决定："
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-查看委托",
+          "targetNodeId": "554"
+        },
+        {
+          "text": "3.-使用道具",
+          "targetNodeId": "556"
+        },
+        {
+          "text": "4.-直接拒绝",
+          "targetNodeId": "557",
+          "callbackKey": "myd1_refuse"
+        },
+        {
+          "text": "5.-特殊委托",
+          "targetNodeId": "559"
+        }
+      ]
+    },
+    {
+      "id": "524",
+      "speakerName": "委托名称",
+      "iconName": "",
+      "contents": [
+        "【维护灾区】"
+      ],
+      "nextNodeId": "525"
+    },
+    {
+      "id": "525",
+      "speakerName": "委托描述",
+      "iconName": "",
+      "contents": [
+        "【在几十年前的那次大型战争之后，过量的魔力污染了哈耳摩尼亚的许多角落。居民们出行普遍需要佩戴专用防具，魔物的肢体是制作此物的最佳材料。城主为此每年会雇佣一些冒险者讨伐魔物。",
+        "目标需求：【待主策配置】",
+        "报酬展示：【待主策配置】"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "接取委托",
+          "targetNodeId": "561",
+          "callbackKey": "myd1_accept_quest"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "362"
+        }
+      ]
+    },
+    {
+      "id": "526",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "3.-“我们的城主是谁来着？”",
+          "targetNodeId": "360",
+          "callbackKey": "myd1_talk3_begin"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "362"
+        }
+      ]
+    },
+    {
+      "id": "527",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "返回",
+          "targetNodeId": "362"
+        }
+      ]
+    },
+    {
+      "id": "528",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“理解，‘新官’上任总是需要多适应几天。”"
+      ],
+      "nextNodeId": "529"
+    },
+    {
+      "id": "529",
+      "speakerName": "旁白",
+      "iconName": "",
+      "contents": [
+        "他平静地离开了。"
+      ],
+      "nextNodeId": ""
+    },
+    {
+      "id": "530",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "返回",
+          "targetNodeId": "362"
+        }
+      ]
+    },
+    {
+      "id": "531",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“合作愉快。”"
+      ],
+      "nextNodeId": ""
+    },
+    {
+      "id": "532",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“……你让我对人类很失望。记住这件事。”"
+      ],
+      "nextNodeId": ""
+    },
+    {
+      "id": "533",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“……本地人。”他叹了口气，“(b)人类(/b)的视力还是太差了，我是混血啦。”",
+        "你深吸一口气，决定："
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-查看委托",
+          "targetNodeId": "554"
+        },
+        {
+          "text": "3.-使用道具",
+          "targetNodeId": "556"
+        },
+        {
+          "text": "4.-直接拒绝",
+          "targetNodeId": "557",
+          "callbackKey": "myd1_refuse"
+        },
+        {
+          "text": "5.-特殊委托",
+          "targetNodeId": "559"
+        }
+      ]
+    },
+    {
+      "id": "534",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“难道你不会自己看档案吗？”",
+        "你深吸一口气，决定："
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-查看委托",
+          "targetNodeId": "554"
+        },
+        {
+          "text": "3.-使用道具",
+          "targetNodeId": "556"
+        },
+        {
+          "text": "4.-直接拒绝",
+          "targetNodeId": "557",
+          "callbackKey": "myd1_refuse"
+        },
+        {
+          "text": "5.-特殊委托",
+          "targetNodeId": "559"
+        }
+      ]
+    },
+    {
+      "id": "535",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [
+        "你深吸一口气，决定："
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-查看委托",
+          "targetNodeId": "562"
+        },
+        {
+          "text": "2.-选择搭话",
+          "targetNodeId": "564"
+        },
+        {
+          "text": "3.-使用道具",
+          "targetNodeId": "565"
+        },
+        {
+          "text": "4.-直接拒绝",
+          "targetNodeId": "566",
+          "callbackKey": "myd1_refuse"
+        },
+        {
+          "text": "5.-特殊委托",
+          "targetNodeId": "568"
+        }
+      ]
+    },
+    {
+      "id": "536",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“那我就出发了。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "指路",
+          "targetNodeId": "569",
+          "callbackKey": "myd1_guide_check"
+        }
+      ]
+    },
+    {
+      "id": "537",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“那我就出发了。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "指路",
+          "targetNodeId": "571",
+          "callbackKey": "myd1_guide_check"
+        }
+      ]
+    },
+    {
+      "id": "538",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“……我可(b)只为自己工作(/b)，钱还是多多益善。”",
+        "你深吸一口气，决定："
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-查看委托",
+          "targetNodeId": "554"
+        },
+        {
+          "text": "3.-使用道具",
+          "targetNodeId": "556"
+        },
+        {
+          "text": "4.-直接拒绝",
+          "targetNodeId": "557",
+          "callbackKey": "myd1_refuse"
+        },
+        {
+          "text": "5.-特殊委托",
+          "targetNodeId": "559"
+        }
+      ]
+    },
+    {
+      "id": "539",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“城主就需要我这种上赶着的榜样。”",
+        "你深吸一口气，决定："
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-查看委托",
+          "targetNodeId": "554"
+        },
+        {
+          "text": "3.-使用道具",
+          "targetNodeId": "556"
+        },
+        {
+          "text": "4.-直接拒绝",
+          "targetNodeId": "557",
+          "callbackKey": "myd1_refuse"
+        },
+        {
+          "text": "5.-特殊委托",
+          "targetNodeId": "559"
+        }
+      ]
+    },
+    {
+      "id": "540",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [
+        "你深吸一口气，决定："
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-查看委托",
+          "targetNodeId": "573"
+        },
+        {
+          "text": "2.-选择搭话",
+          "targetNodeId": "575"
+        },
+        {
+          "text": "3.-使用道具",
+          "targetNodeId": "576"
+        },
+        {
+          "text": "4.-直接拒绝",
+          "targetNodeId": "577",
+          "callbackKey": "myd1_refuse"
+        },
+        {
+          "text": "5.-特殊委托",
+          "targetNodeId": "579"
+        }
+      ]
+    },
+    {
+      "id": "541",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“那我就出发了。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "指路",
+          "targetNodeId": "580",
+          "callbackKey": "myd1_guide_check"
+        }
+      ]
+    },
+    {
+      "id": "542",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“那我就出发了。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "指路",
+          "targetNodeId": "582",
+          "callbackKey": "myd1_guide_check"
+        }
+      ]
+    },
+    {
+      "id": "543",
+      "speakerName": "委托名称",
+      "iconName": "",
+      "contents": [
+        "【维护灾区】"
+      ],
+      "nextNodeId": "544"
+    },
+    {
+      "id": "544",
+      "speakerName": "委托描述",
+      "iconName": "",
+      "contents": [
+        "【在几十年前的那次大型战争之后，过量的魔力污染了哈耳摩尼亚的许多角落。居民们出行普遍需要佩戴专用防具，魔物的肢体是制作此物的最佳材料。城主为此每年会雇佣一些冒险者讨伐魔物。",
+        "目标需求：【待主策配置】",
+        "报酬展示：【待主策配置】"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "接取委托",
+          "targetNodeId": "584",
+          "callbackKey": "myd1_accept_quest"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "476"
+        }
+      ]
+    },
+    {
+      "id": "545",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "472",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "474",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "476"
+        }
+      ]
+    },
+    {
+      "id": "546",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "返回",
+          "targetNodeId": "476"
+        }
+      ]
+    },
+    {
+      "id": "547",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“理解，‘新官’上任总是需要多适应几天。”"
+      ],
+      "nextNodeId": "548"
+    },
+    {
+      "id": "548",
+      "speakerName": "旁白",
+      "iconName": "",
+      "contents": [
+        "他平静地离开了。"
+      ],
+      "nextNodeId": ""
+    },
+    {
+      "id": "549",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "返回",
+          "targetNodeId": "476"
+        }
+      ]
+    },
+    {
+      "id": "550",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“合作愉快。”"
+      ],
+      "nextNodeId": ""
+    },
+    {
+      "id": "551",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“……你让我对人类很失望。记住这件事。”"
+      ],
+      "nextNodeId": ""
+    },
+    {
+      "id": "552",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“合作愉快。”"
+      ],
+      "nextNodeId": ""
+    },
+    {
+      "id": "553",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“……你让我对人类很失望。记住这件事。”"
+      ],
+      "nextNodeId": ""
+    },
+    {
+      "id": "554",
+      "speakerName": "委托名称",
+      "iconName": "",
+      "contents": [
+        "【维护灾区】"
+      ],
+      "nextNodeId": "555"
+    },
+    {
+      "id": "555",
+      "speakerName": "委托描述",
+      "iconName": "",
+      "contents": [
+        "【在几十年前的那次大型战争之后，过量的魔力污染了哈耳摩尼亚的许多角落。居民们出行普遍需要佩戴专用防具，魔物的肢体是制作此物的最佳材料。城主为此每年会雇佣一些冒险者讨伐魔物。",
+        "目标需求：【待主策配置】",
+        "报酬展示：【待主策配置】"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "接取委托",
+          "targetNodeId": "585",
+          "callbackKey": "myd1_accept_quest"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "586"
+        }
+      ]
+    },
+    {
+      "id": "556",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "返回",
+          "targetNodeId": "586"
+        }
+      ]
+    },
+    {
+      "id": "557",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“理解，‘新官’上任总是需要多适应几天。”"
+      ],
+      "nextNodeId": "558"
+    },
+    {
+      "id": "558",
+      "speakerName": "旁白",
+      "iconName": "",
+      "contents": [
+        "他平静地离开了。"
+      ],
+      "nextNodeId": ""
+    },
+    {
+      "id": "559",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "返回",
+          "targetNodeId": "586"
+        }
+      ]
+    },
+    {
+      "id": "560",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“那我就出发了。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "指路",
+          "targetNodeId": "587",
+          "callbackKey": "myd1_guide_check"
+        }
+      ]
+    },
+    {
+      "id": "561",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“那我就出发了。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "指路",
+          "targetNodeId": "589",
+          "callbackKey": "myd1_guide_check"
+        }
+      ]
+    },
+    {
+      "id": "562",
+      "speakerName": "委托名称",
+      "iconName": "",
+      "contents": [
+        "【维护灾区】"
+      ],
+      "nextNodeId": "563"
+    },
+    {
+      "id": "563",
+      "speakerName": "委托描述",
+      "iconName": "",
+      "contents": [
+        "【在几十年前的那次大型战争之后，过量的魔力污染了哈耳摩尼亚的许多角落。居民们出行普遍需要佩戴专用防具，魔物的肢体是制作此物的最佳材料。城主为此每年会雇佣一些冒险者讨伐魔物。",
+        "目标需求：【待主策配置】",
+        "报酬展示：【待主策配置】"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "接取委托",
+          "targetNodeId": "591",
+          "callbackKey": "myd1_accept_quest"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "535"
+        }
+      ]
+    },
+    {
+      "id": "564",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "2.-“我刚才就想问了，你是精灵，还是兽人？”",
+          "targetNodeId": "533",
+          "callbackKey": "myd1_talk2_check"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "535"
+        }
+      ]
+    },
+    {
+      "id": "565",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "返回",
+          "targetNodeId": "535"
+        }
+      ]
+    },
+    {
+      "id": "566",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“理解，‘新官’上任总是需要多适应几天。”"
+      ],
+      "nextNodeId": "567"
+    },
+    {
+      "id": "567",
+      "speakerName": "旁白",
+      "iconName": "",
+      "contents": [
+        "他平静地离开了。"
+      ],
+      "nextNodeId": ""
+    },
+    {
+      "id": "568",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "返回",
+          "targetNodeId": "535"
+        }
+      ]
+    },
+    {
+      "id": "569",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“合作愉快。”"
+      ],
+      "nextNodeId": ""
+    },
+    {
+      "id": "570",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“……你让我对人类很失望。记住这件事。”"
+      ],
+      "nextNodeId": ""
+    },
+    {
+      "id": "571",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“合作愉快。”"
+      ],
+      "nextNodeId": ""
+    },
+    {
+      "id": "572",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“……你让我对人类很失望。记住这件事。”"
+      ],
+      "nextNodeId": ""
+    },
+    {
+      "id": "573",
+      "speakerName": "委托名称",
+      "iconName": "",
+      "contents": [
+        "【维护灾区】"
+      ],
+      "nextNodeId": "574"
+    },
+    {
+      "id": "574",
+      "speakerName": "委托描述",
+      "iconName": "",
+      "contents": [
+        "【在几十年前的那次大型战争之后，过量的魔力污染了哈耳摩尼亚的许多角落。居民们出行普遍需要佩戴专用防具，魔物的肢体是制作此物的最佳材料。城主为此每年会雇佣一些冒险者讨伐魔物。",
+        "目标需求：【待主策配置】",
+        "报酬展示：【待主策配置】"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "接取委托",
+          "targetNodeId": "592",
+          "callbackKey": "myd1_accept_quest"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "540"
+        }
+      ]
+    },
+    {
+      "id": "575",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-“堂堂A级的冒险者也接这种简单的委托，这不是浪费人力吗？”",
+          "targetNodeId": "538",
+          "callbackKey": "myd1_talk1_check"
+        },
+        {
+          "text": "返回",
+          "targetNodeId": "540"
+        }
+      ]
+    },
+    {
+      "id": "576",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "返回",
+          "targetNodeId": "540"
+        }
+      ]
+    },
+    {
+      "id": "577",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“理解，‘新官’上任总是需要多适应几天。”"
+      ],
+      "nextNodeId": "578"
+    },
+    {
+      "id": "578",
+      "speakerName": "旁白",
+      "iconName": "",
+      "contents": [
+        "他平静地离开了。"
+      ],
+      "nextNodeId": ""
+    },
+    {
+      "id": "579",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "返回",
+          "targetNodeId": "540"
+        }
+      ]
+    },
+    {
+      "id": "580",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“合作愉快。”"
+      ],
+      "nextNodeId": ""
+    },
+    {
+      "id": "581",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“……你让我对人类很失望。记住这件事。”"
+      ],
+      "nextNodeId": ""
+    },
+    {
+      "id": "582",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“合作愉快。”"
+      ],
+      "nextNodeId": ""
+    },
+    {
+      "id": "583",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“……你让我对人类很失望。记住这件事。”"
+      ],
+      "nextNodeId": ""
+    },
+    {
+      "id": "584",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“那我就出发了。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "指路",
+          "targetNodeId": "593",
+          "callbackKey": "myd1_guide_check"
+        }
+      ]
+    },
+    {
+      "id": "585",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“那我就出发了。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "指路",
+          "targetNodeId": "595",
+          "callbackKey": "myd1_guide_check"
+        }
+      ]
+    },
+    {
+      "id": "586",
+      "speakerName": "",
+      "iconName": "",
+      "contents": [
+        "你深吸一口气，决定："
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "1.-查看委托",
+          "targetNodeId": "554"
+        },
+        {
+          "text": "3.-使用道具",
+          "targetNodeId": "556"
+        },
+        {
+          "text": "4.-直接拒绝",
+          "targetNodeId": "557",
+          "callbackKey": "myd1_refuse"
+        },
+        {
+          "text": "5.-特殊委托",
+          "targetNodeId": "559"
+        }
+      ]
+    },
+    {
+      "id": "587",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“合作愉快。”"
+      ],
+      "nextNodeId": ""
+    },
+    {
+      "id": "588",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“……你让我对人类很失望。记住这件事。”"
+      ],
+      "nextNodeId": ""
+    },
+    {
+      "id": "589",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“合作愉快。”"
+      ],
+      "nextNodeId": ""
+    },
+    {
+      "id": "590",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“……你让我对人类很失望。记住这件事。”"
+      ],
+      "nextNodeId": ""
+    },
+    {
+      "id": "591",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“那我就出发了。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "指路",
+          "targetNodeId": "597",
+          "callbackKey": "myd1_guide_check"
+        }
+      ]
+    },
+    {
+      "id": "592",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“那我就出发了。”"
+      ],
+      "nextNodeId": "",
+      "options": [
+        {
+          "text": "指路",
+          "targetNodeId": "599",
+          "callbackKey": "myd1_guide_check"
+        }
+      ]
+    },
+    {
+      "id": "593",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“合作愉快。”"
+      ],
+      "nextNodeId": ""
+    },
+    {
+      "id": "594",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“……你让我对人类很失望。记住这件事。”"
+      ],
+      "nextNodeId": ""
+    },
+    {
+      "id": "595",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“合作愉快。”"
+      ],
+      "nextNodeId": ""
+    },
+    {
+      "id": "596",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“……你让我对人类很失望。记住这件事。”"
+      ],
+      "nextNodeId": ""
+    },
+    {
+      "id": "597",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“合作愉快。”"
+      ],
+      "nextNodeId": ""
+    },
+    {
+      "id": "598",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“……你让我对人类很失望。记住这件事。”"
+      ],
+      "nextNodeId": ""
+    },
+    {
+      "id": "599",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“合作愉快。”"
+      ],
+      "nextNodeId": ""
+    },
+    {
+      "id": "600",
+      "speakerName": "Myth",
+      "iconName": "",
+      "contents": [
+        "“……你让我对人类很失望。记住这件事。”"
+      ],
+      "nextNodeId": ""
+    }
+  ]
+}

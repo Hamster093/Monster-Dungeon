@@ -20,13 +20,23 @@ public class TypewriterTextLegacy : MonoBehaviour, ITypewriterEffect
     [Tooltip("每个字符显示的间隔时间（秒），值越小打字越快")]
     public float charInterval = 0.05f;
 
+    [Header("打字机开关")]
+    [Tooltip("关闭后 Play 会直接显示整段文本，不播放逐字效果")]
+    public bool enableTypewriter = true;
+
     private Coroutine typing;
     private string fullText;
     // 用 StringBuilder 追加字符，避免反复创建新字符串
     private StringBuilder sb = new StringBuilder();
 
     public bool IsTyping { get; private set; }
-    
+
+    /// <summary>运行时开关（推荐用这个，而不是直接改字段）</summary>
+    public void SetEnableTypewriter(bool enable)
+    {
+        enableTypewriter = enable;
+    }
+
     public void Play(string content)
     {
         //防重入
@@ -34,6 +44,15 @@ public class TypewriterTextLegacy : MonoBehaviour, ITypewriterEffect
 
         fullText = content ?? string.Empty;
         text.text = "";
+
+        // 开关关闭 → 直接显示全文
+        if (!enableTypewriter)
+        {
+            text.text = fullText;
+            IsTyping = false;
+            typing = null;
+            return;
+        }
 
         typing = StartCoroutine(TypeRoutine());
     }
@@ -60,9 +79,7 @@ public class TypewriterTextLegacy : MonoBehaviour, ITypewriterEffect
     public void Skip()
     {
         if (!IsTyping) return;
-
         if (typing != null) StopCoroutine(typing);
-
         text.text = fullText;
         IsTyping = false;
         typing = null;

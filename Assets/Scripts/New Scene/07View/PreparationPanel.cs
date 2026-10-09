@@ -110,7 +110,31 @@ public class PreparationPanel : PanelBase
         }
 
         var panel = UIManager.Instance.Open<TalkPanel>();
-        panel.Dialogue.StartDialogue(key);   
+        panel.Dialogue.StartDialogue(key);     
+    }
+
+    /// <summary>
+    /// 测试按钮：直接打开指定对话（硬编码 OPEN+Myth-day1）
+    /// </summary>
+    public void OnTestDialogueClick()
+    {
+        const string testDialogueKey = "OPEN+Myth-day1";
+
+        var panel = UIManager.Instance.Open<TalkPanel>();
+        if (panel == null)
+        {
+            Debug.LogError("[PreparationPanel] 测试按钮：打开 TalkPanel 失败");
+            return;
+        }
+
+        if (panel.Dialogue == null)
+        {
+            Debug.LogError("[PreparationPanel] 测试按钮：TalkPanel.Dialogue 为空，检查 TalkPanel 初始化");
+            return;
+        }
+
+        Debug.Log($"[PreparationPanel] 测试按钮：开始对话 {testDialogueKey}");
+        panel.Dialogue.StartDialogue(testDialogueKey);
     }
 
     /// <summary>

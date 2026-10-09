@@ -33,6 +33,7 @@ public class TalkPanel : PanelBase, IPointerClickHandler
     [SerializeField] private MonoBehaviour _typewriterComponent;
     [SerializeField] private Text _speakerNameText;
     [SerializeField] private Image _iconImage;
+    [SerializeField] private TalkPanelRight _talkPanelRight;
     private CharacterArchivePanel _archivePanel;
 
     private Coroutine _idleSwitchCoroutine;
@@ -62,6 +63,12 @@ public class TalkPanel : PanelBase, IPointerClickHandler
     [Header("对话历史")]
     [SerializeField] private Transform _historyContent;      // ScrollView/Viewport/Content
     [SerializeField] private GameObject _historyItemPrefab;  // DialogueHistoryItem
+
+    [Header("点击冷却")]
+    [Tooltip("两次推进对话之间的最小间隔（秒），防止连点一次性跳过所有文本")]
+    [SerializeField] private float _clickCooldown = 0.5f;
+
+    private float _lastAdvanceTime = -999f;
 
     public GameObject leftDisplayArea;
     public GameObject RightDisplayArea;
@@ -252,7 +259,15 @@ public class TalkPanel : PanelBase, IPointerClickHandler
     {
         if (!_isInitialized) return;
 
-        if (Typewriter.IsTyping)
+        // 冷却时间内忽略点击（打字机跳过除外，跳过可以立即响应）
+        if (Typewriter != null && !Typewriter.IsTyping)
+        {
+            if (Time.unscaledTime - _lastAdvanceTime < _clickCooldown)
+                return;
+        }
+
+        // 打字中：点击 = 立即跳过当前句
+        if (Typewriter != null && Typewriter.IsTyping)
         {
             Typewriter.Skip();
             return;
@@ -265,6 +280,7 @@ public class TalkPanel : PanelBase, IPointerClickHandler
         }
 
         PlayCurrentLine();
+        _lastAdvanceTime = Time.unscaledTime;
     }
     /// <summary>
     /// 写入历史对话
@@ -352,6 +368,26 @@ public class TalkPanel : PanelBase, IPointerClickHandler
         _historyView.CheckDayChangedAndClear(today);
     }
 
+    /// <summary>
+    /// 在历史内容末尾显示选项按钮
+    /// </summary>
+    public void ShowOptions(List<DialogueOption> options, Action<DialogueOption> onSelected)
+    {
+        if (_talkPanelRight == null)
+        {
+            Debug.LogError("[TalkPanel] TalkPanelRight 未赋值");
+            return;
+        }
+        _talkPanelRight.ShowOptions(options, onSelected);
+    }
+
+    /// <summary>
+    /// 清空选项按钮
+    /// </summary>
+    public void ClearOptions()
+    {
+        _talkPanelRight?.ClearOptions();
+    }
     /// <summary>
     /// 跨天时清空右侧窗口
     /// </summary>

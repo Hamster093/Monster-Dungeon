@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 776fffec327c6244ead5ac663ef3a2e4, type: 3}
+  m_Name: Monster10
+  m_EditorClassIdentifier: 
+  Id: 110
+  DisplayName: "\u66FC\u5FB7\u62C9\u8349"
+  Color: {r: 0.4156863, g: 0.6156863, b: 0.28627452, a: 1}
+  Shape:
+  - {x: 0, y: 0}
+  - {x: 0, y: 1}
+  - {x: 1, y: 0}
+  CanRotate: 1

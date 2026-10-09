@@ -17,6 +17,11 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 9875b5ebc8f586f499982f0437fa43b6
   m_SerializeEntries:
+  - m_GUID: 3eeb2c1d8c16e4f4a996e2266fa46474
+    m_Address: OPEN+Myth-day1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b23345c498560ca4ea9859fc6b54a5bf
     m_Address: "\u795E\u79D8\u9B54\u6CD5\u5E08day1"
     m_ReadOnly: 0

@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: peizhi
+  m_EditorClassIdentifier: 
+  m_GroupName: peizhi
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 2b475cb477e085649a37eb2bd89afb31
+  m_SerializeEntries:
+  - m_GUID: cbf1c6b9e58ef56408d06342241239e2
+    m_Address: ShapeDatabase
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 60406bbc0a80ace45afd417c8f462b21, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 11dea7f6013c2a744ab6af55de73592f, type: 2}
+    - {fileID: 11400000, guid: 866b149d744d9ef4fa98a0f583f9e80e, type: 2}

@@ -6,26 +6,40 @@
 	功能：深渊祭坛面板
 *****************************************************/
 
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class AbyssalAltarPanel : PanelBase
 {
-    [Header("左侧")]
+    [Header("祭坛")]
     [SerializeField] private Button _newMonsterButton;
     [SerializeField] private Button _returnButton;
 
-    [Header("右侧")]
+    [Header("地狱")]
     [SerializeField] private Button _decomposeButton;
     [SerializeField] private Image _decomposeDropZone;    // DecomposeBG，接收拖入
+    [SerializeField] private GameObject _hellPanel;
+    [SerializeField] private Button _closeHellPanelButton; // 关闭地狱面板按钮
+    [SerializeField] private Button _closelButton; // 关闭面板按钮
 
-    public override bool IsModal => true;
+    public override bool IsModal => false;
 
     public override void OnInit()
     {
         _newMonsterButton.onClick.AddListener(OnNewMonsterClick);
         _returnButton.onClick.AddListener(OnReturnClick);
         _decomposeButton.onClick.AddListener(OnDecomposeClick);
+
+        if (_closeHellPanelButton != null)
+        {
+            _closeHellPanelButton.onClick.AddListener(OnCloseHellPanelClick);
+        }
+        if (_closelButton != null)
+        {
+            _closelButton.onClick.AddListener(OnClosePanelClick);
+        }
+
     }
 
     public override void OnDestroy()
@@ -33,12 +47,26 @@ public class AbyssalAltarPanel : PanelBase
         _newMonsterButton.onClick.RemoveListener(OnNewMonsterClick);
         _returnButton.onClick.RemoveListener(OnReturnClick);
         _decomposeButton.onClick.RemoveListener(OnDecomposeClick);
+        if (_closeHellPanelButton != null)
+            _closeHellPanelButton.onClick.RemoveListener(OnCloseHellPanelClick);
+        if (_closelButton != null)
+        {
+            _closelButton.onClick.RemoveListener(OnClosePanelClick);
+        }
+
         base.OnDestroy();
     }
+
+    
 
     public override void OnOpen(object data = null)
     {
         base.OnOpen(data);
+
+        if (_hellPanel != null)
+        {
+            _hellPanel.SetActive(false);
+        }
     }
 
     public override void OnClose()
@@ -70,6 +98,10 @@ public class AbyssalAltarPanel : PanelBase
     private void OnReturnClick()
     {
         Debug.Log("[AbyssalAltarPanel] 归还深渊");
+        if (_hellPanel != null)
+        {
+            _hellPanel.SetActive(true);
+        }
     }
 
     /// <summary>右侧：分解</summary>
@@ -77,5 +109,20 @@ public class AbyssalAltarPanel : PanelBase
     {
         Debug.Log("[AbyssalAltarPanel] 分解");
         // TODO: 检查拖入的物品 -> 执行分解 -> 发奖励 -> 刷新
+    }
+
+    /// <summary>关闭面板</summary>
+    private void OnClosePanelClick()
+    {
+        UIManager.Instance.Close(this);
+    }
+    /// <summary>关闭地狱面板</summary>
+    private void OnCloseHellPanelClick()
+    {
+        Debug.Log("[AbyssalAltarPanel] 关闭地狱面板");
+        if (_hellPanel != null)
+        {
+            _hellPanel.SetActive(false);
+        }
     }
 }

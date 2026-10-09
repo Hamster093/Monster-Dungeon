@@ -37,6 +37,12 @@ public class TalkIconView
     /// <summary>切换角色，异步加载两张图。加载完成后回调 onLoaded（由调用方决定显示 talk 还是 idle）。</summary>
     public void SetCharacter(string baseName, Action onLoaded = null)
     {
+        if (string.IsNullOrEmpty(baseName))
+        {
+            Clear();
+            return;
+        }
+
         if (_iconImage == null) return;
 
         if (string.IsNullOrEmpty(baseName))

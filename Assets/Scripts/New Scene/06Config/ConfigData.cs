@@ -115,6 +115,8 @@ public class ItemConfig
     public int stock = -1;              // -1 = 无限库存；>=0 = 初始库存
     public int restockPerPhase = 0;     // 每个经营阶段补充数量，0 = 不补充
     public int maxStack = -1;           // 背包堆叠上限，-1 = 无限
+
+    public string shapeId; //魔物形状 ID，用于背包拖拽和放置
 }
 
 // <summary>
