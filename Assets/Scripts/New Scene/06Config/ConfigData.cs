@@ -116,6 +116,7 @@ public class ItemConfig
     public int restockPerPhase = 0;     // 每个经营阶段补充数量，0 = 不补充
     public int maxStack = -1;           // 背包堆叠上限，-1 = 无限
 
+    public int materialValue;   // 拆解价值（只有魔物用得到，物品填 0）
     public string shapeId; //魔物形状 ID，用于背包拖拽和放置
 }
 

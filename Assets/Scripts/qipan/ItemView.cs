@@ -3,7 +3,7 @@
 	作者：DADI
     邮箱: 1581507659@qq.com
     日期：2026/10/9 21:51:22
-	功能：
+	功能：棋盘上的物品视图，负责显示和拖拽
 *****************************************************/
 
 using System.Collections.Generic;
@@ -31,7 +31,12 @@ public class ItemView : MonoBehaviour,
     [Header("拖拽表现")]
     public float DragAlpha = 0.85f;
 
+    private int _originalRotation;   // 拖拽开始时的旋转
+
     public bool IsGhost;// 幽灵/预览用，不参与棋盘登记
+
+    private Transform _originalParent;
+    private Vector2 _grabPixelOffset; //抓取点在物品内的像素偏移（左下角为原点）
 
     // 运行时
     private RectTransform _rect;
@@ -182,21 +187,40 @@ public class ItemView : MonoBehaviour,
 
     public void OnBeginDrag(PointerEventData e)
     {
+
         if (Board == null) return;
         if (_item == null) _item = new PlacedItem(Def) { View = this };
 
         _isDragging = true;
         _canvasGroup.alpha = DragAlpha;
-        _rect.SetAsLastSibling();
 
-        // 记录抓取偏移：鼠标下的格子 - 当前 origin
+        _originalRotation = _item.Rotation;
+
         var cam = e.pressEventCamera;
+
+        // 1. 记录抓取偏移（用棋盘坐标算）
         if (Board.ScreenToBoardCoord(e.position, cam, out var mouseCell))
             _grabCellOffset = mouseCell - _item.Origin;
         else
             _grabCellOffset = Vector2Int.zero;
 
-        // 从棋盘数据里移除，让拖拽过程不阻挡自己
+        _grabPixelOffset = new Vector2(
+            _grabCellOffset.x * (CellSize + Spacing),
+            _grabCellOffset.y * (CellSize + Spacing));
+
+        // 2. 移到 DragLayer 顶层
+        var dragLayer = Board.GetOrCreateDragLayer();
+        if (dragLayer != null)
+        {
+            _originalParent = _rect.parent;
+            _rect.SetParent(dragLayer, true);
+            _rect.SetAsLastSibling();
+        }
+
+        // 3. 立即把物品对齐到鼠标（不然会先闪一下原位）
+        FollowMouseToLayer(e);
+
+        // 4. 从棋盘数据中移除（拖拽期间不阻挡自己）
         Board.RemoveItem(_item);
     }
 
@@ -205,28 +229,21 @@ public class ItemView : MonoBehaviour,
         if (!_isDragging) return;
         var cam = e.pressEventCamera;
 
+        // 幽灵跟随鼠标（在 DragLayer 坐标系下）
+        FollowMouseToLayer(e);
+
+        // 判断棋盘落点
         if (Board.ScreenToBoardCoord(e.position, cam, out var mouseCell))
         {
             var origin = mouseCell - _grabCellOffset;
             _targetOrigin = origin;
             _targetValid = Board.CanPlace(Def, origin, _item.Rotation, _item);
 
-            _rect.localPosition = Board.GetCellLocalPosition(origin);
             HighlightTarget(origin, _targetValid);
         }
         else
         {
-            // 鼠标不在棋盘上 → 跟随鼠标
-            var parentRect = _rect.parent as RectTransform;
-            if (parentRect != null &&
-                RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                    parentRect, e.position, cam, out var lp))
-            {
-                _rect.localPosition = lp;
-            }
-
             _targetValid = false;
-            ClearHighlight();
         }
     }
 
@@ -237,10 +254,29 @@ public class ItemView : MonoBehaviour,
         _canvasGroup.alpha = 1f;
         ClearHighlight();
 
+        // 回到原父节点（ItemsRoot）
+        if (_originalParent != null)
+        {
+            _rect.SetParent(_originalParent, false);
+            _originalParent = null;
+        }
+
+        // 先判断是否落在分解窗口上
+        var decompose = UIManager.Instance.Get<DecomposePanel>();
+       
+        if (decompose != null && decompose.IsOpen
+            && decompose.IsPointerOverSlot(e.position, e.pressEventCamera))
+        {
+            decompose.Accept(_item);
+            gameObject.SetActive(false);   // 本体隐藏，等拆完/取消再处理
+            return;
+        }
+
+        // 处理落点
         if (_targetValid)
             Board.PlaceItem(_item, _targetOrigin, _item.Rotation);
         else
-            Board.PlaceItem(_item, _item.Origin, _item.Rotation); // 回原位
+            Board.PlaceItem(_item, _item.Origin, _originalRotation);
     }
 
     // ---------------- R 键旋转 ----------------
@@ -254,10 +290,8 @@ public class ItemView : MonoBehaviour,
         {
             _item.Rotation = (_item.Rotation + 90) % 360;
             Rebuild();
-
-            // 旋转后重新以"当前鼠标"为锚点计算抓取偏移
-            // 简单起见，旋转后把抓取偏移归零（左下角对齐鼠标）
             _grabCellOffset = Vector2Int.zero;
+            _grabPixelOffset = Vector2.zero;
         }
     }
 
@@ -324,6 +358,19 @@ public class ItemView : MonoBehaviour,
             _canvasGroup = GetComponent<CanvasGroup>();
             if (_canvasGroup == null) _canvasGroup = gameObject.AddComponent<CanvasGroup>();
             _canvasGroup.blocksRaycasts = true;
+        }
+    }
+
+    /// <summary>让物品跟着鼠标，且抓取点保持在鼠标下</summary>
+    private void FollowMouseToLayer(PointerEventData e)
+    {
+        var parentRect = _rect.parent as RectTransform;
+        if (parentRect == null) return;
+
+        if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                parentRect, e.position, e.pressEventCamera, out var lp))
+        {
+            _rect.localPosition = lp - _grabPixelOffset;
         }
     }
 

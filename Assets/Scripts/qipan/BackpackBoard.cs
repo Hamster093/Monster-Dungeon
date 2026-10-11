@@ -3,7 +3,7 @@
 	作者：DADI
     邮箱: 1581507659@qq.com
     日期：2026/10/9 21:51:02
-	功能：
+	功能：棋盘，管理格子和物品的占用关系
 *****************************************************/
 
 using System.Collections.Generic;
@@ -11,6 +11,9 @@ using UnityEngine;
 
 public class BackpackBoard : MonoBehaviour
 {
+    [Header("拖拽层（留空则运行时自动创建 DragLayer_Runtime）")]
+    public RectTransform DragLayer;
+
     [Header("引用")]
     [Tooltip("挂着 GridLayoutGroup 的节点，里面有 49 个 BackpackCell")]
     public RectTransform GridRoot;
@@ -30,6 +33,7 @@ public class BackpackBoard : MonoBehaviour
     private void Awake()
     {
         BuildCellMap();
+        GetOrCreateDragLayer();
     }
 
     private void BuildCellMap()
@@ -154,5 +158,27 @@ public class BackpackBoard : MonoBehaviour
         var view = Instantiate(prefab, ItemsRoot);
         view.Init(def, this, rotation, origin);
         return view;
+    }
+
+    public RectTransform GetOrCreateDragLayer()
+    {
+        if (DragLayer != null) return DragLayer;
+
+        var canvas = GetComponentInParent<Canvas>();
+        if (canvas == null) return null;
+
+        var t = canvas.transform.Find("DragLayer_Runtime");
+        if (t != null) { DragLayer = t as RectTransform; return DragLayer; }
+
+        var go = new GameObject("DragLayer_Runtime", typeof(RectTransform));
+        var rect = (RectTransform)go.transform;
+        rect.SetParent(canvas.transform, false);
+        rect.anchorMin = Vector2.zero;
+        rect.anchorMax = Vector2.one;
+        rect.offsetMin = Vector2.zero;
+        rect.offsetMax = Vector2.zero;
+        rect.SetAsLastSibling();
+        DragLayer = rect;
+        return DragLayer;
     }
 }

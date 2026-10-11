@@ -7,7 +7,7 @@
     "currency": "Cash",
     "maxPerDay": -1,
     "description": "很灵魂的透镜",
-    "iconAddress":  "Icons/WWM",
+    "iconAddress": "Icons/WWM",
     "stock": -1,
     "restockPerPhase": 0,
     "maxStack": -1
@@ -20,7 +20,7 @@
     "currency": "Cash",
     "maxPerDay": -1,
     "description": "可能会幸运吧",
-    "iconAddress":  "Icons/WWM",
+    "iconAddress": "Icons/WWM",
     "stock": -1,
     "restockPerPhase": 0,
     "maxStack": -1
@@ -33,7 +33,7 @@
     "currency": "Cash",
     "maxPerDay": -1,
     "description": "目前0差评",
-    "iconAddress":  "Icons/WWM",
+    "iconAddress": "Icons/WWM",
     "stock": -1,
     "restockPerPhase": 0,
     "maxStack": -1
@@ -59,7 +59,7 @@
     "currency": "Cash",
     "maxPerDay": -1,
     "description": "买不了吃亏，买不了上当",
-    "iconAddress":  "Icons/WWM",
+    "iconAddress": "Icons/WWM",
     "stock": -1,
     "restockPerPhase": 0,
     "maxStack": -1
@@ -93,7 +93,7 @@
   {
     "id": 101,
     "name": "普通史莱姆",
-    "type": "Investigation",
+    "type": "Monster",
     "price": 300,
     "currency": "Cash",
     "maxPerDay": -1,
@@ -102,12 +102,13 @@
     "stock": -1,
     "restockPerPhase": 0,
     "maxStack": -1,
-    "shapeId": "101"
+    "shapeId": "101",
+    "materialValue": 100
   },
   {
     "id": 102,
     "name": "有点强壮的史莱姆",
-    "type": "Investigation",
+    "type": "Monster",
     "price": 400,
     "currency": "Cash",
     "maxPerDay": -1,
@@ -116,12 +117,13 @@
     "stock": -1,
     "restockPerPhase": 0,
     "maxStack": -1,
-    "shapeId": "102"
+    "shapeId": "102",
+    "materialValue": 200
   },
   {
     "id": 103,
     "name": "巨大史莱姆",
-    "type": "Investigation",
+    "type": "Monster",
     "price": 500,
     "currency": "Cash",
     "maxPerDay": -1,
@@ -130,12 +132,13 @@
     "stock": -1,
     "restockPerPhase": 0,
     "maxStack": -1,
-    "shapeId": "103"
+    "shapeId": "103",
+    "materialValue": 300
   },
   {
     "id": 104,
     "name": "哥布林",
-    "type": "Investigation",
+    "type": "Monster",
     "price": 300,
     "currency": "Cash",
     "maxPerDay": -1,
@@ -144,12 +147,13 @@
     "stock": -1,
     "restockPerPhase": 0,
     "maxStack": -1,
-    "shapeId": "104"
+    "shapeId": "104",
+    "materialValue": 100
   },
   {
     "id": 105,
     "name": "健壮哥布林",
-    "type": "Investigation",
+    "type": "Monster",
     "price": 400,
     "currency": "Cash",
     "maxPerDay": -1,
@@ -158,12 +162,13 @@
     "stock": -1,
     "restockPerPhase": 0,
     "maxStack": -1,
-    "shapeId": "105"
+    "shapeId": "105",
+    "materialValue": 200
   },
   {
     "id": 106,
     "name": "哥布林首领",
-    "type": "Investigation",
+    "type": "Monster",
     "price": 500,
     "currency": "Cash",
     "maxPerDay": -1,
@@ -172,12 +177,13 @@
     "stock": -1,
     "restockPerPhase": 0,
     "maxStack": -1,
-    "shapeId": "106"
+    "shapeId": "106",
+    "materialValue": 300
   },
   {
     "id": 107,
     "name": "地狱犬",
-    "type": "Investigation",
+    "type": "Monster",
     "price": 300,
     "currency": "Cash",
     "maxPerDay": -1,
@@ -186,12 +192,13 @@
     "stock": -1,
     "restockPerPhase": 0,
     "maxStack": -1,
-    "shapeId": "107"
+    "shapeId": "107",
+    "materialValue": 100
   },
   {
     "id": 108,
     "name": "三头地狱犬",
-    "type": "Investigation",
+    "type": "Monster",
     "price": 400,
     "currency": "Cash",
     "maxPerDay": -1,
@@ -200,12 +207,13 @@
     "stock": -1,
     "restockPerPhase": 0,
     "maxStack": -1,
-    "shapeId": "108"
+    "shapeId": "108",
+    "materialValue": 200
   },
   {
     "id": 109,
     "name": "灰烬地狱犬",
-    "type": "Investigation",
+    "type": "Monster",
     "price": 500,
     "currency": "Cash",
     "maxPerDay": -1,
@@ -214,12 +222,13 @@
     "stock": -1,
     "restockPerPhase": 0,
     "maxStack": -1,
-    "shapeId": "109"
+    "shapeId": "109",
+    "materialValue": 300
   },
   {
     "id": 110,
     "name": "曼德拉草",
-    "type": "Investigation",
+    "type": "Monster",
     "price": 300,
     "currency": "Cash",
     "maxPerDay": -1,
@@ -228,12 +237,13 @@
     "stock": -1,
     "restockPerPhase": 0,
     "maxStack": -1,
-    "shapeId": "110"
+    "shapeId": "110",
+    "materialValue": 100
   },
   {
     "id": 111,
     "name": "树精",
-    "type": "Investigation",
+    "type": "Monster",
     "price": 400,
     "currency": "Cash",
     "maxPerDay": -1,
@@ -242,12 +252,13 @@
     "stock": -1,
     "restockPerPhase": 0,
     "maxStack": -1,
-    "shapeId": "111"
+    "shapeId": "111",
+    "materialValue": 200
   },
   {
     "id": 112,
     "name": "食人花",
-    "type": "Investigation",
+    "type": "Monster",
     "price": 500,
     "currency": "Cash",
     "maxPerDay": -1,
@@ -256,12 +267,13 @@
     "stock": -1,
     "restockPerPhase": 0,
     "maxStack": -1,
-    "shapeId": "112"
+    "shapeId": "112",
+    "materialValue": 300
   },
   {
     "id": 113,
     "name": "石巨人",
-    "type": "Investigation",
+    "type": "Monster",
     "price": 300,
     "currency": "Cash",
     "maxPerDay": -1,
@@ -270,12 +282,13 @@
     "stock": -1,
     "restockPerPhase": 0,
     "maxStack": -1,
-    "shapeId": "113"
+    "shapeId": "113",
+    "materialValue": 100
   },
   {
     "id": 114,
     "name": "水晶魔像",
-    "type": "Investigation",
+    "type": "Monster",
     "price": 400,
     "currency": "Cash",
     "maxPerDay": -1,
@@ -284,12 +297,13 @@
     "stock": -1,
     "restockPerPhase": 0,
     "maxStack": -1,
-    "shapeId": "114"
+    "shapeId": "114",
+    "materialValue": 200
   },
   {
     "id": 115,
     "name": "璀璨魔像",
-    "type": "Investigation",
+    "type": "Monster",
     "price": 500,
     "currency": "Cash",
     "maxPerDay": -1,
@@ -298,6 +312,37 @@
     "stock": -1,
     "restockPerPhase": 0,
     "maxStack": -1,
-    "shapeId": "115"
+    "shapeId": "115",
+    "materialValue": 300
+  },
+  {
+    "id": 116,
+    "name": "双足飞龙",
+    "type": "Monster",
+    "price": 500,
+    "currency": "Cash",
+    "maxPerDay": -1,
+    "description": "这个物品是双足飞龙",
+    "iconAddress": "Icons/WWM",
+    "stock": -1,
+    "restockPerPhase": 0,
+    "maxStack": -1,
+    "shapeId": "116",
+    "materialValue": 300
+  },
+  {
+    "id": 117,
+    "name": "暗黑龙",
+    "type": "Monster",
+    "price": 600,
+    "currency": "Cash",
+    "maxPerDay": -1,
+    "description": "这个物品是暗黑龙",
+    "iconAddress": "Icons/WWM",
+    "stock": -1,
+    "restockPerPhase": 0,
+    "maxStack": -1,
+    "shapeId": "117",
+    "materialValue": 400
   }
 ]

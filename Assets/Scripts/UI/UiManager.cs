@@ -25,6 +25,11 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager Instance { get; private set; }
 
+    public Transform PanelRoot => _panelRoot;
+    public Canvas RootCanvas => _panelRoot != null
+        ? _panelRoot.GetComponentInParent<Canvas>()?.rootCanvas
+        : null;
+
     [Serializable]
     public class PanelConfig
     {

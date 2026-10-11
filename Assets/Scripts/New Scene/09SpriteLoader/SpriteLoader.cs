@@ -73,4 +73,6 @@ public static class SpriteLoader
         _handles.Clear();
         _tasks.Clear();
     }
+
+
 }

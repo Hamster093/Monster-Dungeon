@@ -39,6 +39,7 @@ public enum ItemType
     CheckManipulate,    // 检定操纵
     Trap,               // 陷阱
     ExtraActionPoint,   // 额外行动点
+    Monster             // 魔物
 }
 /// <summary>
 /// 货币类型枚举。用于区分不同种类的消耗资源。

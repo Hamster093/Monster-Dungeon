@@ -29,6 +29,7 @@ public class ItemSlot : MonoBehaviour ,IPointerClickHandler, IPointerEnterHandle
     private Func<int, ItemStack> _dataProvider;
     private ItemStack _stack;
     private Sprite _emptySprite;
+    private Color _normalColor = Color.white;
 
     // 图标加载状态
     private string _iconAddress;
@@ -198,4 +199,15 @@ public class ItemSlot : MonoBehaviour ,IPointerClickHandler, IPointerEnterHandle
         _subText.text = text;
     }
 
+    public void SetGray(bool gray)
+    {
+        if (_itemImage == null) return;
+        // 记录一下原色（只记一次）
+        if (_normalColor == Color.white && !gray)
+            _normalColor = _itemImage.color;
+
+        _itemImage.color = gray
+            ? new Color(0.5f, 0.5f, 0.5f, 1f)   // 灰色
+            : Color.white;
+    }
 }
