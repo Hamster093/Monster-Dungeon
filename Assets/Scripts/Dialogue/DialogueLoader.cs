@@ -29,7 +29,10 @@ public static class DialogueLoader
 
         try
         {
-            DialogueData data = JsonUtility.FromJson<DialogueData>(handle.Result.text);
+            string raw = handle.Result.text;
+            string expanded = ButtonExpander.Expand(raw);
+
+            DialogueData data = JsonUtility.FromJson<DialogueData>(expanded);
             Addressables.Release(handle);
             return data;
         }

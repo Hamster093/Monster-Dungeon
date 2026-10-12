@@ -100,6 +100,7 @@ public class BackpackBoard : MonoBehaviour
 
         if (item.View != null)
         {
+            RegisterItem(item.View);
             item.View.SetRotationSilently(rotation);
             item.View.ApplyPosition(GetCellLocalPosition(origin));
         }
@@ -112,6 +113,8 @@ public class BackpackBoard : MonoBehaviour
             var cell = GetCell(c);
             if (cell != null && cell.Occupant == item) cell.Occupant = null;
         }
+
+        if (item.View != null) UnregisterItem(item.View);   // ★ 同步移除
     }
 
     /// <summary>格子 (x,y) 左下角在 ItemsRoot 局部坐标中的位置</summary>
@@ -146,8 +149,18 @@ public class BackpackBoard : MonoBehaviour
         return false;
     }
 
-    public void RegisterItem(ItemView v) { if (!_items.Contains(v)) _items.Add(v); }
-    public void UnregisterItem(ItemView v) { _items.Remove(v); }
+    public void RegisterItem(ItemView v)
+    {
+        if (v == null) return;
+        if (_items.Contains(v)) return;   // 幂等
+        _items.Add(v);
+    }
+
+    public void UnregisterItem(ItemView v)
+    {
+        if (v == null) return;
+        _items.Remove(v);
+    }
 
     /// <summary>在棋盘上创建一个 ItemView（用于商店购买后落位）</summary>
     public ItemView CreateItemOnBoard(ItemShapeDefinition def, Vector2Int origin,
@@ -180,5 +193,9 @@ public class BackpackBoard : MonoBehaviour
         rect.SetAsLastSibling();
         DragLayer = rect;
         return DragLayer;
+    }
+    public void CleanupDestroyedItems()
+    {
+        _items.RemoveAll(v => v == null);
     }
 }

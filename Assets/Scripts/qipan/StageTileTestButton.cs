@@ -26,7 +26,7 @@ public class StageTileTestButton : MonoBehaviour
     {
         if (_board == null || _config == null) { Debug.LogError("[StageTest] 引用未配"); return; }
 
-        StageTileApplier.Apply(_board, _config, _currentStage);
+        StageTileApplier.ApplyWithEviction(_board, _config, _currentStage);
         Debug.Log($"[StageTest] 切换到阶段 {_currentStage}");
 
         _currentStage = _currentStage % 5 + 1;   // 1→2→3→4→5→1

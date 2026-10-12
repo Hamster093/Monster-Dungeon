@@ -20,6 +20,7 @@ public class DialogueOption
     public string targetNodeId; // 跳转到的目标节点ID
     [Tooltip("回调标识，运行时由业务注册对应逻辑")]
     public string callbackKey;   // 可为空
+    public string tag;
 }
 
 /// <summary>

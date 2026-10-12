@@ -82,7 +82,7 @@ public class VisitSystem : IDisposable
     {
         if (CurrentVisitorId < 0) return null;
         if (!_config.Adventurers.TryGetValue(CurrentVisitorId, out var adv)) return null;
-        return $"{adv.name}day{CurrentDay}";
+        return $"{adv.name}{"_"}day{CurrentDay}";
     }
 
     // ---------------- 推进 ----------------

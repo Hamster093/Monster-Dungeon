@@ -136,11 +136,14 @@ public class ShopSlotDragger : MonoBehaviour,
     {
         var go = new GameObject("Ghost_" + def.Id,
             typeof(RectTransform), typeof(CanvasGroup));
+
+        go.SetActive(false);   // ★ 先关，防止 AddComponent 立刻触发 OnEnable
+
         var rect = (RectTransform)go.transform;
         rect.SetParent(DragLayer != null ? DragLayer : transform.root, false);
 
         var view = go.AddComponent<ItemView>();
-        view.IsGhost = true;
+        view.IsGhost = true;              // ★ 现在安全
         view.Def = def;
         view.CellSize = CellSize;
         view.Spacing = Spacing;
@@ -149,6 +152,8 @@ public class ShopSlotDragger : MonoBehaviour,
         var cg = go.GetComponent<CanvasGroup>();
         cg.alpha = 0.75f;
         cg.blocksRaycasts = false;
+
+        go.SetActive(true);    // ★ 激活，OnEnable 此时看到 IsGhost=true，跳过注册
 
         return view;
     }

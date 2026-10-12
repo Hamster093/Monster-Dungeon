@@ -33,7 +33,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 20c935f1f45b21043ac2a04ee059b0ab
-    m_Address: MysteriousMage_idle
+    m_Address: Ferdia_idle
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -48,7 +48,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4f9d6a027344fc04083ca51a8325f78d
-    m_Address: YoungAdventurer_idle
+    m_Address: Myth_idle
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -73,7 +73,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6fcff1dd0921d8f409df13c9fb595f04
-    m_Address: YoungAdventurer_talk
+    m_Address: Myth_talk
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -113,7 +113,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f6501bc6b0de8e34c877aa990d4d563b
-    m_Address: MysteriousMage_talk
+    m_Address: Ferdia_talk
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

@@ -1,9 +1,9 @@
 ﻿/****************************************************
     文件：DialogueCallbackBootstrap.cs
-	作者：DADI
+    作者：DADI
     邮箱: 1581507659@qq.com
     日期：2026/10/2 19:00:30
-	功能：对话回调注册器（挂在场景中，Awake 时注册回调，OnDestroy 时注销回调）
+    功能：对话回调注册器（挂在场景中，Awake 时注册回调，OnDestroy 时注销回调）
 *****************************************************/
 
 using System.Collections.Generic;
@@ -11,32 +11,147 @@ using UnityEngine;
 
 public class DialogueCallbackBootstrap : MonoBehaviour
 {
+    // 功能名 -> 处理函数
+    private static readonly Dictionary<string, System.Func<DialogueOption, DialogueOptionResult>> Handlers = new()
+    {
+        { "add_correct_count", OnAddCorrectCount },
+        { "change_attribute",  OnChangeAttribute  },
+        { "roll_d20_check",    OnRollD20Check     },
+        { "register_info",     OnRegisterInfo     },
+        { "enter_talk",        OnEnterTalk        },
+        { "accept_quest",      OnAcceptQuest      },
+        { "refuse_guest",      OnRefuseGuest      },
+        { "guide_check",       OnGuideCheck       },
+    };
+
+    // 每个 callbackKey 属于哪个功能
+    private static readonly Dictionary<string, string> KeyToFeature = new()
+    {
+        { "myd1_intro_mask1",           "add_correct_count" },
+        { "myd1_intro_archive_correct", "add_correct_count" },
+        { "myd1_talk3_answer3_check",   "add_correct_count" },
+        { "myd1_talk4_answer3_check",   "add_correct_count" },
+
+        { "myd1_final_firmness_up",     "change_attribute" },
+        { "myd1_final_tolerance_up",    "change_attribute" },
+
+        { "myd1_final_check",           "roll_d20_check" },
+        { "myd1_talk1_check",           "roll_d20_check" },
+        { "myd1_talk2_check",           "roll_d20_check" },
+        { "myd1_talk3_answer1_check",   "roll_d20_check" },
+        { "myd1_talk3_answer2_check",   "roll_d20_check" },
+        { "myd1_talk4_answer1_check",   "roll_d20_check" },
+        { "myd1_talk4_answer2_check",   "roll_d20_check" },
+
+        { "myd1_talk3_begin",           "enter_talk" },
+        { "myd1_talk4_begin",           "enter_talk" },
+
+        { "myd1_accept_quest",          "accept_quest" },
+        { "myd1_refuse",                "refuse_guest" },
+        { "myd1_guide_check",           "guide_check"  },
+    };
+
     void Awake()
     {
-        DialogueCallbackRegistry.Register("check_reduce_attribute", OnCheckReduce);
+        foreach (var kv in KeyToFeature)
+        {
+            string key = kv.Key;                    // JSON 里的原名，比如 myd1_refuse
+            string feature = kv.Value;              // 功能名，比如 refuse_guest
+            if (Handlers.TryGetValue(feature, out var fn))
+                DialogueCallbackRegistry.Register(key, fn);
+        }
     }
+
     void OnDestroy()
     {
-        DialogueCallbackRegistry.Unregister("check_reduce_attribute");
+        foreach (var kv in KeyToFeature)
+            DialogueCallbackRegistry.Unregister(kv.Key);
     }
 
-    private DialogueOptionResult OnCheckReduce(DialogueOption option)
+    // ─────────────── 累计正确回答次数 ───────────────
+    // 命中 key：myd1_intro_mask1 / myd1_intro_archive_correct
+    //           myd1_talk3_answer3_check / myd1_talk4_answer3_check
+    private static DialogueOptionResult OnAddCorrectCount(DialogueOption option)
     {
-        bool success = UnityEngine.Random.value < 0.5f;
-        var result = new DialogueOptionResult();
-
-        result.extraLines = new List<DialogueLine>
+        switch (option.callbackKey)
         {
-            new DialogueLine
-            {
-                speakerName = "系统",
-                iconName    = null, // 或 null，会走 SetIcon 清空
-                content     = success
-                    ? "【检定成功】刘明的一个主要属性被削减了。"
-                    : "【检定失败】削减的是一个无关属性……"
-            }
-        };
+            case "myd1_intro_mask1":           /* TODO */ break;
+            case "myd1_intro_archive_correct": /* TODO */ break;
+            case "myd1_talk3_answer3_check":   /* TODO */ break;
+            case "myd1_talk4_answer3_check":   /* TODO */ break;
+        }
+        return new DialogueOptionResult();
+    }
 
-        return result;
+    // ─────────────── 改变属性（上升/下降，不掷骰） ───────────────
+    // 命中 key：myd1_final_firmness_up / myd1_final_tolerance_up
+    private static DialogueOptionResult OnChangeAttribute(DialogueOption option)
+    {
+        switch (option.callbackKey)
+        {
+            case "myd1_final_firmness_up":  /* TODO：坚定上升 */ break;
+            case "myd1_final_tolerance_up": /* TODO：宽容上升 */ break;
+        }
+        return new DialogueOptionResult();
+    }
+
+    // ─────────────── 执行 D20，并按结果分支 ───────────────
+    // 命中 key：myd1_final_check
+    //           myd1_talk1_check / myd1_talk2_check
+    //           myd1_talk3_answer1_check / myd1_talk3_answer2_check
+    //           myd1_talk4_answer1_check / myd1_talk4_answer2_check
+    private static DialogueOptionResult OnRollD20Check(DialogueOption option)
+    {
+        switch (option.callbackKey)
+        {
+            case "myd1_final_check":         /* TODO */ break;
+            case "myd1_talk1_check":         /* TODO */ break;
+            case "myd1_talk2_check":         /* TODO */ break;
+            case "myd1_talk3_answer1_check": /* TODO */ break;
+            case "myd1_talk3_answer2_check": /* TODO */ break;
+            case "myd1_talk4_answer1_check": /* TODO */ break;
+            case "myd1_talk4_answer2_check": /* TODO */ break;
+        }
+        return new DialogueOptionResult();
+    }
+
+    // ─────────────── 登记有效信息 ───────────────
+    private static DialogueOptionResult OnRegisterInfo(DialogueOption option)
+    {
+        // TODO
+        return new DialogueOptionResult();
+    }
+
+    // ─────────────── 进入搭话、扣行动点、记录话题已选 ───────────────
+    // 命中 key：myd1_talk3_begin / myd1_talk4_begin
+    private static DialogueOptionResult OnEnterTalk(DialogueOption option)
+    {
+        switch (option.callbackKey)
+        {
+            case "myd1_talk3_begin": /* TODO */ break;
+            case "myd1_talk4_begin": /* TODO */ break;
+        }
+        return new DialogueOptionResult();
+    }
+
+    // ─────────────── 接取委托 ───────────────
+    private static DialogueOptionResult OnAcceptQuest(DialogueOption option)
+    {
+        // TODO 打开委托面板，显示委托信息
+        return new DialogueOptionResult();
+    }
+
+    // ─────────────── 拒绝接待 ───────────────
+    private static DialogueOptionResult OnRefuseGuest(DialogueOption option)
+    {
+        // TODO 对话结束 调用 VisitSystem.OnVisitorFinished() 推进到下一位访客
+        return new DialogueOptionResult();
+    }
+
+    // ─────────────── 根据指路结果分流 ───────────────
+    private static DialogueOptionResult OnGuideCheck(DialogueOption option)
+    {
+        // TODO 根据玩家的指路结果，决定跳转到哪个节点
+        return new DialogueOptionResult();
     }
 }

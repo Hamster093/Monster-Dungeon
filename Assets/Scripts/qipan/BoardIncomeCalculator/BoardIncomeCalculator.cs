@@ -16,10 +16,9 @@ public static class BoardIncomeCalculator
     private const int IncomeDiffType = 3;
     // 地块收益固定 6（放在 TileAffinityConfig 里）
 
-    public static int ComputeTotal(BackpackBoard board,
-                                   TileAffinityConfig tileConfig,
-                                   MonsterIncomeConfig incomeConfig)
+    public static int ComputeTotal(BackpackBoard board,TileAffinityConfig tileConfig,MonsterIncomeConfig incomeConfig)
     {
+        board.CleanupDestroyedItems();
         int total = 0;
         foreach (var view in board.Items)
             total += ComputeSingle(view, board, tileConfig, incomeConfig);
@@ -30,7 +29,7 @@ public static class BoardIncomeCalculator
                                      TileAffinityConfig tileConfig,
                                      MonsterIncomeConfig incomeConfig)
     {
-        if (view?.Item?.Def == null) return 0;
+        if (view == null || view.Item == null || view.Item.Def == null) return 0;
         if (!int.TryParse(view.Item.Def.Id, out int monsterId)) return 0;
 
         // ① 基础收益

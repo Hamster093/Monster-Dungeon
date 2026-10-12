@@ -64,7 +64,8 @@ public class ItemView : MonoBehaviour,
         if (_canvasGroup == null) _canvasGroup = gameObject.AddComponent<CanvasGroup>();
         _canvasGroup.blocksRaycasts = true;
 
-        if (Board == null) Board = FindObjectOfType<BackpackBoard>();
+        if (!IsGhost && Board == null)
+            Board = FindObjectOfType<BackpackBoard>();
     }
 
     private void Start()
@@ -272,6 +273,34 @@ public class ItemView : MonoBehaviour,
             return;
         }
 
+        //  拖回魔物仓库
+        var shop = UIManager.Instance.Get<ShopPanel>();
+        if (shop != null && shop.IsOpen && shop.IsStorageMode
+            && shop.IsPointerOverAnySlot(e.position, e.pressEventCamera, out _))
+        {
+            if (shop.IsStorageFull)
+            {
+                Debug.LogWarning("[ItemView] 仓库已满，无法退回");
+                if (_targetValid)
+                    Board.PlaceItem(_item, _targetOrigin, _item.Rotation);
+                else
+                    Board.PlaceItem(_item, _item.Origin, _originalRotation);
+                return;
+            }
+
+            if (int.TryParse(_item.Def.Id, out int id))
+            {
+                MonsterStorageModel.Instance.Add(id);   // ★ 内部生成新实例
+                Board.RemoveItem(_item);
+                shop.SwitchToStorage();
+                Destroy(gameObject);
+            }
+            else
+            {
+                Debug.LogWarning($"[ItemView] Def.Id 非数字，无法退回：{_item.Def.Id}");
+            }
+            return;
+        }
         // 处理落点
         if (_targetValid)
             Board.PlaceItem(_item, _targetOrigin, _item.Rotation);
