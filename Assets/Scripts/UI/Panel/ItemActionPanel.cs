@@ -13,6 +13,7 @@ public class ItemActionPanel : PanelBase
     [SerializeField] private Button _examineButton;
     [SerializeField] private Button _dropButton;
     [SerializeField] private Vector2 _buttonOffset;
+    [SerializeField] private Vector2 _fixedPosition = new Vector2(624f, 745f);
 
     // 模态，点遮罩可关闭
     public override bool IsModal => true;
@@ -35,7 +36,7 @@ public class ItemActionPanel : PanelBase
         if (data is ItemActionData d)
             _currentData = d;
 
-        FollowMouse(); // 打开时出现在鼠标位置
+        ApplyFixedPosition();
     }
     /// <summary>
     /// 刷新
@@ -46,7 +47,7 @@ public class ItemActionPanel : PanelBase
         if (data is ItemActionData d)
             _currentData = d;
 
-        FollowMouse();
+        ApplyFixedPosition();
     }
 
     public override void OnClose()
@@ -82,23 +83,22 @@ public class ItemActionPanel : PanelBase
 
     #region 定位
 
-    private void FollowMouse()
+    private void ApplyFixedPosition()
     {
         var canvas = GetComponentInParent<Canvas>();
-        Vector2 mousePos = Input.mousePosition;
 
         if (canvas != null && canvas.renderMode != RenderMode.ScreenSpaceOverlay)
         {
             RectTransformUtility.ScreenPointToWorldPointInRectangle(
                 canvas.transform as RectTransform,
-                mousePos,
+                _fixedPosition,
                 canvas.worldCamera,
                 out Vector3 worldPos);
             transform.position = worldPos;
         }
         else
         {
-            transform.position = mousePos+ _buttonOffset;
+            transform.position = (Vector3)_fixedPosition;
         }
     }
 

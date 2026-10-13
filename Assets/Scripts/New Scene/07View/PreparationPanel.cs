@@ -6,6 +6,7 @@
 	功能：整备界面
 *****************************************************/
 
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,6 +18,7 @@ public class PreparationPanel : PanelBase
     [SerializeField] private Button _startReceptionButton;
     [SerializeField] private Button _shopButton;
     [SerializeField] private Button _abyssButton;
+    [SerializeField] private Button _monsterBackpackButton;
 
     public override bool IsModal => false;
 
@@ -70,6 +72,7 @@ public class PreparationPanel : PanelBase
         _startReceptionButton.onClick.AddListener(OnStartReceptionClick);
         _shopButton.onClick.AddListener(OnShopClick);
         _abyssButton.onClick.AddListener(OnAbyssClick);
+        _monsterBackpackButton.onClick.AddListener(OnmonsterBackpack);
     }
 
     private void UnbindEvents()
@@ -77,6 +80,7 @@ public class PreparationPanel : PanelBase
         _startReceptionButton.onClick.RemoveListener(OnStartReceptionClick);
         _shopButton.onClick.RemoveListener(OnShopClick);
         _abyssButton.onClick.RemoveListener(OnAbyssClick);
+        _monsterBackpackButton.onClick.RemoveListener(OnmonsterBackpack);
     }
 
     #endregion
@@ -110,26 +114,9 @@ public class PreparationPanel : PanelBase
         UIManager.Instance.Open<AbyssalAltarPanel>();
     }
 
-    /// <summary>测试按钮：直接打开指定对话（硬编码 OPEN+Myth-day1）</summary>
-    public void OnTestDialogueClick()
+    private void OnmonsterBackpack()
     {
-        const string testDialogueKey = "OPEN+Myth-day1";
-
-        var panel = UIManager.Instance.Open<TalkPanel>();
-        if (panel == null)
-        {
-            Debug.LogError("[PreparationPanel] 测试按钮：打开 TalkPanel 失败");
-            return;
-        }
-
-        if (panel.Dialogue == null)
-        {
-            Debug.LogError("[PreparationPanel] 测试按钮：TalkPanel.Dialogue 为空，检查 TalkPanel 初始化");
-            return;
-        }
-
-        Debug.Log($"[PreparationPanel] 测试按钮：开始对话 {testDialogueKey}");
-        panel.Dialogue.StartDialogue(testDialogueKey);
+        ShopPanel.OpenMonsterStorage();//打开魔物商店
     }
 
     #endregion

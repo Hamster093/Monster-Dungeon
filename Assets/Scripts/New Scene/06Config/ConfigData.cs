@@ -51,12 +51,10 @@ public class VisitOrder
 public class ContractConfig
 {
     public int id;
-    public int adventurerId;        // 关联冒险者ID
+    public string adventurerName;        // 关联冒险者ID
     public int targetMonsterId;     // 目标魔物 ID
-    public int targetZoneId;        // 目标分区 ID
     public int baseReward;          // 基础酬劳
     public string description;      // 委托描述文本
-    public string specialConditions; // 特殊条件，可空。如"必须活捉"
 }
 
 /// <summary>

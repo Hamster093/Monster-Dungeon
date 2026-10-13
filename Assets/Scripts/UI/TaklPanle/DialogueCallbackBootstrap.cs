@@ -7,6 +7,7 @@
 *****************************************************/
 
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using UnityEngine;
 
 public class DialogueCallbackBootstrap : MonoBehaviour
@@ -137,14 +138,16 @@ public class DialogueCallbackBootstrap : MonoBehaviour
     // ─────────────── 接取委托 ───────────────
     private static DialogueOptionResult OnAcceptQuest(DialogueOption option)
     {
-        // TODO 打开委托面板，显示委托信息
+        // 打开委托面板，显示委托信息 传入的是委托号
+        Debug.Log($"玩家接取了委托，编号为：1");
+        UIManager.Instance.Open<CommissionPanel>(1);
         return new DialogueOptionResult();
     }
 
     // ─────────────── 拒绝接待 ───────────────
     private static DialogueOptionResult OnRefuseGuest(DialogueOption option)
     {
-        // TODO 对话结束 调用 VisitSystem.OnVisitorFinished() 推进到下一位访客
+        //自动推进到下一位访客
         return new DialogueOptionResult();
     }
 

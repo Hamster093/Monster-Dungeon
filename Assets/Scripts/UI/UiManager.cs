@@ -10,6 +10,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public enum UILayer
@@ -97,8 +98,27 @@ public class UIManager : MonoBehaviour
         {
             _modalBlocker.gameObject.SetActive(false);
 
-            var btn = _modalBlocker.GetComponent<Button>();
-            if (btn != null) btn.onClick.AddListener(CloseTop);
+            //  用 EventTrigger 支持左右键点击遮罩关闭
+            var trigger = _modalBlocker.GetComponent<EventTrigger>();
+            if (trigger == null)
+                trigger = _modalBlocker.gameObject.AddComponent<EventTrigger>();
+
+            var entry = new EventTrigger.Entry
+            {
+                eventID = EventTriggerType.PointerClick
+            };
+            entry.callback.AddListener(data =>
+            {
+                var ped = data as PointerEventData;
+                if (ped == null) return;
+
+                if (ped.button == PointerEventData.InputButton.Left
+                    || ped.button == PointerEventData.InputButton.Right)
+                {
+                    CloseTop();
+                }
+            });
+            trigger.triggers.Add(entry);
         }
         //预创建面板
         foreach (var cfg in _configs)

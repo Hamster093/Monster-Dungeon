@@ -14,6 +14,7 @@ public class ShopItemActionPanel : PanelBase
     [SerializeField] private Button _examineButton;
     [SerializeField] private Button _buyButton;
     [SerializeField] private Vector2 _buttonOffset;
+    [SerializeField] private Vector2 _fixedPosition = new Vector2(624f, 745f);
 
     public override bool IsModal => true;
 
@@ -40,14 +41,14 @@ public class ShopItemActionPanel : PanelBase
         _buyButton.interactable = _currentData != null
             && SystemManager.Instance.Economy.Cash >= _currentData.price;
 
-        FollowMouse();
+        ApplyFixedPosition();
     }
 
     public override void OnRefresh(object data = null)
     {
         base.OnRefresh(data);
         if (data is ShopActionData d) _currentData = d;
-        FollowMouse();
+        ApplyFixedPosition();
     }
 
     public override void OnClose()
@@ -80,23 +81,22 @@ public class ShopItemActionPanel : PanelBase
 
     // ---------- 定位 ----------
 
-    private void FollowMouse()
+    private void ApplyFixedPosition()
     {
         var canvas = GetComponentInParent<Canvas>();
-        Vector2 mousePos = Input.mousePosition;
 
         if (canvas != null && canvas.renderMode != RenderMode.ScreenSpaceOverlay)
         {
             RectTransformUtility.ScreenPointToWorldPointInRectangle(
                 canvas.transform as RectTransform,
-                mousePos,
+                _fixedPosition,
                 canvas.worldCamera,
                 out Vector3 worldPos);
             transform.position = worldPos;
         }
         else
         {
-            transform.position = (Vector3)mousePos + (Vector3)_buttonOffset;
+            transform.position = (Vector3)_fixedPosition;
         }
     }
 }

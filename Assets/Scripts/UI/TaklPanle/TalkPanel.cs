@@ -53,6 +53,7 @@ public class TalkPanel : PanelBase, IPointerClickHandler
     [Header("对话历史")]
     [SerializeField] private Transform _historyContent;      // ScrollView/Viewport/Content
     [SerializeField] private GameObject _historyItemPrefab;  // DialogueHistoryItem
+    private int _lastModelIndex = -1;
 
     [Header("点击冷却")]
     [Tooltip("两次推进对话之间的最小间隔（秒），防止连点一次性跳过所有文本")]
@@ -197,7 +198,8 @@ public class TalkPanel : PanelBase, IPointerClickHandler
 
         _historyView.BeginSegment();
         Typewriter?.Clear();
-        // 图片不再置空——保留当前 sprite
+        // 图片置空——保留当前 sprite
+        _lastModelIndex = -1;
     }
 
     #endregion
@@ -231,7 +233,7 @@ public class TalkPanel : PanelBase, IPointerClickHandler
 
         if (_currentIndex >= _dialogueList.Count)
         {
-            OnDialogueComplete?.Invoke();
+            CompleteDialogue();
             return;
         }
 
@@ -241,10 +243,13 @@ public class TalkPanel : PanelBase, IPointerClickHandler
 
     private void PlayCurrentLine()
     {
-        // 兜底：上一句若还没记（跳过时可能来不及记），补记
+        // ★ 补写上一句（和 _historyView 同一时机）
         int prev = _currentIndex - 1;
         if (prev >= 0 && prev < _dialogueList.Count)
+        {
             _historyView.RecordLineIfNeeded(prev, _dialogueList[prev]);
+            WriteModelIfNeeded(prev);
+        }
 
         DialogueLine line = _dialogueList[_currentIndex];
 
@@ -255,8 +260,6 @@ public class TalkPanel : PanelBase, IPointerClickHandler
             LoadIconAsync(line.iconName);
         }
 
-        // 历史对话模型（跨天保留）
-        DialogueHistoryModel.Instance?.Add(line);
 
         // 说话人
         if (_currentSpeaker != line.speakerName)
@@ -286,7 +289,7 @@ public class TalkPanel : PanelBase, IPointerClickHandler
         yield return null;
         yield return new WaitUntil(() => !Typewriter.IsTyping);
         _autoCompleteCoroutine = null;
-        OnDialogueComplete?.Invoke();
+        CompleteDialogue();
     }
 
     private void OnTodayVisitorsReady(List<int> ids)
@@ -356,7 +359,10 @@ public class TalkPanel : PanelBase, IPointerClickHandler
         UIManager.Instance.Open<DialogueHistoryPanel>();
     }
 
-    private void OnCharacterArchive()
+    private void OnCharacterArchive() => ToggleCharacterArchive();
+
+    /// <summary>切换角色档案显示（供 HUD 等外部调用）</summary>
+    public void ToggleCharacterArchive()
     {
         if (leftDisplayArea == null)
         {
@@ -383,6 +389,36 @@ public class TalkPanel : PanelBase, IPointerClickHandler
 
     #endregion
 
+    #region 历史对话写入
+    /// <summary>把指定索引的对话写入全局历史模型（同一索引只写一次）</summary>
+    private void WriteModelIfNeeded(int index)
+    {
+        if (index < 0 || index >= _dialogueList.Count) return;
+        if (index == _lastModelIndex) return;
+        _lastModelIndex = index;
+        DialogueHistoryModel.Instance?.Add(_dialogueList[index]);
+    }
+
+    /// <summary>补写最后一句 + 触发完成事件</summary>
+    private void CompleteDialogue()
+    {
+        FlushLastLine();
+        OnDialogueComplete?.Invoke();
+    }
+
+    /// <summary>补写最后一句（对话全部播放完毕时调用）</summary>
+    private void FlushLastLine()
+    {
+        if (_dialogueList.Count == 0) return;
+        int last = _dialogueList.Count - 1;
+
+        // 当前面板用的每日历史（自带去重，重复调用安全）
+        _historyView.RecordLineIfNeeded(last, _dialogueList[last]);
+
+        // 全局历史模型
+        WriteModelIfNeeded(last);
+    }
+    #endregion
 
     #region 公共工具方法
 
@@ -396,7 +432,22 @@ public class TalkPanel : PanelBase, IPointerClickHandler
 
     public void SetAutoCompleteAtEnd(bool value) => _autoCompleteAtEnd = value;
 
-    public void RecordPlayerChoice(string buttonText) => _historyView.AppendChoice(buttonText);
+    public void RecordPlayerChoice(string buttonText)
+    {
+        //  当前面板的每日历史
+        _historyView.AppendChoice(buttonText);
+
+        //  补写上一句（避免选项插到未写的上一句之前）
+        int prev = _currentIndex - 1;
+        if (prev >= 0 && prev < _dialogueList.Count)
+        {
+            _historyView.RecordLineIfNeeded(prev, _dialogueList[prev]);
+            WriteModelIfNeeded(prev);
+        }
+
+        //  再追加选项本身
+        DialogueHistoryModel.Instance?.AddChoice(buttonText);
+    }
 
     #endregion
 }

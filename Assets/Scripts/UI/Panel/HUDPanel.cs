@@ -16,6 +16,7 @@ public class HUDPanel : PanelBase
 {
     public Transform ButtonRoot;
 
+
     // ---------- 顶部状态栏 ----------
     private Text _dayText;
     private Text _phaseText;
@@ -32,6 +33,10 @@ public class HUDPanel : PanelBase
     public override void OnInit()
     {
         BindButtonClick("Backpack", ToggleBackpack);
+        BindButtonClick("Settings", ToggleSettings);          // 新增：设置
+        BindButtonClick("DialogueHistory", OpenDialogueHistory);     // 新增：历史记录
+        BindButtonClick("CharacterArchive", OpenCharacterArchive);    // 新增：人物档案
+
 
         // 顶部
         _dayText = FindByName<Text>("DayText");
@@ -83,18 +88,19 @@ public class HUDPanel : PanelBase
     public void RefreshTopBar()
     {
         var run = SystemManager.Instance.RunState.run;
-        if (_dayText) _dayText.text = $"第 {run.currentDay} 天";
-        if (_phaseText) _phaseText.text = $"阶段 {run.currentPhase}";
-        if (_cashText) _cashText.text = $"现金 {run.cash}";
+        if (_dayText) _dayText.text = $" {run.currentDay} ";//第 {run.currentDay} 天
+        if (_phaseText) _phaseText.text = $" {run.currentPhase}";//阶段
+        if (_cashText) _cashText.text = $" {run.cash}";//现金
         if (_nutrientText) _nutrientText.text = $"养分 {run.nutrient}";
-        if (_apText) _apText.text = $"行动点 {run.actionPoint}";
+        if (_apText) _apText.text = $" {run.actionPoint}";//行动点
         if (_remainingDays) _remainingDays.text = $"当前阶段剩余经营日 {run.remainingDays}";
         if (_installmentPayment) _installmentPayment.text = $"分期金额 {run.installmentPayment}";
     }
     #endregion
 
     #region OnButton
-    private void ToggleBackpack()
+
+        private void ToggleBackpack()
     {
         // 已打开就关闭，没打开就打开
         if (UIManager.Instance.IsOpen<BackpackPanel>())
@@ -102,6 +108,40 @@ public class HUDPanel : PanelBase
         else
             UIManager.Instance.Open<BackpackPanel>();
     }
+
+    /// <summary>设置面板（同样做成开关式）</summary>
+    private void ToggleSettings()
+    {
+        if (UIManager.Instance.IsOpen<SettingsPanel>())
+            UIManager.Instance.Close<SettingsPanel>();
+        else
+            UIManager.Instance.Open<SettingsPanel>();
+    }
+
+    /// <summary>历史记录（由 TalkPanel 提供的静态入口）</summary>
+    private void OpenDialogueHistory()
+    {
+
+        if (!UIManager.Instance.IsOpen<TalkPanel>()) return;
+        if (UIManager.Instance.IsOpen<DialogueHistoryPanel>())
+            UIManager.Instance.Close<DialogueHistoryPanel>();
+        else
+            UIManager.Instance.Open<DialogueHistoryPanel>();
+    }
+
+    /// <summary>人物档案（由 TalkPanel 提供的静态入口）</summary>
+    private void OpenCharacterArchive()
+    {
+        var talkPanel = UIManager.Instance.Get<TalkPanel>();
+        if (talkPanel == null)
+        {
+            Debug.LogWarning("[HUDPanel] 场景中不存在 TalkPanel，无法打开角色档案");
+            return;
+        }
+        talkPanel.ToggleCharacterArchive();
+    }
+
     #endregion
 }
+
 
