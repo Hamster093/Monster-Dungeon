@@ -38,13 +38,16 @@ public class ScheduleSystem
     public void AdvanceDay()
     {
         if (IsPhaseEndDay(_runState.run.currentDay))
+        { 
             EndPhase();
+        
+        }
 
         _runState.run.currentDay++;
         Debug.Log($"进入第 {_runState.run.currentDay} 天");
 
         foreach (var m in _runState.run.monsters.Values)
-            m.接待过今日 = false;
+            m.isReception = false;
 
         _runState.run.todayVisitors.Clear();
         _runState.run.resolvedVisitors.Clear();

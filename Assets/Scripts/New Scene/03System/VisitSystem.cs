@@ -109,8 +109,7 @@ public class VisitSystem : IDisposable
         CurrentVisitorId = -1;
         OnCurrentVisitorChanged?.Invoke(-1);
         OnDayVisitsFinished?.Invoke();
-
-        NextDayEvent.Trigger();  
+ 
         return false;
     }
 }

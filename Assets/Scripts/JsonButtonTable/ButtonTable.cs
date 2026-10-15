@@ -15,9 +15,9 @@ public static class ButtonTable
     {
         { "view_quest",    ("1.-查看委托", null) },
         { "talk",          ("2.-选择搭话", null) },
-        { "use_item",      ("3.-使用道具", null) },
+        { "use_item",      ("3.-使用道具", "open_backpack") },
         { "refuse",        ("4.-直接拒绝", "myd1_refuse") },
-        { "special_quest", ("5.-特殊委托", null) },
+        { "special_quest", ("5.-特殊委托", "open_special_commission") },
 
         { "accept_quest",  ("接取委托", "myd1_accept_quest") },
         { "guide",         ("指路",     "myd1_guide_check") },

@@ -527,6 +527,7 @@ MonoBehaviour:
   _scrollRect: {fileID: 6510564309408780909}
   _content: {fileID: 2209250081308493891}
   _itemPrefab: {fileID: 4281117943658665490, guid: a4fe51766c38601498e6e07db64b9bcf, type: 3}
+  _optionItemPrefab: {fileID: 0}
 --- !u!1 &7525155844369320571
 GameObject:
   m_ObjectHideFlags: 0
@@ -683,7 +684,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8546422768230378428, guid: a4fe51766c38601498e6e07db64b9bcf, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -523
+      value: -537
       objectReference: {fileID: 0}
     - target: {fileID: 8546422768230378428, guid: a4fe51766c38601498e6e07db64b9bcf, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

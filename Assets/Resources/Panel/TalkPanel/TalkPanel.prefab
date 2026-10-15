@@ -2154,10 +2154,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: CharacterArchivePanel
       objectReference: {fileID: 0}
-    - target: {fileID: 8362290069593482518, guid: 3f2ee8fbaff7104498ece57d5d238b6d, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

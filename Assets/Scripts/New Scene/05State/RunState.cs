@@ -41,8 +41,7 @@ public class MonsterState
 {
     public int id;
     public bool alive = true;
-    public bool 接待过今日 = false;
-    public int 今日损耗 = 0;
+    public bool isReception = false;
 }
 
 [Serializable]

@@ -7,7 +7,6 @@
 *****************************************************/
 
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using UnityEngine;
 
 public class DialogueCallbackBootstrap : MonoBehaviour
@@ -23,6 +22,7 @@ public class DialogueCallbackBootstrap : MonoBehaviour
         { "accept_quest",      OnAcceptQuest      },
         { "refuse_guest",      OnRefuseGuest      },
         { "guide_check",       OnGuideCheck       },
+        { "open_ui",           OnOpenUI },
     };
 
     // 每个 callbackKey 属于哪个功能
@@ -50,6 +50,9 @@ public class DialogueCallbackBootstrap : MonoBehaviour
         { "myd1_accept_quest",          "accept_quest" },
         { "myd1_refuse",                "refuse_guest" },
         { "myd1_guide_check",           "guide_check"  },
+
+        { "open_backpack",              "open_ui" },
+        { "open_special_commission",    "open_ui" },
     };
 
     void Awake()
@@ -139,7 +142,7 @@ public class DialogueCallbackBootstrap : MonoBehaviour
     private static DialogueOptionResult OnAcceptQuest(DialogueOption option)
     {
         // 打开委托面板，显示委托信息 传入的是委托号
-        Debug.Log($"玩家接取了委托，编号为：1");
+        Debug.Log($"玩家接取了委托，编号为：1 硬编码");
         UIManager.Instance.Open<CommissionPanel>(1);
         return new DialogueOptionResult();
     }
@@ -155,6 +158,22 @@ public class DialogueCallbackBootstrap : MonoBehaviour
     private static DialogueOptionResult OnGuideCheck(DialogueOption option)
     {
         // TODO 根据玩家的指路结果，决定跳转到哪个节点
+        return new DialogueOptionResult();
+    }
+
+    // ─────────────── 打开 UI 面板 ───────────────
+    // 命中 key：open_backpack / open_special_commission
+    private static DialogueOptionResult OnOpenUI(DialogueOption option)
+    {
+        switch (option.callbackKey)
+        {
+            case "open_backpack":
+                UIManager.Instance.Open<BackpackPanel>();
+                break;
+            case "open_special_commission":
+                UIManager.Instance.Open<SpecialCommissionPanel>();
+                break;
+        }
         return new DialogueOptionResult();
     }
 }

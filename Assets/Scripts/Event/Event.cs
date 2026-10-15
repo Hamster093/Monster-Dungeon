@@ -28,6 +28,9 @@ public class Event<T> where T : Event<T>
     /// 触发事件
     /// </summary>
     public static void Trigger() => mOnEvent?.Invoke();
+
+    /// <summary>场景切换 / 单元测试时手动清空，防止残留委托</summary>
+    public static void Clear() => mOnEvent = null;
 }
 
 // 带一个参数的事件
@@ -38,4 +41,7 @@ public class Event<T, TArg> where T : Event<T, TArg>
     public static void Register(Action<TArg> onEvent) => mOnEvent += onEvent;
     public static void UnRegister(Action<TArg> onEvent) => mOnEvent -= onEvent;
     public static void Trigger(TArg arg) => mOnEvent?.Invoke(arg);
+
+    /// <summary>场景切换 / 单元测试时手动清空，防止残留委托</summary>
+    public static void Clear() => mOnEvent = null;
 }

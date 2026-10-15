@@ -104,7 +104,7 @@ public class CommissionPanel : PanelBase
         if (_config == null) return;
 
         if (txt_name != null)
-            txt_name.text = _config.adventurerName;
+            txt_name.text = _config.name;
 
         if (txt_Description != null)
             txt_Description.text = _config.description;
@@ -113,14 +113,19 @@ public class CommissionPanel : PanelBase
             txt_Objectives.text = BuildObjectiveText(_config);
 
         if (txt_Payment != null)
-            txt_Payment.text = _config.baseReward.ToString();
+            txt_Payment.text = _config.reward.ToString();
     }
 
     /// <summary>根据委托配置拼出“目标”文本，具体格式你可以按需改</summary>
     private string BuildObjectiveText(ContractConfig cfg)
     {
-        // 这里可以在魔物表查名字？todo
-        return $"讨伐魔物 ID：{cfg.targetMonsterId}";
+        if (cfg.targetMonsterId <= 0)
+            return "无指定目标";
+
+        if (ConfigDatabase.Instance.Monsters.TryGetValue(cfg.targetMonsterId, out var monster))
+            return $"讨伐目标：{monster.name}";
+
+        return $"讨伐目标 ID：{cfg.targetMonsterId}";
     }
 
     // ───────────── 按钮回调 ─────────────
@@ -129,8 +134,21 @@ public class CommissionPanel : PanelBase
     {
         if (_config == null) return;
 
+        var sys = SystemManager.Instance?.DailyCommission;
+        if (sys == null)
+        {
+            Debug.LogError("[CommissionPanel] DailyCommission 为空", this);
+            return;
+        }
+
+        int adventurerId = SystemManager.Instance.VisitSystem.CurrentVisitorId;
+        sys.AddNormal(_config.id, adventurerId);
+
         OnAccept?.Invoke(_config);
-         UIManager.Instance.Close(this);
+
+        ToastManager.Show("委托接取成功");
+
+        UIManager.Instance.Close(this);
     }
 
     private void OnCloseClick()

@@ -110,7 +110,6 @@ public class PreparationPanel : PanelBase
     /// <summary>进入深渊</summary>
     private void OnAbyssClick()
     {
-        Debug.Log("[PreparationPanel] 点击深渊");
         UIManager.Instance.Open<AbyssalAltarPanel>();
     }
 

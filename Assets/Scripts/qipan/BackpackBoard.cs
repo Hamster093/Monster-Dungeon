@@ -11,6 +11,8 @@ using UnityEngine;
 
 public class BackpackBoard : MonoBehaviour
 {
+    public static BackpackBoard Instance { get; private set; }
+
     [Header("拖拽层（留空则运行时自动创建 DragLayer_Runtime）")]
     public RectTransform DragLayer;
 
@@ -30,10 +32,26 @@ public class BackpackBoard : MonoBehaviour
 
     public IReadOnlyList<ItemView> Items => _items;
 
+
+    [Header("收益配置")]
+    [SerializeField] private TileAffinityConfig _tileConfig;
+    [SerializeField] private MonsterIncomeConfig _incomeConfig;
+
+    //  暴露给外部
+    public TileAffinityConfig TileConfig => _tileConfig;
+    public MonsterIncomeConfig IncomeConfig => _incomeConfig;
+
     private void Awake()
     {
+        Instance = this;
+
         BuildCellMap();
         GetOrCreateDragLayer();
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance == this) Instance = null;
     }
 
     private void BuildCellMap()

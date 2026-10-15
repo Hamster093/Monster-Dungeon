@@ -60,9 +60,5 @@ public class GameBootstrap : MonoBehaviour
         SystemManager.Instance.Init();
         _inited = true;
 
-        Debug.Log($"[GameBootstrap] 初始化完成：第 {SystemManager.Instance.RunState.run.currentDay} 天，" +
-                  $"阶段 {SystemManager.Instance.RunState.run.currentPhase}，" +
-                  $"现金 {SystemManager.Instance.RunState.run.cash}");
-
     }
 }

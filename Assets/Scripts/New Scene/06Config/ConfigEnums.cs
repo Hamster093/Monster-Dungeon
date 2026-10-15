@@ -6,6 +6,8 @@
 	功能：定义配置所需的枚举类型
 *****************************************************/
 
+using UnityEngine;
+
 public enum Level { A = 4, B = 3, C = 2, D = 1 }
 
 /// <summary>
@@ -87,13 +89,13 @@ public enum RelationshipState { Neutral, Suspicious, Hostile }
 /// </summary>
 public enum SevenDimension
 {
-    Reason,       // 理智(高) - 疯狂(低)
-    Courage,      // 勇气(高) - 怯懦(低)
-    Piety,        // 虔诚(高) - 亵渎(低)
-    Tolerance,    // 宽容(高) - 偏狭(低)
-    Benevolence,  // 仁爱(高) - 冷漠(低)
-    Resolve,      // 坚定(高) - 动摇(低)
-    Diligence     // 勤勉(高) - 懒惰(低)
+    [InspectorName("理智")] Reason,       // 理智(高) - 疯狂(低)
+    [InspectorName("勇气")] Courage,      // 勇气(高) - 怯懦(低)
+    [InspectorName("虔诚")] Piety,        // 虔诚(高) - 亵渎(低)
+    [InspectorName("宽容")] Tolerance,    // 宽容(高) - 偏狭(低)
+    [InspectorName("仁爱")] Benevolence,  // 仁爱(高) - 冷漠(低)
+    [InspectorName("坚定")] Resolve,      // 坚定(高) - 动摇(低)
+    [InspectorName("勤勉")] Diligence     // 勤勉(高) - 懒惰(低)
 }
 /// <summary>
 /// 人物id枚举。用于标识游戏中不同的来访角色。

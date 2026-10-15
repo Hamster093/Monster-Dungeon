@@ -50,11 +50,14 @@ public class VisitOrder
 [Serializable]
 public class ContractConfig
 {
-    public int id;
-    public string adventurerName;        // 关联冒险者ID
-    public int targetMonsterId;     // 目标魔物 ID
-    public int baseReward;          // 基础酬劳
-    public string description;      // 委托描述文本
+    public int id;                       // 委托 ID
+    public string name;                  // 委托名
+    public string description;           // 委托描述
+    public int targetMonsterId;
+    public int reward;                   // 委托报酬（100% 完成度时）
+
+    // 影响属性，空 = 普通委托，非空 = 特殊委托
+    public List<SevenDimension> influenceStats = new List<SevenDimension>();
 }
 
 /// <summary>

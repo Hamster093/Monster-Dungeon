@@ -153,7 +153,7 @@ public class TestBootstrap : MonoBehaviour
         foreach (var kv in run.monsters)
         {
             var m = kv.Value;
-            Debug.Log($"  魔物 {kv.Key}: alive={m.alive}, 接待过今日={m.接待过今日}");
+            Debug.Log($"  魔物 {kv.Key}: alive={m.alive}, 接待过今日={m.isReception}");
         }
     }
 

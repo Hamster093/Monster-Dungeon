@@ -58,8 +58,7 @@ public class RunStateManager
             {
                 id = mon.id,
                 alive = true,
-                接待过今日 = false,
-                今日损耗 = 0
+                isReception = false,
             });
         }
 

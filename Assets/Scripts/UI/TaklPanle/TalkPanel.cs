@@ -9,6 +9,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -202,6 +203,8 @@ public class TalkPanel : PanelBase, IPointerClickHandler
         _lastModelIndex = -1;
     }
 
+
+
     #endregion
 
 
@@ -349,6 +352,16 @@ public class TalkPanel : PanelBase, IPointerClickHandler
         LoadIconAsync(iconName);
     }
 
+    /// <summary>异步加载并设置角色头像</summary>
+    private async void LoadAndSetPortraitAsync(int id)
+    {
+        Sprite sp = await SpriteLoader.LoadAsync($"{id}_portrait");
+
+        if (this == null || _archivePanel == null || _iconImage == null) return;
+
+        _archivePanel.Refresh(id, sp);
+    }
+
     #endregion
 
 
@@ -381,12 +394,13 @@ public class TalkPanel : PanelBase, IPointerClickHandler
                 Debug.LogWarning("[TalkPanel] 当前没有访客，无法刷新档案");
                 return;
             }
-
             if (_archivePanel != null)
-                _archivePanel.Refresh(id, _iconImage != null ? _iconImage.sprite : null);
+                _archivePanel.Refresh(id, _iconImage != null ? null : null);
+            // 异步加载头像，不阻塞UI切换
+            LoadAndSetPortraitAsync(id);
         }
     }
-
+   
     #endregion
 
     #region 历史对话写入

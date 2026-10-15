@@ -90,8 +90,20 @@ public class DialogueController
         {
             DialogueNode node = _nodeDict[currentNodeId];
 
-            //遍历该节点包含的所有句子
-            if (node.contents != null && node.contents.Count > 0)
+            // 优先读 lines，回退到旧 contents
+            if (node.lines != null && node.lines.Count > 0)
+            {
+                foreach (var line in node.lines)
+                {
+                    linearLines.Add(new DialogueLine
+                    {
+                        iconName = string.IsNullOrEmpty(line.icon) ? node.iconName : line.icon,
+                        speakerName = line.speaker,
+                        content = line.content
+                    });
+                }
+            }
+            else if (node.contents != null && node.contents.Count > 0)
             {
                 foreach (string text in node.contents)
                 {
@@ -104,13 +116,11 @@ public class DialogueController
                 }
             }
 
-            // 判断该节点是否有选项，或者没有下一节点
             if ((node.options != null && node.options.Count > 0) || string.IsNullOrEmpty(node.nextNodeId))
             {
                 _currentStopNodeId = currentNodeId;
                 break;
             }
-
             currentNodeId = node.nextNodeId;
         }
 
@@ -243,9 +253,15 @@ public class DialogueController
 
     private void EndDialogue()
     {
-        if (_talkPanel != null)
-            _talkPanel.gameObject.SetActive(false);
-        Debug.Log("[DialogueController] 对话结束");
+        UIManager.Instance.Close<TalkPanel>();
+
+        // 先渐黑，黑屏完成后打开结算面板
+        ScreenFader.Instance.FadeToBlack(2f, () =>
+        {
+            var data = DailyIncomeCalculator.Compute();
+            UIManager.Instance.Open<DailySettlementPanel>(data);
+            Debug.Log("[DialogueController] 对话结束,打开结算面板");
+        });
     }
 
     #endregion

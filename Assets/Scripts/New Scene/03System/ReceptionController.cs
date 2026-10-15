@@ -164,7 +164,7 @@ public class ReceptionController
             return ReceptionResult.Fail("找不到目标魔物");
 
         // 检查目标魔物当天是否已接待
-        if (_runState.run.monsters.TryGetValue(monster.id, out var monState) && monState.接待过今日)
+        if (_runState.run.monsters.TryGetValue(monster.id, out var monState) && monState.isReception)
         {
             return ReceptionResult.Fail("目标魔物今日已被接待，只能拒绝或编造另一条路线。");
         }
@@ -184,13 +184,13 @@ public class ReceptionController
         };
 
         var result = _resolver.Resolve(ctx);
-        monState.接待过今日 = true;
+        monState.isReception = true;
 
         // 奖励
         if (result == AdventureResult.FlawlessSuccess || result == AdventureResult.InjuredSuccess)
         {
-            if (isTruth) _economy.RewardHonest(contract.baseReward);
-            else _economy.RewardLied(contract.baseReward);
+            if (isTruth) _economy.RewardHonest(contract.reward);
+            else _economy.RewardLied(contract.reward);
         }
 
         // 记忆

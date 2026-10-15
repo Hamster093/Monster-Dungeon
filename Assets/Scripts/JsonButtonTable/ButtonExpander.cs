@@ -10,39 +10,113 @@ using Newtonsoft.Json.Linq;
 
 public static class ButtonExpander
 {
-    /// <summary>把 $ref 展开成完整按钮，其它字段不动。</summary>
     public static string Expand(string json)
     {
-        var root = JObject.Parse(json);
-        if (root["buttons"] is not JObject buttons) return json;
-
-        if (root["nodes"] is JArray nodes)
+        JObject root;
+        try { root = JObject.Parse(json); }
+        catch (System.Exception e)
         {
-            foreach (var token in nodes)
+            UnityEngine.Debug.LogError($"[Expander] 解析失败: {e}");
+            return json;
+        }
+
+        var buttons = root["buttons"] as JObject;
+        var templates = root["templates"] as JObject;
+        var nodes = root["nodes"] as JArray;
+
+        if (nodes != null)
+        {
+            // 第 1 遍：展开模板（use + params → lines + options）
+            if (templates != null)
             {
-                if (token is not JObject node) continue;
-                if (node["options"] is not JArray options) continue;
-
-                for (int i = 0; i < options.Count; i++)
+                foreach (var tok in nodes)
                 {
-                    if (options[i] is not JObject opt) continue;
-                    var refToken = opt["$ref"];
-                    if (refToken == null) continue;
+                    var node = tok as JObject;
+                    if (node == null || node["use"] == null) continue;
 
-                    var btn = buttons[(string)refToken] as JObject;
-                    if (btn == null) continue;
-
-                    var merged = new JObject();
-                    foreach (var p in btn.Properties()) merged[p.Name] = p.Value;
-                    foreach (var p in opt.Properties())
+                    string tplKey = (string)node["use"];
+                    var tpl = templates[tplKey] as JObject;
+                    if (tpl == null)
                     {
-                        if (p.Name == "$ref") continue;
-                        merged[p.Name] = p.Value;   // targetNodeId 覆盖
+                        UnityEngine.Debug.LogWarning($"[Expander] 找不到模板: {tplKey}");
+                        continue;
                     }
-                    options[i] = merged;
+
+                    var paramObj = node["params"] as JObject;
+                    var expanded = SubstituteParams(tpl, paramObj) as JObject;
+
+                    node.Remove("use");
+                    node.Remove("params");
+                    foreach (var p in expanded.Properties())
+                    {
+                        if (node[p.Name] != null) continue;   // 节点已有 → 保留
+                        node[p.Name] = p.Value;
+                    }
+                }
+            }
+
+            // 第 2 遍：展开 $ref 按钮
+            if (buttons != null)
+            {
+                foreach (var tok in nodes)
+                {
+                    var node = tok as JObject;
+                    if (node == null) continue;
+                    var opts = node["options"] as JArray;
+                    if (opts == null) continue;
+
+                    for (int i = 0; i < opts.Count; i++)
+                    {
+                        var opt = opts[i] as JObject;
+                        if (opt == null) continue;
+
+                        var refTok = opt["$ref"];
+                        if (refTok == null) continue;
+
+                        var btn = buttons[(string)refTok] as JObject;
+                        if (btn == null) continue;
+
+                        var merged = new JObject();
+                        foreach (var p in btn.Properties()) merged[p.Name] = p.Value;
+                        foreach (var p in opt.Properties())
+                        {
+                            if (p.Name == "$ref") continue;
+                            merged[p.Name] = p.Value;
+                        }
+                        opts[i] = merged;
+                    }
                 }
             }
         }
+
+        root.Remove("buttons");
+        root.Remove("templates");
         return root.ToString(Newtonsoft.Json.Formatting.None);
+    }
+
+    // 递归替换 "$param" 为实际值
+    static JToken SubstituteParams(JToken token, JObject paramObj)
+    {
+        if (token is JValue v && v.Type == JTokenType.String)
+        {
+            string s = (string)v;
+            if (!string.IsNullOrEmpty(s) && s[0] == '$' && paramObj != null && paramObj[s] != null)
+                return paramObj[s].DeepClone();
+            return v.DeepClone();
+        }
+        if (token is JObject obj)
+        {
+            var result = new JObject();
+            foreach (var p in obj.Properties())
+                result[p.Name] = SubstituteParams(p.Value, paramObj);
+            return result;
+        }
+        if (token is JArray arr)
+        {
+            var result = new JArray();
+            foreach (var item in arr) result.Add(SubstituteParams(item, paramObj));
+            return result;
+        }
+        return token.DeepClone();
     }
 }

@@ -30,12 +30,24 @@ public class DialogueOption
 public class DialogueNode
 {
     public string id;           // 节点唯一ID
+    //新：多行支持
+    public List<DialogueLineData> lines = new List<DialogueLineData>();
+
+    // 旧：兼容字段，lines 为空时才回退到这里
     public string speakerName;  //说话人
     public string iconName;     //图片名称
     public List<string> contents = new List<string>();       // 对话内容
 
     public string nextNodeId;   // 自动跳转的下一节点ID（没有选项时使用）
     public List<DialogueOption> options = new List<DialogueOption>(); // 玩家选项（如果有，则覆盖 nextNodeId）
+}
+
+[Serializable]
+public class DialogueLineData
+{
+    public string speaker;
+    public string icon;
+    public string content;
 }
 
 /// <summary>

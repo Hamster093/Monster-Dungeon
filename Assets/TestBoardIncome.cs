@@ -34,6 +34,7 @@ public class BoardIncomeTestButton : MonoBehaviour
         int total = BoardIncomeCalculator.ComputeTotal(_board, _tileConfig, _incomeConfig);
 
         Debug.Log($"[IncomeTest] 棋盘总收益 = {total}");
+        ToastManager.Show($"[IncomeTest] 棋盘总收益 = {total}");
 
         if (_resultText != null)
             _resultText.text = $"总收益：{total}";

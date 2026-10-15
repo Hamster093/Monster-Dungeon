@@ -979,6 +979,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4731637222435966722}
   - component: {fileID: 2621100631457537823}
+  - component: {fileID: 5907538274947292198}
   m_Layer: 5
   m_Name: BoardManager
   m_TagString: Untagged
@@ -1022,6 +1023,23 @@ MonoBehaviour:
   ItemsRoot: {fileID: 6127537713525245186}
   Width: 7
   Height: 7
+  _tileConfig: {fileID: 11400000, guid: 7471e867394eda146986335a24b8dea3, type: 2}
+  _incomeConfig: {fileID: 11400000, guid: 6e009c999760981448400d5dcace1084, type: 2}
+--- !u!114 &5907538274947292198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6011998955044633058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 499d301ab88ffde4e98969943f06da3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  board: {fileID: 2621100631457537823}
+  config: {fileID: 11400000, guid: 83d70fc2b4947ce44a44227aa1fccebc, type: 2}
+  startStage: 1
 --- !u!1 &6796979584869573321
 GameObject:
   m_ObjectHideFlags: 0

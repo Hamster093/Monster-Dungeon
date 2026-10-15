@@ -74,7 +74,6 @@ public class InventoryModel
         }
 
         int added = originalQuantity - quantity;
-        Debug.Log($"[Model] AddItem {data.itemName} x{added}，剩余放不下 {quantity}");
         BackpackChanged.Trigger();
         return quantity;
     }
