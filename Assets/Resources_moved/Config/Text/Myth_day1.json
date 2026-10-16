@@ -501,7 +501,7 @@
       "options": [
         {
           "$ref": "view_quest",
-          "targetNodeId": "74"
+          "targetNodeId": "66"
         },
         {
           "$ref": "talk",
@@ -555,7 +555,7 @@
       "options": [
         {
           "$ref": "view_quest",
-          "targetNodeId": "74"
+          "targetNodeId": "66"
         },
         {
           "$ref": "talk",
@@ -601,7 +601,7 @@
       "options": [
         {
           "$ref": "view_quest",
-          "targetNodeId": "74"
+          "targetNodeId": "66"
         },
         {
           "$ref": "talk",
@@ -630,21 +630,6 @@
           "content": "你深吸一口气，决定："
         }
       ]
-    },
-    {
-      "id": "66",
-      "use": "quest_title",
-      "params": {
-        "$next": "67"
-      }
-    },
-    {
-      "id": "67",
-      "use": "quest_detail",
-      "params": {
-        "$accept": "73",
-        "$back": "74"
-      }
     },
     {
       "id": "68",
@@ -1441,22 +1426,7 @@
         }
       ]
     },
-    {
-      "id": "176",
-      "use": "quest_title",
-      "params": {
-        "$next": "177"
-      }
-    },
-    {
-      "id": "177",
-      "use": "quest_detail",
-      "params": {
-        "$accept": "295",
-        "$back": "89"
-      }
-    },
-    {
+        {
       "id": "178",
       "nextNodeId": "",
       "options": [
@@ -1652,21 +1622,6 @@
           "content": "“人类值得羡慕之处也有很多。”"
         }
       ]
-    },
-    {
-      "id": "221",
-      "use": "quest_title",
-      "params": {
-        "$next": "222"
-      }
-    },
-    {
-      "id": "222",
-      "use": "quest_detail",
-      "params": {
-        "$accept": "305",
-        "$back": "95"
-      }
     },
     {
       "id": "223",
@@ -1996,22 +1951,7 @@
         }
       ]
     },
-    {
-      "id": "279",
-      "use": "quest_title",
-      "params": {
-        "$next": "280"
-      }
-    },
-    {
-      "id": "280",
-      "use": "quest_detail",
-      "params": {
-        "$accept": "363",
-        "$back": "137"
-      }
-    },
-    {
+        {
       "id": "281",
       "nextNodeId": "",
       "options": [
@@ -2367,22 +2307,7 @@
         }
       ]
     },
-    {
-      "id": "320",
-      "use": "quest_title",
-      "params": {
-        "$next": "321"
-      }
-    },
-    {
-      "id": "321",
-      "use": "quest_detail",
-      "params": {
-        "$accept": "477",
-        "$back": "233"
-      }
-    },
-    {
+        {
       "id": "322",
       "nextNodeId": "",
       "options": [
@@ -2492,22 +2417,7 @@
         }
       ]
     },
-    {
-      "id": "351",
-      "use": "quest_title",
-      "params": {
-        "$next": "352"
-      }
-    },
-    {
-      "id": "352",
-      "use": "quest_detail",
-      "params": {
-        "$accept": "478",
-        "$back": "240"
-      }
-    },
-    {
+       {
       "id": "353",
       "nextNodeId": "",
       "options": [
@@ -2700,22 +2610,7 @@
         }
       ]
     },
-    {
-      "id": "378",
-      "use": "quest_title",
-      "params": {
-        "$next": "379"
-      }
-    },
-    {
-      "id": "379",
-      "use": "quest_detail",
-      "params": {
-        "$accept": "536",
-        "$back": "289"
-      }
-    },
-    {
+       {
       "id": "380",
       "nextNodeId": "",
       "options": [
@@ -2809,22 +2704,7 @@
         }
       ]
     },
-    {
-      "id": "409",
-      "use": "quest_title",
-      "params": {
-        "$next": "410"
-      }
-    },
-    {
-      "id": "410",
-      "use": "quest_detail",
-      "params": {
-        "$accept": "537",
-        "$back": "294"
-      }
-    },
-    {
+        {
       "id": "411",
       "nextNodeId": "",
       "options": [
@@ -2918,22 +2798,7 @@
         }
       ]
     },
-    {
-      "id": "432",
-      "use": "quest_title",
-      "params": {
-        "$next": "433"
-      }
-    },
-    {
-      "id": "433",
-      "use": "quest_detail",
-      "params": {
-        "$accept": "541",
-        "$back": "299"
-      }
-    },
-    {
+       {
       "id": "434",
       "nextNodeId": "",
       "options": [
@@ -3027,22 +2892,7 @@
         }
       ]
     },
-    {
-      "id": "463",
-      "use": "quest_title",
-      "params": {
-        "$next": "464"
-      }
-    },
-    {
-      "id": "464",
-      "use": "quest_detail",
-      "params": {
-        "$accept": "542",
-        "$back": "304"
-      }
-    },
-    {
+       {
       "id": "465",
       "nextNodeId": "",
       "options": [
@@ -3145,7 +2995,7 @@
       "options": [
         {
           "$ref": "view_quest",
-          "targetNodeId": "586"
+          "targetNodeId": "554"
         },
         {
           "$ref": "use_item",
@@ -3182,7 +3032,7 @@
       "options": [
         {
           "$ref": "view_quest",
-          "targetNodeId": "586"
+          "targetNodeId": "554"
         },
         {
           "$ref": "use_item",
@@ -3219,7 +3069,7 @@
       "options": [
         {
           "$ref": "view_quest",
-          "targetNodeId": "586"
+          "targetNodeId": "554"
         },
         {
           "$ref": "use_item",
@@ -3245,22 +3095,7 @@
         }
       ]
     },
-    {
-      "id": "493",
-      "use": "quest_title",
-      "params": {
-        "$next": "494"
-      }
-    },
-    {
-      "id": "494",
-      "use": "quest_detail",
-      "params": {
-        "$accept": "560",
-        "$back": "359"
-      }
-    },
-    {
+        {
       "id": "495",
       "nextNodeId": "",
       "options": [
@@ -3286,7 +3121,7 @@
       "options": [
         {
           "$ref": "view_quest",
-          "targetNodeId": "586"
+          "targetNodeId": "554"
         },
         {
           "$ref": "use_item",
@@ -3323,7 +3158,7 @@
       "options": [
         {
           "$ref": "view_quest",
-          "targetNodeId": "586"
+          "targetNodeId": "554"
         },
         {
           "$ref": "use_item",
@@ -3360,7 +3195,7 @@
       "options": [
         {
           "$ref": "view_quest",
-          "targetNodeId": "586"
+          "targetNodeId": "554"
         },
         {
           "$ref": "use_item",
@@ -3386,22 +3221,7 @@
         }
       ]
     },
-    {
-      "id": "524",
-      "use": "quest_title",
-      "params": {
-        "$next": "525"
-      }
-    },
-    {
-      "id": "525",
-      "use": "quest_detail",
-      "params": {
-        "$accept": "561",
-        "$back": "362"
-      }
-    },
-    {
+        {
       "id": "526",
       "nextNodeId": "",
       "options": [
@@ -3422,7 +3242,7 @@
       "options": [
         {
           "$ref": "view_quest",
-          "targetNodeId": "586"
+          "targetNodeId": "554"
         },
         {
           "$ref": "use_item",
@@ -3497,7 +3317,7 @@
       "options": [
         {
           "$ref": "view_quest",
-          "targetNodeId": "586"
+          "targetNodeId": "554"
         },
         {
           "$ref": "use_item",
@@ -3566,21 +3386,7 @@
         }
       ]
     },
-    {
-      "id": "543",
-      "use": "quest_title",
-      "params": {
-        "$next": "544"
-      }
-    },
-    {
-      "id": "544",
-      "use": "quest_detail",
-      "params": {
-        "$accept": "584",
-        "$back": "476"
-      }
-    },
+   
     {
       "id": "545",
       "nextNodeId": "",
@@ -3600,22 +3406,7 @@
       ],
       "lines": []
     },
-    {
-      "id": "554",
-      "use": "quest_title",
-      "params": {
-        "$next": "555"
-      }
-    },
-    {
-      "id": "555",
-      "use": "quest_detail",
-      "params": {
-        "$accept": "585",
-        "$back": "586"
-      }
-    },
-    {
+       {
       "id": "560",
       "nextNodeId": "",
       "options": [
@@ -3647,22 +3438,7 @@
         }
       ]
     },
-    {
-      "id": "562",
-      "use": "quest_title",
-      "params": {
-        "$next": "563"
-      }
-    },
-    {
-      "id": "563",
-      "use": "quest_detail",
-      "params": {
-        "$accept": "591",
-        "$back": "535"
-      }
-    },
-    {
+        {
       "id": "564",
       "nextNodeId": "",
       "options": [
@@ -3677,22 +3453,7 @@
       ],
       "lines": []
     },
-    {
-      "id": "573",
-      "use": "quest_title",
-      "params": {
-        "$next": "574"
-      }
-    },
-    {
-      "id": "574",
-      "use": "quest_detail",
-      "params": {
-        "$accept": "592",
-        "$back": "540"
-      }
-    },
-    {
+       {
       "id": "575",
       "nextNodeId": "",
       "options": [
@@ -3802,8 +3563,9 @@
   ],
   "buttons": {
     "view_quest": {
-      "text": "1.-查看委托",
-      "callbackKey": "myd1_accept_quest"
+    "text": "1.-查看委托",
+    "callbackKey": "open_commission_panel",
+    "param": 1
     },
     "talk": {
       "text": "2.-选择搭话"
@@ -3821,7 +3583,8 @@
       "callbackKey": "open_special_commission"
     },
     "accept_quest": {
-      "text": "接取委托"
+      "text": "接取委托",
+      "callbackKey": "myd1_accept_quest"
     },
     "guide": {
       "text": "指路",
@@ -3924,41 +3687,6 @@
         {
           "$ref": "special_quest",
           "targetNodeId": "$special"
-        }
-      ]
-    },
-    "quest_title": {
-      "lines": [
-        {
-          "speaker": "委托名称",
-          "content": "【维护灾区】"
-        }
-      ],
-      "nextNodeId": "$next"
-    },
-    "quest_detail": {
-      "lines": [
-        {
-          "speaker": "委托描述",
-          "content": "【在几十年前的那次大型战争之后，过量的魔力污染了哈耳摩尼亚的许多角落。居民们出行普遍需要佩戴专用防具，魔物的肢体是制作此物的最佳材料。城主为此每年会雇佣一些冒险者讨伐魔物。"
-        },
-        {
-          "speaker": "委托描述",
-          "content": "目标需求：【待主策配置】"
-        },
-        {
-          "speaker": "委托描述",
-          "content": "报酬展示：【待主策配置】"
-        }
-      ],
-      "options": [
-        {
-          "$ref": "accept_quest",
-          "targetNodeId": "$accept"
-        },
-        {
-          "$ref": "back",
-          "targetNodeId": "$back"
         }
       ]
     },

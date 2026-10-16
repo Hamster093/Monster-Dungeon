@@ -302,7 +302,7 @@ public class TalkPanel : PanelBase, IPointerClickHandler
     }
 
     /// <summary>在历史内容末尾显示选项按钮</summary>
-    public void ShowOptions(List<DialogueOption> options, Action<DialogueOption> onSelected)
+    public void ShowOptions(List<DialogueOption> options, Func<DialogueOption, bool> onSelected)
     {
         if (_talkPanelRight == null)
         {
@@ -369,6 +369,7 @@ public class TalkPanel : PanelBase, IPointerClickHandler
 
     private void OnDescription()
     {
+        //点击了历史对话按钮，打开历史对话面板
         UIManager.Instance.Open<DialogueHistoryPanel>();
     }
 
@@ -464,4 +465,6 @@ public class TalkPanel : PanelBase, IPointerClickHandler
     }
 
     #endregion
+
+
 }

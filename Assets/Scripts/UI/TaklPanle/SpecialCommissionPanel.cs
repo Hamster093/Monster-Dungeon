@@ -142,4 +142,12 @@ public class SpecialCommissionPanel : PanelBase
     {
         UIManager.Instance.Close(this);
     }
+
+    public override void OnClose()
+    {
+        base.OnClose();
+
+        var controller = UIManager.Instance.Get<TalkPanel>()?.Dialogue;
+        controller?.ResumeCurrentNode();
+    }
 }

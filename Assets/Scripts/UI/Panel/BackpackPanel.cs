@@ -40,7 +40,9 @@ public class BackpackPanel : PanelBase
     public override void OnClose()
     {
         Time.timeScale = 1f;      
-        base.OnClose();          
+        base.OnClose();
+        var controller = UIManager.Instance.Get<TalkPanel>()?.Dialogue;
+        controller?.ResumeCurrentNode();
     }
 
     // 按 ESC 关闭背包，并消费这次 ESC

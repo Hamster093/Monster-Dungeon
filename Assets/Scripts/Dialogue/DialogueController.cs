@@ -19,6 +19,7 @@ public class DialogueController
     private DialogueData _currentData;
     private Dictionary<string, DialogueNode> _nodeDict;
     private string _currentStopNodeId;
+    private bool _waitingForExternal;//等待外部回调处理，用于接收委托等特殊情况，回调处理完后再继续播放下一节点
 
     //========对话回调相关========
     private bool _playingExtraLines;//正在播放返回的额外台词
@@ -203,34 +204,64 @@ public class DialogueController
     {
         _talkPanel.ShowOptions(options, option =>
         {
-            _talkPanel.RecordPlayerChoice(option.text);
-            HandleOptionSelected(option);
+            bool keep = HandleOptionSelected(option);
+
+            // 只有"真的推进/跳转"才记录选择，cancelJump 不记录
+            if (!keep)
+                _talkPanel.RecordPlayerChoice(option.text);
+
+            return keep;
         });
     }
+
+
 
     /// <summary>
     /// 处理选项选中事件：先尝试执行回调，若有额外台词则先播额外台词，否则直接跳转到目标节点
     /// </summary>
     /// <param name="option"></param>
-    private void HandleOptionSelected(DialogueOption option)
+    private bool HandleOptionSelected(DialogueOption option)
     {
         string targetId = option.targetNodeId;
 
-        // 有回调就先执行回调
         if (DialogueCallbackRegistry.TryInvoke(option.callbackKey, option, out var result))
         {
             if (!string.IsNullOrEmpty(result.targetNodeId))
                 targetId = result.targetNodeId;
 
-            // 有额外行 → 先播这些行，播完再跳
             if (result.extraLines != null && result.extraLines.Count > 0)
             {
                 PlayExtraLines(result.extraLines, targetId);
-                return;
+                return false;
             }
+
+            if (result.waitForExternal)
+            {
+                _waitingForExternal = true;   // ★ 关键
+                return false;
+            }
+
+            if (result.cancelJump) return true;
         }
 
         PlayFromNode(targetId);
+        return false;
+    }
+
+    /// <summary>外部（面板）通知：继续到指定节点</summary>
+    public void ContinueFromNode(string nodeId)
+    {
+        if (!_waitingForExternal) return;
+        _waitingForExternal = false;
+        PlayFromNode(nodeId);
+    }
+
+    /// <summary>外部（面板）通知：放弃，重放当前节点</summary>
+    public void ResumeCurrentNode()
+    {
+        if (!_waitingForExternal) return;
+        _waitingForExternal = false;
+        PlayFromNode(_currentStopNodeId);
     }
     /// <summary>
     /// 播放额外台词

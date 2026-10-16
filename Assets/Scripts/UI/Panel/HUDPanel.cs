@@ -73,6 +73,12 @@ public class HUDPanel : PanelBase
             ToggleBackpack();
         }
     }
+    public override void OnClose()
+    {
+        Debug.Log($"[HUDPanel] OnClose 调用栈:\n{System.Environment.StackTrace}");
+        base.OnClose();
+    }
+
 
     private void BindButtonClick(string buttonName,UnityAction action)
     {

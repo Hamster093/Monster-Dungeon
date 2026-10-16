@@ -21,6 +21,7 @@ public class DialogueOption
     [Tooltip("回调标识，运行时由业务注册对应逻辑")]
     public string callbackKey;   // 可为空
     public string tag;
+    public int param;
 }
 
 /// <summary>
@@ -74,4 +75,10 @@ public class DialogueOptionResult
     /// 要插入到对话流里的附加行（例如检定结果）
     /// </summary>
     public List<DialogueLine> extraLines;
+    /// <summary>
+    /// 是否等待外部事件完成后再继续对话（例如等待委托接取完成、动画播放完毕等）
+    /// </summary>
+    public bool waitForExternal;
+
+    public bool cancelJump;     //取消本次跳转，留在当前选项
 }

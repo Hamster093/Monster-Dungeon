@@ -23,6 +23,7 @@ public class DialogueCallbackBootstrap : MonoBehaviour
         { "refuse_guest",      OnRefuseGuest      },
         { "guide_check",       OnGuideCheck       },
         { "open_ui",           OnOpenUI },
+        { "open_commission_panel", OnOpenCommissionPanel },
     };
 
     // 每个 callbackKey 属于哪个功能
@@ -53,6 +54,8 @@ public class DialogueCallbackBootstrap : MonoBehaviour
 
         { "open_backpack",              "open_ui" },
         { "open_special_commission",    "open_ui" },
+
+        { "open_commission_panel", "open_commission_panel" },
     };
 
     void Awake()
@@ -108,13 +111,19 @@ public class DialogueCallbackBootstrap : MonoBehaviour
     {
         switch (option.callbackKey)
         {
-            case "myd1_final_check":         /* TODO */ break;
-            case "myd1_talk1_check":         /* TODO */ break;
-            case "myd1_talk2_check":         /* TODO */ break;
-            case "myd1_talk3_answer1_check": /* TODO */ break;
-            case "myd1_talk3_answer2_check": /* TODO */ break;
-            case "myd1_talk4_answer1_check": /* TODO */ break;
-            case "myd1_talk4_answer2_check": /* TODO */ break;
+            case "myd1_final_check":
+            case "myd1_talk1_check":
+            case "myd1_talk2_check":
+                if (!SystemManager.Instance.ActionPoint.Spend(1))
+                    return new DialogueOptionResult { cancelJump = true };
+                break;
+
+            case "myd1_talk3_answer1_check":
+            case "myd1_talk3_answer2_check":
+            case "myd1_talk4_answer1_check":
+            case "myd1_talk4_answer2_check":
+                /* TODO */
+                break;
         }
         return new DialogueOptionResult();
     }
@@ -132,8 +141,11 @@ public class DialogueCallbackBootstrap : MonoBehaviour
     {
         switch (option.callbackKey)
         {
-            case "myd1_talk3_begin": /* TODO */ break;
-            case "myd1_talk4_begin": /* TODO */ break;
+            case "myd1_talk3_begin": 
+            case "myd1_talk4_begin":
+                if (!SystemManager.Instance.ActionPoint.Spend(1))
+                    return new DialogueOptionResult { cancelJump = true };
+                break;
         }
         return new DialogueOptionResult();
     }
@@ -169,11 +181,33 @@ public class DialogueCallbackBootstrap : MonoBehaviour
         {
             case "open_backpack":
                 UIManager.Instance.Open<BackpackPanel>();
-                break;
+                return new DialogueOptionResult { waitForExternal = true };
+
             case "open_special_commission":
                 UIManager.Instance.Open<SpecialCommissionPanel>();
-                break;
+                return new DialogueOptionResult { waitForExternal = true };
+
+            case "open_commission_panel":
+                return OnOpenCommissionPanel(option);
         }
         return new DialogueOptionResult();
+    }
+
+    private static DialogueOptionResult OnOpenCommissionPanel(DialogueOption option)
+    {
+        Debug.Log("[OpenCommissionPanel] 被调用了");
+        int contractId = option.param > 0 ? option.param : 1;
+
+        var talkPanel = UIManager.Instance.Get<TalkPanel>();
+        var controller = talkPanel?.Dialogue;
+
+        var panel = UIManager.Instance.Open<CommissionPanel>(contractId);
+        if (panel == null)
+            return new DialogueOptionResult();
+
+        panel.SetOnAccepted(() => controller?.ContinueFromNode("73"));
+        panel.SetOnCancelled(() => controller?.ResumeCurrentNode());
+
+        return new DialogueOptionResult { waitForExternal = true };
     }
 }

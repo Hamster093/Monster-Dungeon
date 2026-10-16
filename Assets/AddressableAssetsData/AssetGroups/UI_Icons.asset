@@ -22,6 +22,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0ea94a6238c67f94ba573f8eb3e98f68
+    m_Address: Myth_day1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 19e6cb5df859f3545a0de6ec67aa1e97
     m_Address: Monster05
     m_ReadOnly: 0
@@ -94,11 +99,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: bfb81b320e34bbc4fb6bb8089bd0c67f
     m_Address: Monster14
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: c0a47e78ad7dd81418c82fd16ef18354
-    m_Address: Myth_day1
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

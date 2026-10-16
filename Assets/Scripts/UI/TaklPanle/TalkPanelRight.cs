@@ -84,12 +84,12 @@ public class TalkPanelRight :PanelBase
         AddItem(line);
         ScrollToBottom();
     }
-   
+
 
     /// <summary>
     /// 在历史内容末尾插入选项按钮
     /// </summary>
-    public void ShowOptions(List<DialogueOption> options, Action<DialogueOption> onSelected)
+    public void ShowOptions(List<DialogueOption> options, Func<DialogueOption, bool> onSelected)
     {
         ClearOptions();
         if (options == null || options.Count == 0) return;
@@ -102,11 +102,22 @@ public class TalkPanelRight :PanelBase
             var captured = opt;
             item.SetData(opt.text, () =>
             {
-                // 先禁用，再清空
+                // 先禁用所有选项，防重复点击
                 foreach (var o in _activeOptions)
                     if (o != null) o.SetInteractable(false);
-                ClearOptions();
-                onSelected?.Invoke(captured);
+
+                // 回调返回 true = 保留选项，false = 清空
+                bool keep = onSelected?.Invoke(captured) ?? false;
+
+                if (keep)
+                {
+                    foreach (var o in _activeOptions)
+                        if (o != null) o.SetInteractable(true);
+                }
+                else
+                {
+                    ClearOptions();
+                }
             });
 
             _activeOptions.Add(item);

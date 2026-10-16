@@ -37,8 +37,7 @@ public class DialogueOptionItem : MonoBehaviour
 
     private void HandleClick()
     {
-        var cb = _onClick;
-        _onClick = null;
-        cb?.Invoke();
+
+        _onClick?.Invoke();
     }
 }

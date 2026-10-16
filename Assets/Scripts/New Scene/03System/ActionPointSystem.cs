@@ -33,8 +33,13 @@ public class ActionPointSystem
     /// </summary>
     public bool Spend(int cost)
     {
-        if (!CanSpend(cost)) return false;
+        if (!CanSpend(cost)) 
+        {
+            ToastManager.Show("行动点不足");
+            return false;
+        }
         _runState.run.actionPoint -= cost;
+        TopBarRefreshEvent.Trigger();
         return true;
     }
     /// <summary>

@@ -26,7 +26,11 @@ public class CommissionPanel : PanelBase
     private ContractConfig _config;
 
     /// <summary>接受委托时触发，外部可注册做业务处理</summary>
-    public event Action<ContractConfig> OnAccept;
+    private Action _onAccepted;
+    private Action _onCancelled;
+
+    public void SetOnAccepted(Action cb) => _onAccepted = cb;
+    public void SetOnCancelled(Action cb) => _onCancelled = cb;
 
     public override void OnInit()
     {
@@ -49,7 +53,8 @@ public class CommissionPanel : PanelBase
         if (btn_AcceptCommission != null)
             btn_AcceptCommission.onClick.RemoveListener(OnAcceptClick);
 
-        OnAccept = null;
+        _onAccepted = null;
+        _onCancelled= null;
 
         base.OnDestroy();
     }
@@ -135,24 +140,36 @@ public class CommissionPanel : PanelBase
         if (_config == null) return;
 
         var sys = SystemManager.Instance?.DailyCommission;
-        if (sys == null)
-        {
-            Debug.LogError("[CommissionPanel] DailyCommission 为空", this);
-            return;
-        }
+        if (sys == null) return;
 
         int adventurerId = SystemManager.Instance.VisitSystem.CurrentVisitorId;
         sys.AddNormal(_config.id, adventurerId);
 
-        OnAccept?.Invoke(_config);
-
         ToastManager.Show("委托接取成功");
+
+        var cb = _onAccepted;
+        _onAccepted = null;
+        _onCancelled = null;
+        cb?.Invoke();
 
         UIManager.Instance.Close(this);
     }
 
     private void OnCloseClick()
     {
+        var cb = _onCancelled;
+        _onAccepted = null;
+        _onCancelled = null;
+        cb?.Invoke();
+
         UIManager.Instance.Close(this);
+    }
+
+    public override void OnClose()
+    {
+
+        _onAccepted = null;
+        _onCancelled = null;
+        base.OnClose();
     }
 }
