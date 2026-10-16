@@ -25,6 +25,31 @@ public class DialogueController
     private bool _playingExtraLines;//正在播放返回的额外台词
     private string _pendingNextNodeId;//待处理的下一个节点ID
 
+    private string _pendingStartKey;   // 待启动的下一位访客对话 key
+
+    /// <summary>
+    /// 访客间过渡台词提供者。参数 = 下一位访客的对话 key，返回 null/空表示不插过渡。
+    /// 外部（如 GameBootstrap）可注册，不注册则直接切下一位。
+    /// </summary>
+    public static Func<string, List<DialogueLine>> TransitionProvider = DefaultTransition;
+
+    private static List<DialogueLine> DefaultTransition(string nextKey)
+    {
+        return new List<DialogueLine>
+    {
+        new DialogueLine { speakerName = "旁白", content = "他离开了。" },
+        new DialogueLine { speakerName = "旁白", content = "门再次被推开，新的客人走了进来。" }
+    };
+    }
+
+    /// <summary>
+    /// 所有访客接待完毕、结算前的钩子。
+    /// 外部注册后，自行处理检定、总结、回访等，处理完调 controller.ContinueToSettlement()。
+    /// 未注册 = 直接 EndDialogue。
+    /// </summary>
+    public static Action<DialogueController> OnAllVisitorsFinished;
+    private Action _extraCompleteCallback;
+
     #region 生命周期（由 TalkPanel 调用）
 
     /// <summary>
@@ -153,6 +178,24 @@ public class DialogueController
             _playingExtraLines = false;
             string next = _pendingNextNodeId;
             _pendingNextNodeId = null;
+
+            if (next == "__START_NEXT__")//访客间过渡台词播完 → 继续下一位访客
+            {
+                string key = _pendingStartKey;
+                _pendingStartKey = null;
+                if (!string.IsNullOrEmpty(key)) StartDialogue(key);
+                else EndDialogue();
+                return;
+            }
+
+            if (next == "__REPORT_DONE__")  // 回访阶段播
+            {
+                var cb = _extraCompleteCallback;
+                _extraCompleteCallback = null;
+                cb?.Invoke();
+                return;
+            }
+
             if (!string.IsNullOrEmpty(next)) PlayFromNode(next);
             else EndDialogue();
             return;
@@ -192,12 +235,44 @@ public class DialogueController
             string key = vs.GetCurrentDialogueKey();
             if (!string.IsNullOrEmpty(key))
             {
-                StartDialogue(key);   // 复用同一个 controller，继续跑下一位
+                //  问外部有没有过渡台词
+                var transition = TransitionProvider?.Invoke(key);
+                if (transition != null && transition.Count > 0)
+                {
+                    PlayTransitionThenStart(transition, key);
+                }
+                else
+                {
+                    StartDialogue(key);
+                }
                 return;
             }
         }
+        //  无下一位访客 → 问外部有没有回访阶段
+        if (OnAllVisitorsFinished != null)
+        {
+            var handler = OnAllVisitorsFinished;
+            OnAllVisitorsFinished = null;   // 一次性
+            handler(this);
+            return;
+        }
 
-        EndDialogue();   // 当天结束 / 已触发 NextDayEvent → 关面板
+        EndDialogue();
+    }
+    private void PlayTransitionThenStart(List<DialogueLine> lines, string nextKey)
+    {
+        _playingExtraLines = true;
+        _pendingNextNodeId = "__START_NEXT__";   // 特殊标记
+        _pendingStartKey = nextKey;
+
+        _talkPanel.gameObject.SetActive(true);
+        _talkPanel.Init(lines);
+        _talkPanel.ResetDialogue();
+
+        _talkPanel.SetInstantText(true);         // 过渡不走打字机，快速过
+        _talkPanel.SetAutoCompleteAtEnd(false);  // 等玩家点击推进
+
+        _talkPanel.MoveNext();
     }
 
     private void ShowOptions(List<DialogueOption> options)
@@ -295,5 +370,35 @@ public class DialogueController
         });
     }
 
+    #endregion
+
+    #region 工具方法
+    /// <summary>
+    /// 往 TalkPanel 插一段线性对话，播完执行 onComplete。
+    /// 用于回访、总结、过渡等场景，不走 JSON 节点。
+    /// </summary>
+    public void PlayReportLines(List<DialogueLine> lines, Action onComplete)
+    {
+        if (lines == null || lines.Count == 0)
+        {
+            onComplete?.Invoke();
+            return;
+        }
+
+        _extraCompleteCallback = onComplete;
+        _playingExtraLines = true;
+        _pendingNextNodeId = "__REPORT_DONE__";
+
+        _talkPanel.gameObject.SetActive(true);
+        _talkPanel.Init(lines);
+        _talkPanel.ResetDialogue();
+        _talkPanel.SetInstantText(true);
+        _talkPanel.SetAutoCompleteAtEnd(false);   // 播完自动触发 OnTalkPanelComplete
+
+        _talkPanel.MoveNext();
+    }
+
+    /// <summary>回访阶段结束，继续走结算流程</summary>
+    public void ContinueToSettlement() => EndDialogue();
     #endregion
 }

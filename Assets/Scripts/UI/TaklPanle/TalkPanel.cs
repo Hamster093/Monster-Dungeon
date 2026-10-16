@@ -355,11 +355,25 @@ public class TalkPanel : PanelBase, IPointerClickHandler
     /// <summary>异步加载并设置角色头像</summary>
     private async void LoadAndSetPortraitAsync(int id)
     {
-        Sprite sp = await SpriteLoader.LoadAsync($"{id}_portrait");
+        var run = RunStateManager.Instance.run;
+        bool injured = run.adventurers.TryGetValue(id, out var adv)
+                       && adv != null
+                       && adv.isSeverelyInjured;
 
+        string name = GetIllustrationName(id);
+        string key = injured ? $"{name}_hurt" : $"{name}_idle";
+
+        Sprite sp = await SpriteLoader.LoadAsync(key);
         if (this == null || _archivePanel == null || _iconImage == null) return;
 
         _archivePanel.Refresh(id, sp);
+    }
+    private string GetIllustrationName(int id)
+    {
+        var cfg = ConfigDatabase.Instance.Adventurers.TryGetValue(id, out var c) ? c : null;
+        return cfg != null && !string.IsNullOrEmpty(cfg.IllustrationName)
+            ? cfg.IllustrationName
+            : id.ToString();
     }
 
     #endregion

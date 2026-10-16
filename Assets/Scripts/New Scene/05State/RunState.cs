@@ -9,6 +9,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 [Serializable]
 public class RunState
@@ -20,9 +21,55 @@ public class RunState
     public int actionPoint = 5;
     public int remainingDays;
     public int installmentPayment;
+    public int correctAnswerCount;// 本次来访已答话正确次数
+
+    /// <summary>
+    /// 累计答对次数
+    /// </summary>
+    public void AddCorrectAnswer()
+    {
+        correctAnswerCount++; 
+    }
+
+    public int GetCorrectAnswerCount()=> correctAnswerCount;
+    
 
     // 每个冒险者的运行状态，key = adventurerId
     public Dictionary<int, AdventurerRuntimeData> adventurers = new();
+    /// <summary>
+    /// 为当前访客增加指定属性值
+    /// </summary>
+    public void AddAdventurerStat(SevenDimension stat, int value)
+    {
+        ModifyCurrentVisitorStat(stat, value);
+    }
+    /// <summary>
+    /// 为当前访客减少指定属性值
+    /// </summary>
+    public void ReduceAdventurerStat(SevenDimension stat, int value)
+    {
+        ModifyCurrentVisitorStat(stat, -value);
+    }
+    /// <summary>
+    /// 内部统一修改逻辑，避免重复代码
+    /// </summary>
+    private void ModifyCurrentVisitorStat(SevenDimension stat, int delta)
+    {
+        int id = SystemManager.Instance.VisitSystem.GetCurrentVisitorId();
+
+        if (!adventurers.ContainsKey(id))
+        {
+            return;
+        }
+
+        adventurers[id].currentSevenStats[stat] += delta;
+        string action = delta >= 0 ? "增加" : "减少";
+    }
+
+    public int GetAdventurerRuntime( SevenDimension seven)=>adventurers[SystemManager.Instance.VisitSystem.GetCurrentVisitorId()].currentSevenStats[seven];
+    
+
+
 
     // 每只魔物的运行状态，key = monsterId
     public Dictionary<int, MonsterState> monsters = new();
@@ -71,6 +118,10 @@ public class AdventurerRuntimeData
     public List<string> historyDialogue = new();     // 历史对话
     public List<string> validInfo = new();           // 有效信息
     public List<string> investigationArchive = new(); // 已调查背景
+
+    // --- 伤势 ---
+    public bool isSeverelyInjured = false;   // 是否处于重伤状态
+    public int severeInjuryDelay = 0;        // 重伤恢复倒计时，0 = 已恢复
 
     // --- 属性 ---
     // 当前七维数值

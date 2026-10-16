@@ -7,6 +7,7 @@
 *****************************************************/
 
 using System.Collections.Generic;
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
 public class DailyCommissionSystem
@@ -17,7 +18,11 @@ public class DailyCommissionSystem
     public IReadOnlyList<CommissionEntry> NormalCommissions => _normalCommissions;
     public IReadOnlyList<CommissionEntry> SpecialCommissions => _specialCommissions;
 
+    private ConfigDatabase Config => ConfigDatabase.Instance;
+
     public bool IsEmpty => _normalCommissions.Count == 0 && _specialCommissions.Count == 0;
+
+    private readonly D20Service _d20 = new D20Service();
 
     // ============================================================
     //  Add 接口（接委托时调用）
@@ -66,6 +71,126 @@ public class DailyCommissionSystem
     // ============================================================
     //  结算
     // ============================================================
+
+    /// <summary>
+    /// 对队列里所有委托做检定：委托成败 + 战斗伤势 + 特殊委托属性提升
+    /// </summary>
+    public void ResolveAllChecks()
+    {
+        int correctCount = RunStateManager.Instance.run.GetCorrectAnswerCount();
+        int modifier = correctCount * 2;
+
+        Debug.Log($"[委托检定] ===== 开始，正确回答数={correctCount}，修正=+{modifier} =====");
+
+        ResolveQueue(_normalCommissions, modifier, isSpecial: false);
+        ResolveQueue(_specialCommissions, modifier, isSpecial: true);
+
+        Debug.Log("[委托检定] ===== 结束 =====");
+    }
+
+    private void ResolveQueue(List<CommissionEntry> list, int modifier, bool isSpecial)
+    {
+        var config = ConfigDatabase.Instance;
+
+        foreach (var entry in list)
+        {
+            var check = _d20.Check(11, modifier);
+            entry.completionRate = check.Success ? 1f : 0.5f;
+
+            string tag = isSpecial ? "特殊" : "普通";
+            string resultStr = check.Success ? "成功 → 100%" : "失败 → 50%";
+            string flag = check.IsCritical ? "【暴击】" : check.IsFumble ? "【大失败】" : "";
+
+            Debug.Log($"[委托检定] {tag} 委托{entry.contractId} 冒险者{entry.adventurerId} | " +
+                      $"骰={check.Roll} + 修正{modifier} = {check.Roll + modifier} | {flag}{resultStr}");
+
+            // 特殊委托成功 → 提升影响属性
+            if (isSpecial && check.Success)
+                ApplySpecialStatBonus(entry);
+
+            // 有目标委托 → 战斗伤势检定
+            if (config.Contracts.TryGetValue(entry.contractId, out var cfg)
+                && cfg != null
+                && cfg.targetMonsterId > 0)
+            {
+                var injury = CombatResolver.Resolve(entry.adventurerId, cfg.targetMonsterId);
+                ApplyInjury(entry.adventurerId, injury);
+            }
+        }
+    }
+
+    /// <summary>
+    /// 按 adventurerId 直接改属性，不依赖"当前访客"。
+    /// influenceStats 里每个属性 +1。
+    /// </summary>
+    private void ApplySpecialStatBonus(CommissionEntry entry)
+    {
+        if (entry == null || entry.statsApplied) return;
+        entry.statsApplied = true;
+
+        var config = ConfigDatabase.Instance;
+        if (config == null || config.Contracts == null) return;
+        if (!config.Contracts.TryGetValue(entry.contractId, out var cfg) || cfg == null) return;
+        if (cfg.influenceStats == null || cfg.influenceStats.Count == 0) return;
+
+        var run = RunStateManager.Instance?.run;
+        if (run == null || run.adventurers == null) return;
+        if (!run.adventurers.TryGetValue(entry.adventurerId, out var adv) || adv == null)
+        {
+            Debug.LogWarning($"[属性提升] 找不到冒险者 {entry.adventurerId}");
+            return;
+        }
+
+        foreach (var stat in cfg.influenceStats)
+        {
+            if (!adv.currentSevenStats.ContainsKey(stat))
+                adv.currentSevenStats[stat] = 0;
+
+            adv.currentSevenStats[stat] += 1;
+            Debug.Log($"[属性提升] 冒险者{entry.adventurerId} {GetStatName(stat)} +1 → 当前 {adv.currentSevenStats[stat]}");
+        }
+    }
+
+    private void ApplyInjury(int adventurerId, InjuryResult injury)
+    {
+        var run = RunStateManager.Instance.run;
+        if (!run.adventurers.TryGetValue(adventurerId, out var adv) || adv == null) return;
+
+        switch (injury)
+        {
+            case InjuryResult.Severe:
+                if (adv.isSeverelyInjured)
+                {
+                    adv.isDead = true;
+                    adv.isSeverelyInjured = false;
+                    adv.severeInjuryDelay = 0;
+                    Debug.Log($"[伤势] 冒险者{adventurerId} 重伤叠加 → 死亡");
+                }
+                else
+                {
+                    adv.isSeverelyInjured = true;
+                    adv.severeInjuryDelay = 2;   // 第 1 次受伤 → 第 3 次来访恢复
+                    Debug.Log($"[伤势] 冒险者{adventurerId} 进入重伤，还需 {adv.severeInjuryDelay} 次来访恢复");
+                }
+                break;
+
+            case InjuryResult.Light:
+                if (adv.isSeverelyInjured)
+                {
+                    adv.severeInjuryDelay = 2;   // 重伤延续
+                    Debug.Log($"[伤势] 冒险者{adventurerId} 重伤延续，重置倒计时");
+                }
+                else
+                {
+                    Debug.Log($"[伤势] 冒险者{adventurerId} 轻伤，忽略");
+                }
+                break;
+
+            case InjuryResult.None:
+                Debug.Log($"[伤势] 冒险者{adventurerId} 无伤");
+                break;
+        }
+    }
 
     public CommissionIncomeResult ComputeAll()
     {
@@ -134,6 +259,20 @@ public class DailyCommissionSystem
     {
         _normalCommissions.Clear();
         _specialCommissions.Clear();
+    }
+    private static string GetStatName(SevenDimension d)
+    {
+        switch (d)
+        {
+            case SevenDimension.Reason: return "理智";
+            case SevenDimension.Courage: return "勇气";
+            case SevenDimension.Piety: return "虔诚";
+            case SevenDimension.Tolerance: return "宽容";
+            case SevenDimension.Benevolence: return "仁爱";
+            case SevenDimension.Resolve: return "坚定";
+            case SevenDimension.Diligence: return "勤勉";
+            default: return d.ToString();
+        }
     }
 }
 

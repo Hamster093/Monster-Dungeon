@@ -25,6 +25,8 @@ public class VisitSystem : IDisposable
 
     public int CurrentDay => _runState.run.currentDay;
 
+    public int GetCurrentVisitorId() => CurrentVisitorId;
+
     /// <summary>当前访客变化时触发，参数为 id；-1 表示今日无访客/已接待完</summary>
     public event Action<int> OnCurrentVisitorChanged;
     /// <summary>今日最后一位接待完，即将推进下一天</summary>
@@ -56,7 +58,23 @@ public class VisitSystem : IDisposable
 
     private void OnVisitorsReady(List<int> ids)
     {
-        TodayVisitors = ids ?? new List<int>();
+        //  过滤掉已死亡的冒险者
+        var filtered = new List<int>();
+        if (ids != null)
+        {
+            foreach (var id in ids)
+            {
+                if (_runState.run.adventurers.TryGetValue(id, out var adv)
+                    && adv != null && adv.isDead)
+                {
+                    Debug.Log($"[访客] 冒险者{id} 已死亡，跳过来访");
+                    continue;
+                }
+                filtered.Add(id);
+            }
+        }
+
+        TodayVisitors = filtered;
         VisitorIndex = 0;
         NotifyCurrent();
     }
@@ -96,6 +114,8 @@ public class VisitSystem : IDisposable
         // 防重入
         if (TodayVisitors.Count == 0 || VisitorIndex >= TodayVisitors.Count)
             return false;
+        //  当前访客离开前，递减重伤倒计时
+        TickInjuryOnVisit(TodayVisitors[VisitorIndex]);
 
         VisitorIndex++;
 
@@ -111,5 +131,41 @@ public class VisitSystem : IDisposable
         OnDayVisitsFinished?.Invoke();
  
         return false;
+    }
+    /// <summary>访客离开时递减重伤倒计时。0 → 恢复</summary>
+    private void TickInjuryOnVisit(int adventurerId)
+    {
+        var run = _runState.run;
+        if (!run.adventurers.TryGetValue(adventurerId, out var adv) || adv == null) return;
+        if (!adv.isSeverelyInjured) return;
+
+        adv.severeInjuryDelay -= 1;
+        if (adv.severeInjuryDelay <= 0)
+        {
+            adv.isSeverelyInjured = false;
+            adv.severeInjuryDelay = 0;
+            Debug.Log($"[伤势] 冒险者{adventurerId} 重伤恢复");
+        }
+        else
+        {
+            Debug.Log($"[伤势] 冒险者{adventurerId} 仍重伤，还需 {adv.severeInjuryDelay} 次来访");
+        }
+    }
+    // ---------------- 拒绝 ----------------
+
+    /// <summary>玩家点"拒绝"时调用：重伤直接恢复</summary>
+    public void OnRefuseCurrentVisitor()
+    {
+        if (CurrentVisitorId < 0) return;
+
+        var run = _runState.run;
+        if (!run.adventurers.TryGetValue(CurrentVisitorId, out var adv) || adv == null) return;
+
+        if (adv.isSeverelyInjured)
+        {
+            adv.isSeverelyInjured = false;
+            adv.severeInjuryDelay = 0;
+            Debug.Log($"[拒绝] 冒险者{CurrentVisitorId} 因拒绝接待而恢复伤势");
+        }
     }
 }

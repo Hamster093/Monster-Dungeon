@@ -12,7 +12,10 @@ public class CommissionEntry
     public int contractId;              // 委托配置 ID
     public int adventurerId;            // 接这条委托的冒险者 ID
     [UnityEngine.Range(0f, 1f)]
-    public float completionRate = 1f;   // 检定结果，默认 100%
+    public float completionRate = 0.5f;   // ★ 默认改 0.5，等检定覆盖
+
+    [System.NonSerialized]
+    public bool statsApplied;             // ★ 防止重复加属性
 
     public CommissionEntry() { }
 

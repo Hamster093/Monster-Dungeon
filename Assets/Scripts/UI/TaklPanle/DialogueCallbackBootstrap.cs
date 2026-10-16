@@ -82,42 +82,46 @@ public class DialogueCallbackBootstrap : MonoBehaviour
     {
         switch (option.callbackKey)
         {
-            case "myd1_intro_mask1":           /* TODO */ break;
-            case "myd1_intro_archive_correct": /* TODO */ break;
-            case "myd1_talk3_answer3_check":   /* TODO */ break;
-            case "myd1_talk4_answer3_check":   /* TODO */ break;
+            case "myd1_intro_mask1":          
+            case "myd1_intro_archive_correct":
+            case "myd1_talk3_answer3_check":
+            case "myd1_talk4_answer3_check": 
+                RunStateManager.Instance.run.AddCorrectAnswer(); break;
+                
         }
         return new DialogueOptionResult();
     }
 
     // ─────────────── 改变属性（上升/下降，不掷骰） ───────────────
-    // 命中 key：myd1_final_firmness_up / myd1_final_tolerance_up
+    // 命中 key：myd1_final_firmness_up / myd1_final_tolerance_up 
     private static DialogueOptionResult OnChangeAttribute(DialogueOption option)
     {
         switch (option.callbackKey)
         {
-            case "myd1_final_firmness_up":  /* TODO：坚定上升 */ break;
-            case "myd1_final_tolerance_up": /* TODO：宽容上升 */ break;
+            case "myd1_final_firmness_up":   RunStateManager.Instance.run.AddAdventurerStat(SevenDimension.Resolve, 3); break;
+            case "myd1_final_tolerance_up":  RunStateManager.Instance.run.ReduceAdventurerStat(SevenDimension.Tolerance, 3); break;
         }
         return new DialogueOptionResult();
     }
+   
 
-    // ─────────────── 执行 D20，并按结果分支 ───────────────
-    // 命中 key：myd1_final_check
-    //           myd1_talk1_check / myd1_talk2_check
-    //           myd1_talk3_answer1_check / myd1_talk3_answer2_check
-    //           myd1_talk4_answer1_check / myd1_talk4_answer2_check
-    private static DialogueOptionResult OnRollD20Check(DialogueOption option)
+
+// ─────────────── 执行 D20，并按结果分支 ───────────────
+// 命中 key：myd1_final_check
+//           myd1_talk1_check / myd1_talk2_check
+//           myd1_talk3_answer1_check / myd1_talk3_answer2_check
+//           myd1_talk4_answer1_check / myd1_talk4_answer2_check
+private static DialogueOptionResult OnRollD20Check(DialogueOption option)
     {
         switch (option.callbackKey)
         {
-            case "myd1_final_check":
-            case "myd1_talk1_check":
+            case "myd1_talk1_check"://todo 检定
             case "myd1_talk2_check":
                 if (!SystemManager.Instance.ActionPoint.Spend(1))
                     return new DialogueOptionResult { cancelJump = true };
                 break;
 
+            case "myd1_final_check":
             case "myd1_talk3_answer1_check":
             case "myd1_talk3_answer2_check":
             case "myd1_talk4_answer1_check":
@@ -162,6 +166,7 @@ public class DialogueCallbackBootstrap : MonoBehaviour
     // ─────────────── 拒绝接待 ───────────────
     private static DialogueOptionResult OnRefuseGuest(DialogueOption option)
     {
+        SystemManager.Instance.VisitSystem.OnRefuseCurrentVisitor();//伤势回复
         //自动推进到下一位访客
         return new DialogueOptionResult();
     }
@@ -195,7 +200,7 @@ public class DialogueCallbackBootstrap : MonoBehaviour
 
     private static DialogueOptionResult OnOpenCommissionPanel(DialogueOption option)
     {
-        Debug.Log("[OpenCommissionPanel] 被调用了");
+
         int contractId = option.param > 0 ? option.param : 1;
 
         var talkPanel = UIManager.Instance.Get<TalkPanel>();

@@ -92,6 +92,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9d84bd38cedd3454f81e887c4fc83958
+    m_Address: Ferdia_day1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b63d4d2cfe3ebc047b28b9bf2c4766eb
     m_Address: Monster11
     m_ReadOnly: 0
@@ -104,6 +109,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c80d02d07d708524194c5c4eea96ce12
     m_Address: Monster09
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d3a6280f1bba6f9439b6cbfdc6d6511b
+    m_Address: Myth_hurt
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

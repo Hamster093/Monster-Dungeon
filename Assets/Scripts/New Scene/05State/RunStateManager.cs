@@ -13,7 +13,7 @@ public class RunStateManager
     private static RunStateManager _instance;
     /// <summary>
     /// 懒加载单例
-    /// </summary>
+    /// </summar
     public static RunStateManager Instance
     {
         get

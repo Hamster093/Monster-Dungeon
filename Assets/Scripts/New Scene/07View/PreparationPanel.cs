@@ -100,6 +100,11 @@ public class PreparationPanel : PanelBase
             return;
         }
 
+        if (UIManager.Instance.IsOpen<ShopPanel>())
+        {
+            UIManager.Instance.Close<ShopPanel>();
+        }
+
         var panel = UIManager.Instance.Open<TalkPanel>();
         panel.Dialogue.StartDialogue(key);
     }

@@ -895,7 +895,7 @@
         "$quest": "176",
         "$talk": "178",
         "$backpack": "89",
-        "$refuse": "180",
+        "$refuse": "70",
         "$special": "89"
       }
     },
@@ -982,7 +982,7 @@
         "$quest": "221",
         "$talk": "223",
         "$backpack": "95",
-        "$refuse": "225",
+        "$refuse": "70",
         "$special": "95"
       }
     },
@@ -1248,7 +1248,7 @@
         "$quest": "279",
         "$talk": "281",
         "$backpack": "137",
-        "$refuse": "283",
+        "$refuse": "70",
         "$special": "137"
       }
     },
@@ -1715,7 +1715,7 @@
         "$quest": "320",
         "$talk": "322",
         "$backpack": "233",
-        "$refuse": "324",
+        "$refuse": "70",
         "$special": "233"
       }
     },
@@ -1797,7 +1797,7 @@
         "$quest": "351",
         "$talk": "353",
         "$backpack": "240",
-        "$refuse": "355",
+        "$refuse": "70",
         "$special": "240"
       }
     },
@@ -2016,7 +2016,7 @@
         "$quest": "378",
         "$talk": "380",
         "$backpack": "289",
-        "$refuse": "382",
+        "$refuse": "70",
         "$special": "289"
       }
     },
@@ -2075,7 +2075,7 @@
         "$quest": "409",
         "$talk": "411",
         "$backpack": "294",
-        "$refuse": "413",
+        "$refuse": "70",
         "$special": "294"
       }
     },
@@ -2141,7 +2141,7 @@
         "$quest": "432",
         "$talk": "434",
         "$backpack": "299",
-        "$refuse": "436",
+        "$refuse": "70",
         "$special": "299"
       }
     },
@@ -2200,7 +2200,7 @@
         "$quest": "463",
         "$talk": "465",
         "$backpack": "304",
-        "$refuse": "467",
+        "$refuse": "70",
         "$special": "304"
       }
     },
@@ -2471,7 +2471,7 @@
         "$quest": "493",
         "$talk": "495",
         "$backpack": "359",
-        "$refuse": "497",
+        "$refuse": "70",
         "$special": "359"
       }
     },
@@ -2515,7 +2515,7 @@
         "$quest": "524",
         "$talk": "526",
         "$backpack": "362",
-        "$refuse": "528",
+        "$refuse": "70",
         "$special": "362"
       }
     },
@@ -2948,7 +2948,7 @@
         "$quest": "543",
         "$talk": "545",
         "$backpack": "476",
-        "$refuse": "547",
+        "$refuse": "70",
         "$special": "476"
       }
     },
@@ -3275,7 +3275,7 @@
         "$quest": "562",
         "$talk": "564",
         "$backpack": "535",
-        "$refuse": "566",
+        "$refuse": "70",
         "$special": "535"
       }
     },
@@ -3350,7 +3350,7 @@
         "$quest": "573",
         "$talk": "575",
         "$backpack": "540",
-        "$refuse": "577",
+        "$refuse": "70",
         "$special": "540"
       }
     },

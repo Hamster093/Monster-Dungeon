@@ -61,4 +61,5 @@ public class GameBootstrap : MonoBehaviour
         _inited = true;
 
     }
+
 }
