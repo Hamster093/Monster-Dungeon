@@ -131,6 +131,7 @@ public class DailySettlementPanel : PanelBase
     private bool _closedNotified;
     private void OnCloseClick()
     {
+        AudioManager.Instance.PlaySFX(AudioKeys.SFX_Back);
         if (_closedNotified) return;
         _closedNotified = true;
 

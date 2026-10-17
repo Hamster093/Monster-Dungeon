@@ -70,8 +70,18 @@ public class ItemSlot : MonoBehaviour ,IPointerClickHandler, IPointerEnterHandle
             return;
         }
         // ---------- 数量 ----------
-        _quantityText.enabled = stack.quantity > 1;
-        _quantityText.text = stack.quantity.ToString();
+        if (stack.quantity < 0)
+        {
+            // 负数代表无限
+            _quantityText.enabled = true;
+            _quantityText.text = "∞";
+        }
+        else
+        {
+            // 等于 1 或大于 1，都显示数字
+            _quantityText.enabled = true;
+            _quantityText.text = stack.quantity.ToString();
+        }
         // ---------- 图标 ----------
         string addr = stack.iconAddress;
 
@@ -126,7 +136,11 @@ public class ItemSlot : MonoBehaviour ,IPointerClickHandler, IPointerEnterHandle
 
     // ---------- 交互 ----------
     public void OnPointerClick(PointerEventData eventData)
-    {
+    {// ★ 只有在格子里有物品时，才播放点击音效
+        if (_stack != null && !_stack.IsEmpty)
+        {
+            AudioManager.Instance.PlaySFX(AudioKeys.SFX_Click);
+        }
         if (eventData.button == PointerEventData.InputButton.Left)
             OnLeftClick();
         else if (eventData.button == PointerEventData.InputButton.Right)
@@ -146,12 +160,41 @@ public class ItemSlot : MonoBehaviour ,IPointerClickHandler, IPointerEnterHandle
 
         if (_stack == null || _stack.IsEmpty) return;
 
-        if (_thisItemSelected)
+        OpenDescriptionPanel();
+    }
+
+    private void OpenDescriptionPanel()
+    {
+        var display = _stack.data;
+        if (display == null) return;
+
+        // 哪些物品"可用"？先白名单，后面换成 ItemConfig.useType
+        bool canUse = display.id == 7;
+
+        var args = new DescriptionPanelArgs
         {
-            // 使用逻辑
-            // InventoryModel.Instance.UseItem(SlotIndex);
-            
-        }
+            Item = display,
+            Level = null,                 // 背包物品无等级 -> 等级块自动隐藏
+            ShowUseButton = canUse,
+            UseButtonInteractable = canUse,
+            OnUse = () =>
+            {
+                if (InventoryModel.Instance.TryConsumeById(display.id, 1))
+                {
+                    Debug.Log($"[背包] 使用 {display.itemName}({display.id})");
+                    AudioManager.Instance.PlaySFX(AudioKeys.SFX_ItemUse); // ★ 成功使用道具
+                    UIManager.Instance.Close<DescriptionPanel>();
+                }
+                else
+                {
+                    AudioManager.Instance.PlaySFX(AudioKeys.SFX_Invalid); // ★ 使用失败（不可操作）
+                    Debug.LogWarning($"[背包] 使用失败 {display.itemName}({display.id})");
+                }
+            },
+        };
+
+        if (!UIManager.Instance.IsOpen<DescriptionPanel>())
+            UIManager.Instance.Open<DescriptionPanel>(args);
     }
     private void OnRightClick()
     {
@@ -173,9 +216,7 @@ public class ItemSlot : MonoBehaviour ,IPointerClickHandler, IPointerEnterHandle
     private void DropItem()
     {
         if (_stack == null || _stack.IsEmpty) return;
-
-        // 生成掉落物？TODO
-
+        AudioManager.Instance.PlaySFX(AudioKeys.SFX_GoldDown);
         //丢弃一个
         InventoryModel.Instance.RemoveItem(SlotIndex, 1);
         

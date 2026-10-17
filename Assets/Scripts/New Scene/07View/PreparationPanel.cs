@@ -99,7 +99,7 @@ public class PreparationPanel : PanelBase
             Debug.LogWarning("[PreparationPanel] 当前没有访客，无法开始接待");
             return;
         }
-
+        AudioManager.Instance.PlaySFX(AudioKeys.SFX_Confirm); // ★ 开始接待，用确认音效比较好
         if (UIManager.Instance.IsOpen<ShopPanel>())
         {
             UIManager.Instance.Close<ShopPanel>();
@@ -110,17 +110,23 @@ public class PreparationPanel : PanelBase
     }
 
     /// <summary>打开商店</summary>
-    private void OnShopClick() => ShopPanel.OpenItemShop();
+    private void OnShopClick()
+    {
+        AudioManager.Instance.PlaySFX(AudioKeys.SFX_Click); // ★ 打开商店
+        ShopPanel.OpenItemShop();
+    }
 
     /// <summary>进入深渊</summary>
     private void OnAbyssClick()
     {
+        AudioManager.Instance.PlaySFX(AudioKeys.SFX_Click); // ★ 打开深渊
         UIManager.Instance.Open<AbyssalAltarPanel>();
     }
 
     private void OnmonsterBackpack()
     {
-        ShopPanel.OpenMonsterStorage();//打开魔物商店
+        AudioManager.Instance.PlaySFX(AudioKeys.SFX_Click); // ★ 打开魔物仓库
+        ShopPanel.OpenMonsterStorage();
     }
 
     #endregion

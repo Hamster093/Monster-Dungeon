@@ -23,10 +23,18 @@ public class DecomposePanel : PanelBase
         // 左键：不响应
         _slot.OnLeftClickedOverride = _ => { };
         // 右键：退回棋盘
-        _slot.OnRightClickedOverride = _ => ReturnToBoard();
+        _slot.OnRightClickedOverride = _ =>
+        {
+            AudioManager.Instance.PlaySFX(AudioKeys.SFX_Back);
+            ReturnToBoard();
+        };
 
         _decomposeButton.onClick.AddListener(OnDecompose);
-        _closeButton.onClick.AddListener(() => UIManager.Instance.Close(this));
+        _closeButton.onClick.AddListener(() =>
+        {
+            AudioManager.Instance.PlaySFX(AudioKeys.SFX_Back);
+            UIManager.Instance.Close(this);
+        });
 
         Clear();
     }
@@ -39,6 +47,7 @@ public class DecomposePanel : PanelBase
 
     public override bool OnEscapePressed()
     {
+        AudioManager.Instance.PlaySFX(AudioKeys.SFX_Back); // ★ 按 ESC 关闭
         UIManager.Instance.Close(this);
         return true;
     }
@@ -93,6 +102,7 @@ public class DecomposePanel : PanelBase
             && ConfigDatabase.Instance.Items.TryGetValue(id, out var cfg))
         {
             SystemManager.Instance.Economy.AddCash(cfg.materialValue);
+            AudioManager.Instance.PlaySFX(AudioKeys.SFX_GoldUp);
         }
 
         if (_pendingItem.View != null)

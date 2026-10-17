@@ -15,12 +15,32 @@ public class MonsterInstance
     public string uid;        // 唯一 id
     public int monsterId;     // items.json 的 id（101~117）
 
+    public bool isEvolved;                         // 是否已进化
+    public EvolutionDirection evolutionDirection;  // 进化方向
+
     public MonsterInstance() { }
 
     public MonsterInstance(int monsterId)
     {
         this.uid = Guid.NewGuid().ToString("N");
         this.monsterId = monsterId;
+        this.isEvolved = false;
+        this.evolutionDirection = EvolutionDirection.None;
+    }
+
+    /// <summary>尝试进化。已进化返回 false。</summary>
+    public bool Evolve(EvolutionDirection dir)
+    {
+        if (isEvolved) return false;
+
+        isEvolved = true;
+        evolutionDirection = dir;
+
+        // TODO: 在这里发提升，比如最大生命值、攻击力等
+        // 如果是挂载组件的话，可以把魔物实例包裹一层，或者在这里加上属性字典
+        // Debug.Log($"[MonsterInstance] {uid} 进化方向：{dir}，数值提升中...");
+
+        return true;
     }
 }
 
@@ -40,7 +60,20 @@ public class MonsterStorageModel
         var inst = new MonsterInstance(monsterId);
         _items.Add(inst);
         OnChanged?.Invoke();
+        SaveSystem.Save(this);
         return inst;
+    }
+    //魔物回收方法
+    public void Reclaim(MonsterInstance inst)
+    {
+        if (inst == null) return;
+
+        // 防止重复添加
+        if (_items.Exists(m => m.uid == inst.uid)) return;
+
+        _items.Add(inst);
+        SaveSystem.Save(this);
+        OnChanged?.Invoke();
     }
 
     /// <summary>按 uid 精确移除</summary>
@@ -51,6 +84,7 @@ public class MonsterStorageModel
 
         _items.RemoveAt(idx);
         OnChanged?.Invoke();
+        SaveSystem.Save(this);
         return true;
     }
 

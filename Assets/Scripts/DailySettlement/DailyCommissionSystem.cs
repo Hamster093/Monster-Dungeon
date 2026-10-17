@@ -34,9 +34,16 @@ public class DailyCommissionSystem
         _normalCommissions.Add(entry);
     }
 
+    // ★ 新增：带实例的重载
+    public void AddNormal(int contractId, int adventurerId, MonsterInstance targetMonster, float completionRate = 1f)
+    {
+        _normalCommissions.Add(new CommissionEntry(contractId, adventurerId, targetMonster, completionRate));
+    }
+
+    // 保留原本不带实例的重载（有些无需战斗的委托用）
     public void AddNormal(int contractId, int adventurerId, float completionRate = 1f)
     {
-        _normalCommissions.Add(new CommissionEntry(contractId, adventurerId, completionRate));
+        _normalCommissions.Add(new CommissionEntry(contractId, adventurerId, null, completionRate));
     }
 
     public void AddSpecial(CommissionEntry entry)
@@ -45,10 +52,18 @@ public class DailyCommissionSystem
         _specialCommissions.Add(entry);
     }
 
+    // ★ 新增：带实例的重载
+    public void AddSpecial(int contractId, int adventurerId, MonsterInstance targetMonster, float completionRate = 1f)
+    {
+        _specialCommissions.Add(new CommissionEntry(contractId, adventurerId, targetMonster, completionRate));
+    }
+
+    // 保留原本不带实例的重载
     public void AddSpecial(int contractId, int adventurerId, float completionRate = 1f)
     {
-        _specialCommissions.Add(new CommissionEntry(contractId, adventurerId, completionRate));
+        _specialCommissions.Add(new CommissionEntry(contractId, adventurerId, null, completionRate));
     }
+
 
     /// <summary>
     /// 外部（检定系统）回调里用它来设置完成度
@@ -108,13 +123,11 @@ public class DailyCommissionSystem
             if (isSpecial && check.Success)
                 ApplySpecialStatBonus(entry);
 
-            // 有目标委托 → 战斗伤势检定
-            if (config.Contracts.TryGetValue(entry.contractId, out var cfg)
-                && cfg != null
-                && cfg.targetMonsterId > 0)
+            // ★ 核心修改：如果有指定魔物实例，进行战斗伤势检定
+            if (entry.targetMonster != null)
             {
-                var injury = CombatResolver.Resolve(entry.adventurerId, cfg.targetMonsterId);
-                ApplyInjury(entry.adventurerId, injury);
+                var result = CombatResolver.Resolve(entry.adventurerId, entry.targetMonster);
+                ApplyInjury(entry.adventurerId, result);
             }
         }
     }

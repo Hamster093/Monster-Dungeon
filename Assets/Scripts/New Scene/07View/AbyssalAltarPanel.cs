@@ -46,15 +46,21 @@ public class AbyssalAltarPanel : PanelBase
 
     public override bool OnEscapePressed()
     {
+        AudioManager.Instance.PlaySFX(AudioKeys.SFX_Back); // ★ 按 ESC 关闭
         UIManager.Instance.Close(this);
         return true;
     }
 
     // ---------- 按钮回调 ----------
-    private void OnNewMonsterClick() => ShopPanel.OpenMonsterShop();
+    private void OnNewMonsterClick()
+    {
+        AudioManager.Instance.PlaySFX(AudioKeys.SFX_Click); // ★ 打开商店点击音效
+        ShopPanel.OpenMonsterShop();
+    }
 
     private void OnReturnClick()
     {
+        AudioManager.Instance.PlaySFX(AudioKeys.SFX_Click); // ★ 打开分解面板点击音效
         // 打开分解面板
         Debug.Log("[AbyssalAltarPanel] 打开分解面板1");
         UIManager.Instance.Open<DecomposePanel>();
@@ -62,6 +68,7 @@ public class AbyssalAltarPanel : PanelBase
 
     private void OnClosePanelClick()
     {
+        AudioManager.Instance.PlaySFX(AudioKeys.SFX_Back); // ★ 关闭面板音效
         // 顺手关掉分解窗口，避免它独立残留
         UIManager.Instance.Close<DecomposePanel>();
         UIManager.Instance.Close(this);

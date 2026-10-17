@@ -26,8 +26,8 @@ public static class BoardIncomeCalculator
     }
 
     private static int ComputeSingle(ItemView view, BackpackBoard board,
-                                     TileAffinityConfig tileConfig,
-                                     MonsterIncomeConfig incomeConfig)
+                                 TileAffinityConfig tileConfig,
+                                 MonsterIncomeConfig incomeConfig)
     {
         if (view == null || view.Item == null || view.Item.Def == null) return 0;
         if (!int.TryParse(view.Item.Def.Id, out int monsterId)) return 0;
@@ -37,9 +37,15 @@ public static class BoardIncomeCalculator
         if (entry == null) return 0;
 
         MonsterType selfType = GetMonsterType(monsterId);
-        int income = entry.baseIncome;   // 进化后换成 evolvedIncome
 
-        // ② 相邻魔物收益（可反复计算：每个邻居都独立加一次）
+        // ★ 核心修改：判断是否进化，选择对应的基础收益
+        int income = entry.baseIncome;
+        if (view.Item.Instance != null && view.Item.Instance.isEvolved)
+        {
+            income = entry.evolvedIncome;
+        }
+
+        // ② 相邻魔物收益（不变）
         foreach (var neighbor in GetAdjacentMonsters(view.Item, board))
         {
             if (!int.TryParse(neighbor.Def.Id, out int nid)) continue;
@@ -47,11 +53,11 @@ public static class BoardIncomeCalculator
             income += (nType == selfType) ? IncomeSameType : IncomeDiffType;
         }
 
-        // ③ 相邻地块收益（同种地块只算一次）
+        // ③ 相邻地块收益（不变）
         var seenTiles = new HashSet<SpecialTileType>();
         foreach (var tile in GetAdjacentSpecialTiles(view.Item, board))
         {
-            if (!seenTiles.Add(tile)) continue;          // 已算过这种地块就跳过
+            if (!seenTiles.Add(tile)) continue;
             if (tileConfig.IsAdapted(tile, selfType))
                 income += tileConfig.GetAdaptedIncome(tile);
         }

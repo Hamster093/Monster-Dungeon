@@ -22,6 +22,16 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0acba4431073f9d4f97b29e201a17b77
+    m_Address: SanctuaryEarring
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0af9e776e02feec4e997a21328b0ac0e
+    m_Address: ShatteredBoneScroll
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 0ea94a6238c67f94ba573f8eb3e98f68
     m_Address: Myth_day1
     m_ReadOnly: 0
@@ -44,6 +54,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2f596431c3871104589e51e38889e234
     m_Address: Monster08
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 404999412e307a345aeba093bc2cfaa5
+    m_Address: SoulLens
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -72,6 +87,16 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 61bd0edc82b7d184c8a2a69b5b7535fc
+    m_Address: AbyssalResidue
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6904490933c45b54ba20008524772e32
+    m_Address: Monster16
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 69daa3b931b98c84f93604727de73b91
     m_Address: Monster06
     m_ReadOnly: 0
@@ -97,8 +122,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b4b2d43fd388e374a8a6f388949894f7
+    m_Address: MindAwakeningPotion
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b63d4d2cfe3ebc047b28b9bf2c4766eb
     m_Address: Monster11
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ba6c79866fc538f4b992a6f1a0facda5
+    m_Address: LuckyCoin
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -122,6 +157,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e4e63f4e026505d4a9ce9a0bc8cf1b98
+    m_Address: Monster17
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: eb192bb1a1d93ac47a2db449d369ced0
     m_Address: Monster15
     m_ReadOnly: 0
@@ -129,6 +169,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f0e4f0ec778d63a4d8b9ef7ef9f9eb65
     m_Address: 1_portrait
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f568b74def5365e4e8f34e9e051ef2e1
+    m_Address: ApologyGiftBox
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

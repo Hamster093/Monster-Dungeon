@@ -108,31 +108,48 @@ public class HUDPanel : PanelBase
 
         private void ToggleBackpack()
     {
-        // 已打开就关闭，没打开就打开
         if (UIManager.Instance.IsOpen<BackpackPanel>())
+        {
+            AudioManager.Instance.PlaySFX(AudioKeys.SFX_Back); // ★ 关闭背包
             UIManager.Instance.Close<BackpackPanel>();
+        }
         else
+        {
+            AudioManager.Instance.PlaySFX(AudioKeys.SFX_Click); // ★ 打开背包
             UIManager.Instance.Open<BackpackPanel>();
+        }
     }
 
     /// <summary>设置面板（同样做成开关式）</summary>
     private void ToggleSettings()
     {
         if (UIManager.Instance.IsOpen<SettingsPanel>())
+        {
+            AudioManager.Instance.PlaySFX(AudioKeys.SFX_Back); // ★ 关闭设置
             UIManager.Instance.Close<SettingsPanel>();
+        }
         else
+        {
+            AudioManager.Instance.PlaySFX(AudioKeys.SFX_Click); // ★ 打开设置
             UIManager.Instance.Open<SettingsPanel>();
+        }
     }
 
     /// <summary>历史记录（由 TalkPanel 提供的静态入口）</summary>
     private void OpenDialogueHistory()
     {
-
         if (!UIManager.Instance.IsOpen<TalkPanel>()) return;
+
         if (UIManager.Instance.IsOpen<DialogueHistoryPanel>())
+        {
+            AudioManager.Instance.PlaySFX(AudioKeys.SFX_Back); // ★ 关闭历史
             UIManager.Instance.Close<DialogueHistoryPanel>();
+        }
         else
+        {
+            AudioManager.Instance.PlaySFX(AudioKeys.SFX_Click); // ★ 打开历史
             UIManager.Instance.Open<DialogueHistoryPanel>();
+        }
     }
 
     /// <summary>人物档案（由 TalkPanel 提供的静态入口）</summary>
@@ -144,6 +161,7 @@ public class HUDPanel : PanelBase
             Debug.LogWarning("[HUDPanel] 场景中不存在 TalkPanel，无法打开角色档案");
             return;
         }
+        // 音效在 TalkPanel.ToggleCharacterArchive 内部已经处理
         talkPanel.ToggleCharacterArchive();
     }
 

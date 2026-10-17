@@ -32,6 +32,21 @@ public enum MonsterType
     Construct,  // 构造类
     Dragon,     // 龙
 }
+
+/// <summary>
+/// 进化方向
+/// </summary>
+public enum EvolutionDirection
+{
+    None,           // 未进化
+    Aggressive,     // 激进
+    Cautious,       // 慎重
+    Arrogant,       // 狂妄
+    Conservative,   // 保守
+    Timid,          // 胆小
+    Chaotic,        // 混乱
+    Evil,           // 邪恶
+}
 /// <summary>
 /// 物品类型枚举。用于区分道具在玩法中的功能分类。
 /// </summary>

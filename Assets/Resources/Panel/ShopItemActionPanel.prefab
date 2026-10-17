@@ -188,7 +188,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 9de9091435bf48649bd418300e82e9e8, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7cee0900338073d4ca2d716a1a44bae6, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -213,6 +213,7 @@ MonoBehaviour:
   _examineButton: {fileID: 8436849192664922437}
   _buyButton: {fileID: 354534864523385985}
   _buttonOffset: {x: 200, y: -50}
+  _fixedPosition: {x: 624, y: 745}
 --- !u!1 &8110769971425789750
 GameObject:
   m_ObjectHideFlags: 0

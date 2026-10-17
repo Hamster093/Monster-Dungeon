@@ -21,6 +21,14 @@ public class CommissionPanel : PanelBase
     [SerializeField] private Button btn_AcceptCommission;
     [SerializeField] private Button CloseButton;
 
+    private RectTransform _originalBoardParent;
+    private Vector2 _originalBoardPos;
+    private PlacedItem _selectedMonsterItem;
+    private bool _isSelectingTarget = false;
+    private Transform _originalParent;
+    private Vector2 _originalPos;
+
+
     public override bool IsModal => true;
 
     private ContractConfig _config;
@@ -43,6 +51,19 @@ public class CommissionPanel : PanelBase
             btn_AcceptCommission.onClick.AddListener(OnAcceptClick);
         else
             Debug.LogError("[CommissionPanel] btn_AcceptCommission 未赋值!", this);
+    }
+    private void OnEnable()
+    {
+        // 订阅右键事件
+        if (BackpackBoard.Instance != null)
+            BackpackBoard.Instance.OnItemRightClicked += OnBoardRightClick;
+    }
+
+    private void OnDisable()
+    {
+        // 退订
+        if (BackpackBoard.Instance != null)
+            BackpackBoard.Instance.OnItemRightClicked -= OnBoardRightClick;
     }
 
     public override void OnDestroy()
@@ -98,6 +119,7 @@ public class CommissionPanel : PanelBase
 
     public override bool OnEscapePressed()
     {
+        AudioManager.Instance.PlaySFX(AudioKeys.SFX_Back); // ★ 按 ESC 退出音效
         UIManager.Instance.Close(this);
         return true;
     }
@@ -135,28 +157,51 @@ public class CommissionPanel : PanelBase
 
     // ───────────── 按钮回调 ─────────────
 
+    // 玩家点击“接受”按钮
     private void OnAcceptClick()
     {
-        if (_config == null) return;
+        if (!_isSelectingTarget)
+        {
+            _isSelectingTarget = true;
+            AudioManager.Instance.PlaySFX(AudioKeys.SFX_Click); // ★ 点击进入选怪模式音效
+            var boardRoot = BackpackBoard.Instance.BoardUIRoot;
 
-        var sys = SystemManager.Instance?.DailyCommission;
-        if (sys == null) return;
+            // 1. 记录原父节点和坐标
+            _originalParent = boardRoot.parent;
+            _originalPos = boardRoot.anchoredPosition;
 
-        int adventurerId = SystemManager.Instance.VisitSystem.CurrentVisitorId;
-        sys.AddNormal(_config.id, adventurerId);
+            // 2. 借到顶层，居中（false 表示相对新父节点计算，不保留原世界坐标）
+            boardRoot.SetParent(UIManager.Instance.LayerTop, false);
+            boardRoot.anchoredPosition = Vector2.zero;
+            boardRoot.SetAsLastSibling();
 
-        ToastManager.Show("委托接取成功");
+            // 锁定拖拽，订阅右键...
+            BackpackBoard.Instance.AllowDrag = false;
+            BackpackBoard.Instance.AllowClick = false;
 
-        var cb = _onAccepted;
-        _onAccepted = null;
-        _onCancelled = null;
-        cb?.Invoke();
+            ToastManager.Show("请右键点击棋盘上的魔物作为指路目标");
 
-        UIManager.Instance.Close(this);
+            return;
+        }
+    }
+
+
+    // 玩家在棋盘上右键了
+    private void OnBoardRightClick(PlacedItem item)
+    {
+        if (item.Instance == null) return; // 不是魔物，忽略
+        AudioManager.Instance.PlaySFX(AudioKeys.SFX_Confirm); // ★ 选中目标音效
+        // 记录选中的魔物
+        _selectedMonsterItem = item;
+        ToastManager.Show($"已选中：魔物 {item.Instance.uid}，正在为您接取委托...");
+
+        // 立即执行接取！
+        ExecuteAccept();
     }
 
     private void OnCloseClick()
     {
+        AudioManager.Instance.PlaySFX(AudioKeys.SFX_Back); // ★ 点关闭/取消按钮音效
         var cb = _onCancelled;
         _onAccepted = null;
         _onCancelled = null;
@@ -171,5 +216,67 @@ public class CommissionPanel : PanelBase
         _onAccepted = null;
         _onCancelled = null;
         base.OnClose();
+        // 如果玩家没选怪就关面板
+        if (_isSelectingTarget)
+        {
+            RestoreBoard();
+        }
+    }
+
+    private void ExecuteAccept()
+    {
+        var sys = SystemManager.Instance?.DailyCommission;
+        if (sys == null) return;
+
+        int adventurerId = SystemManager.Instance.VisitSystem.CurrentVisitorId;
+
+        // 塞入委托系统
+        sys.AddNormal(_config.id, adventurerId, _selectedMonsterItem.Instance);
+        AudioManager.Instance.PlaySFX(AudioKeys.SFX_CheckSuccess);
+        ToastManager.Show("委托接取成功");
+
+        // ★ 还原棋盘状态
+        RestoreBoard();
+
+        // 恢复面板透明度（如果有改的话）
+        // GetComponent<CanvasGroup>().alpha = 1f;
+
+        // 回调并关闭面板
+        var cb = _onAccepted;
+        _onAccepted = null;
+        _onCancelled = null;
+        cb?.Invoke();
+
+        UIManager.Instance.Close(this);
+    }
+    // ==========================================
+    // 4. 还原棋盘（独立方法，成功/取消时调用）
+    // ==========================================
+    private void RestoreBoard()
+    {
+        _isSelectingTarget = false;
+        _selectedMonsterItem = null;
+
+        if (_originalParent == null) return;
+
+        var boardRoot = BackpackBoard.Instance.BoardUIRoot;
+
+        // 1. 塞回原处并恢复坐标
+        boardRoot.SetParent(_originalParent, false);
+        boardRoot.anchoredPosition = _originalPos;
+
+        // 2. 恢复面板
+        var cg = GetComponent<CanvasGroup>();
+        if (cg != null)
+        {
+            cg.alpha = 1f;
+            cg.blocksRaycasts = true;
+        }
+
+        // 3. 退订、恢复交互
+        BackpackBoard.Instance.AllowDrag = true;
+        BackpackBoard.Instance.OnItemRightClicked -= OnBoardRightClick;
+
+        _originalParent = null;
     }
 }

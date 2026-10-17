@@ -98,7 +98,25 @@ public class ShopSlotDragger : MonoBehaviour,
 
             // 1. 先生成到棋盘
             var shape = Panel.GetSlotShape(SlotIndex);
-            var newItem = Board.CreateItemOnBoard(shape, _targetOrigin, _rotation, ItemViewPrefab);
+            var cfg = Panel.GetSlotConfig(SlotIndex);
+            var existingInst = Panel.GetSlotInstance(SlotIndex);
+
+            MonsterInstance instance = null;
+            if (existingInst != null)
+            {
+                // 如果是仓库拖出来的，直接复用原实例，保留进化状态
+                instance = existingInst;
+            }
+            else if (cfg != null && !string.IsNullOrEmpty(cfg.shapeId))
+            {
+                // 如果是商店买的，就新建实例
+                instance = new MonsterInstance(cfg.id);
+                Debug.Log($"[Dragger] 商店购买新实例 uid={instance.uid}");
+            }
+
+            var newItem = Board.CreateItemOnBoard(
+                shape, _targetOrigin, _rotation, ItemViewPrefab, instance);
+
             if (newItem == null) return;
 
             // 2. 生成成功再扣钱；扣钱失败则回滚

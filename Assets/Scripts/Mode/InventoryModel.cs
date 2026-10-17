@@ -112,4 +112,48 @@ public class InventoryModel
 
         data.onResult?.Invoke(leftover);
     }
+
+    /// <summary>查询某物品的总数量（跨槽位）</summary>
+    public int GetItemCount(int itemId)
+    {
+        int total = 0;
+        for (int i = 0; i < _slots.Length; i++)
+        {
+            var slot = _slots[i];
+            if (!slot.IsEmpty && slot.data.id == itemId)
+                total += slot.quantity;
+        }
+        return total;
+    }
+
+    /// <summary>是否拥有足够数量</summary>
+    public bool HasItem(int itemId, int count = 1)
+    {
+        return count > 0 && GetItemCount(itemId) >= count;
+    }
+
+    /// <summary>
+    /// 按物品 id 消耗（跨槽位）。
+    /// 数量不足时整体失败，不会扣一半。
+    /// </summary>
+    public bool TryConsumeById(int itemId, int count = 1)
+    {
+        if (count <= 0) return false;
+        if (GetItemCount(itemId) < count) return false;
+
+        int remain = count;
+        for (int i = 0; i < _slots.Length && remain > 0; i++)
+        {
+            var slot = _slots[i];
+            if (slot.IsEmpty || slot.data.id != itemId) continue;
+
+            int take = Mathf.Min(slot.quantity, remain);
+            slot.quantity -= take;
+            remain -= take;
+            if (slot.quantity <= 0) slot.Clear();
+        }
+
+        BackpackChanged.Trigger();   
+        return true;
+    }
 }

@@ -60,6 +60,9 @@ public class ShopPanel : PanelBase
     [SerializeField] private List<int> _itemShopIds = new();
     [SerializeField] private List<int> _monsterShopIds = new();
 
+    //  运行时库存缓存（商品ID -> 当前库存）
+    private static readonly Dictionary<int, int> _runtimeStocks = new Dictionary<int, int>();
+
     [Header("拖拽配置")]
     [SerializeField] private ItemView _itemViewPrefab;
     [SerializeField] private float _cellSize;
@@ -134,7 +137,11 @@ public class ShopPanel : PanelBase
 
         if (_closeButton != null)
         {
-            _closeButton.onClick.AddListener(() => UIManager.Instance.Close(this));
+            _closeButton.onClick.AddListener(() =>
+            {
+                AudioManager.Instance.PlaySFX(AudioKeys.SFX_Back); // ★ 关闭/返回音效
+                UIManager.Instance.Close(this);
+            });
         }
 
         StartCoroutine(PreloadOwnIcons());   // 预加载图标
@@ -288,7 +295,9 @@ public class ShopPanel : PanelBase
             return;
         }
 
-        //  仓库模式：按实例列表构建
+        // ==========================================
+        // 模式 1：仓库模式（固定数量 1）
+        // ==========================================
         if (_freeMode && _customMonsters != null)
         {
             foreach (var inst in _customMonsters)
@@ -304,15 +313,18 @@ public class ShopPanel : PanelBase
                 {
                     config = cfg,
                     data = data,
+                    // ★ 仓库里的魔物都是 1 只，直接传 1
                     stack = new ItemStack { data = data, quantity = 1 },
                     stock = 1,
-                    instance = inst,   // ★ 绑定实例
+                    instance = inst,
                 });
             }
             return;
         }
 
-        // 商店模式
+        // ==========================================
+        // 模式 2：商店模式（无限或有限库存）
+        // ==========================================
         var sourceIds = _currentCategory == ShopCategory.Item ? _itemShopIds : _monsterShopIds;
         foreach (var id in sourceIds)
         {
@@ -323,12 +335,22 @@ public class ShopPanel : PanelBase
             }
 
             var data = ItemData.FromConfig(cfg);
+
+            // ★ 如果缓存里没有，说明是第一次打开，用配置的初始库存
+            if (!_runtimeStocks.ContainsKey(cfg.id))
+            {
+                _runtimeStocks[cfg.id] = cfg.stock;
+            }
+
+            int currentStock = _runtimeStocks[cfg.id];
+            int displayQuantity = currentStock < 0 ? -1 : currentStock;
+
             _slots.Add(new ShopSlot
             {
                 config = cfg,
                 data = data,
-                stack = new ItemStack { data = data, quantity = 1 },
-                stock = cfg.stock,
+                stack = new ItemStack { data = data, quantity = displayQuantity },
+                stock = currentStock, // 使用缓存的库存
             });
         }
     }
@@ -353,7 +375,11 @@ public class ShopPanel : PanelBase
     {
         foreach (var s in _slots)
             if (s.config.restockPerPhase > 0)
+            {
                 s.stock = s.config.restockPerPhase;
+                _runtimeStocks[s.config.id] = s.stock; // ★ 补货时同步重置缓存
+            }
+
 
         RefreshAll();
     }
@@ -486,6 +512,7 @@ public class ShopPanel : PanelBase
         var slot = GetSlot(index);
         if (slot == null || slot.stock == 0) return;
 
+        AudioManager.Instance.PlaySFX(AudioKeys.SFX_Click); // ★ 通用点击音效
         // 魔物：左键只弹详情，不参与选中
         if (slot.config.type == ItemType.Monster)
         {
@@ -514,6 +541,8 @@ public class ShopPanel : PanelBase
 
         if (slot.config.type == ItemType.Monster) return;
 
+        AudioManager.Instance.PlaySFX(AudioKeys.SFX_Click); // ★ 通用点击音效
+
         UIManager.Instance.Open<ShopItemActionPanel>(new ShopActionData
         {
             data = slot.data,
@@ -532,7 +561,11 @@ public class ShopPanel : PanelBase
         var cfg = slot.config;
 
         // 1. 先扣钱（返回值 false = 现金不够）
-        if (!SystemManager.Instance.Economy.SpendCash(cfg.price)) return;
+        if (!SystemManager.Instance.Economy.SpendCash(cfg.price))
+        {
+            AudioManager.Instance.PlaySFX(AudioKeys.SFX_Invalid); // ★ 失败：金钱不足
+            return;
+        }
 
         // 2. 再进背包
         int remain = InventoryModel.Instance.AddItem(
@@ -542,12 +575,17 @@ public class ShopPanel : PanelBase
         {
             Debug.Log("背包满了");
             Refund(cfg);       // 退款
+            AudioManager.Instance.PlaySFX(AudioKeys.SFX_Invalid); // ★ 失败：背包已满
             return;
         }
 
         // 3. 减库存（-1 表示无限）
-        if (slot.stock > 0) slot.stock--;
-
+        if (slot.stock > 0)
+        {
+            slot.stock--;
+            _runtimeStocks[cfg.id] = slot.stock; // 同步写回缓存
+        }
+        AudioManager.Instance.PlaySFX(AudioKeys.SFX_GoldDown); // ★ 成功：扣除金币/购买成功
         DeselectAllSlots();
         RefreshAll();
     }
@@ -578,15 +616,31 @@ public class ShopPanel : PanelBase
             if (!MonsterStorageModel.Instance.RemoveByUid(slot.instance.uid)) return false;
 
             SwitchToStorage();   // 重建 + 刷新
+            AudioManager.Instance.PlaySFX(AudioKeys.SFX_Confirm); // ★ 成功：从仓库拿出
             return true;
         }
 
         // 商店模式：扣钱
-        if (!SystemManager.Instance.Economy.SpendCash(cfg.price)) return false;
-        if (slot.stock > 0) slot.stock--;
+        if (!SystemManager.Instance.Economy.SpendCash(cfg.price))
+        {
+            AudioManager.Instance.PlaySFX(AudioKeys.SFX_Invalid); // ★ 失败：金钱不足
+            return false;
+        }
+        if (slot.stock > 0)
+        {
+            slot.stock--;
+            _runtimeStocks[cfg.id] = slot.stock; // 同步写回缓存
+        }
+        AudioManager.Instance.PlaySFX(AudioKeys.SFX_GoldDown); // ★ 成功：扣除金币
         DeselectAllSlots();
         RefreshAll();
         return true;
+    }
+    /// <summary>给拖拽器用：获取槽位绑定的运行时实例（仓库模式才有）</summary>
+    public MonsterInstance GetSlotInstance(int index)
+    {
+        var s = GetSlot(index);
+        return s?.instance;
     }
 
     /// <summary>库存是否允许购买</summary>
@@ -622,7 +676,7 @@ public class ShopPanel : PanelBase
     #endregion
 
 
-    #region 给 ShopSlotDragger 的访问接口
+    #region 给 外部 的访问接口
 
     /// <summary>给 ShopSlotDragger 拿数据用</summary>
     public ItemData GetSlotData(int index)
@@ -636,7 +690,11 @@ public class ShopPanel : PanelBase
         var s = GetSlot(index);
         return s?.data?.shape;
     }
-
+    public ItemConfig GetSlotConfig(int index)
+    {
+        var s = GetSlot(index);
+        return s?.config;
+    }
     #endregion
 
 

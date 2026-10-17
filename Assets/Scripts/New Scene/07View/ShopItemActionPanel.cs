@@ -59,6 +59,7 @@ public class ShopItemActionPanel : PanelBase
 
     public override bool OnEscapePressed()
     {
+        AudioManager.Instance.PlaySFX(AudioKeys.SFX_Back); // ★ 关闭面板
         UIManager.Instance.Close(this);
         return true;
     }
@@ -68,7 +69,7 @@ public class ShopItemActionPanel : PanelBase
     private void OnViewClick()
     {
         if (_currentData?.data == null) return;
-
+        AudioManager.Instance.PlaySFX(AudioKeys.SFX_Click); // ★ 查看物品
         UIManager.Instance.Open<DescriptionPanel>(_currentData.data);
         UIManager.Instance.Close(this);
     }

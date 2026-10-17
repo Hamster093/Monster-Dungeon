@@ -212,6 +212,7 @@ public class DialogueHistoryPanel : PanelBase
 
     private void OnCloseClick()
     {
-        UIManager.Instance.Close(this);
+        UIManager.Instance.Close(this); 
+        AudioManager.Instance.PlaySFX(AudioKeys.SFX_GoldUp);
     }
 }

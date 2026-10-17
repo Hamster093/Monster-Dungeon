@@ -52,6 +52,9 @@ public class SystemManager
         DailyCommission = new DailyCommissionSystem();
         DailyDebrief = new DailyDebriefSystem(RunState, VisitSystem);
 
+        //棋盘魔物存档数据
+        SaveSystem.Load(MonsterStorageModel.Instance);
+
         // 5. 让各系统自己注册事件
         Schedule.Init();
         Schedule.RefreshScheduleData();

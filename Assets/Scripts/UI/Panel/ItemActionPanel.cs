@@ -58,6 +58,7 @@ public class ItemActionPanel : PanelBase
 
     public override bool OnEscapePressed()
     {
+        AudioManager.Instance.PlaySFX(AudioKeys.SFX_Back); // ★ 丢弃物品音效（可用返回声替代）
         UIManager.Instance.Close(this);
         return true;
     }
@@ -67,7 +68,7 @@ public class ItemActionPanel : PanelBase
     private void OnViewClick()
     {
         if (_currentData == null) return;
-
+        AudioManager.Instance.PlaySFX(AudioKeys.SFX_Click); // ★ 打开详情音效
         UIManager.Instance.Open<DescriptionPanel>(_currentData.data);
 
         UIManager.Instance.Close(this); // 查看后关掉操作面板
@@ -75,6 +76,7 @@ public class ItemActionPanel : PanelBase
 
     private void OnDropClick()
     {
+        AudioManager.Instance.PlaySFX(AudioKeys.SFX_Back); // ★ 丢弃物品音效（可用返回声替代）
         _currentData?.onDrop?.Invoke();
         UIManager.Instance.Close(this);
     }

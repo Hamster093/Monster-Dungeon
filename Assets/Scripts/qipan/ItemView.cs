@@ -7,13 +7,14 @@
 *****************************************************/
 
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(RectTransform))]
 public class ItemView : MonoBehaviour,
-    IBeginDragHandler, IDragHandler, IEndDragHandler
+    IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
 {
     [Header("配置")]
     public ItemShapeDefinition Def;
@@ -31,7 +32,19 @@ public class ItemView : MonoBehaviour,
     [Header("拖拽表现")]
     public float DragAlpha = 0.85f;
 
+    [Header("交互遮罩")]
+    [Tooltip("遮罩小方块的预制体，留空则用半透黑 Image 自动创建")]
+    public GameObject MaskCellPrefab;
+
+    [Tooltip("遮罩颜色")]
+    public Color MaskColor = new Color(0f, 0f, 0f, 0.55f);
+
+    private readonly List<GameObject> _maskCells = new List<GameObject>();
+    private bool _isInteracted;
+
+
     private int _originalRotation;   // 拖拽开始时的旋转
+
 
     public bool IsGhost;// 幽灵/预览用，不参与棋盘登记
 
@@ -85,13 +98,21 @@ public class ItemView : MonoBehaviour,
 
     /// <summary>外部初始化（拖到场景里做测试也可直接在 Inspector 填 Def）</summary>
     public void Init(ItemShapeDefinition def, BackpackBoard board,
-                 int rotation = 0, Vector2Int? preferredOrigin = null)
+                 int rotation = 0, Vector2Int? preferredOrigin = null,
+                 MonsterInstance instance = null,     
+                 bool interacted = false)
     {
+
         Def = def;
         Board = board;
         if (Board != null) Board.RegisterItem(this);
 
-        _item = new PlacedItem(def) { View = this, Rotation = rotation };
+        _item = new PlacedItem(def)
+        {
+            View = this,
+            Rotation = rotation,
+            Instance = instance,       
+        };
         Rebuild();
 
         // 决定落点
@@ -154,14 +175,48 @@ public class ItemView : MonoBehaviour,
                 var img = go.GetComponent<Image>();
                 if (img != null)
                 {
-                    img.color = Def.Color;
-                    img.raycastTarget = true; // 让点击/拖拽冒泡到 ItemView
+                    img.raycastTarget = true;
+
+                    // 判断是否进化
+                    bool isEvolved = _item != null && _item.Instance != null && _item.Instance.isEvolved;
+
+                    if (isEvolved)
+                    {
+                        // 进化状态
+                        if (Def.EvolvedSprite != null)
+                        {
+                            img.sprite = Def.EvolvedSprite;
+                            img.color = Color.white;
+                        }
+                        else
+                        {
+                            // 没配进化图，就兜底用普通图
+                            img.sprite = Def.NormalSprite;
+                            img.color = Def.NormalSprite != null ? Color.white : Def.Color;
+                        }
+                    }
+                    else
+                    {
+                        // 未进化状态（默认也用图片）
+                        if (Def.NormalSprite != null)
+                        {
+                            img.sprite = Def.NormalSprite;
+                            img.color = Color.white;
+                        }
+                        else
+                        {
+                            // 没配图，用纯色兜底
+                            img.sprite = null;
+                            img.color = Def.Color;
+                        }
+                    }
                 }
             }
             else
             {
                 go.SetActive(false);
             }
+            RefreshMask();
         }
     }
 
@@ -188,6 +243,9 @@ public class ItemView : MonoBehaviour,
 
     public void OnBeginDrag(PointerEventData e)
     {
+
+        if (IsGhost) return;
+        if (Board == null || !Board.AllowDrag) return;
 
         if (Board == null) return;
         if (_item == null) _item = new PlacedItem(Def) { View = this };
@@ -288,17 +346,21 @@ public class ItemView : MonoBehaviour,
                 return;
             }
 
-            if (int.TryParse(_item.Def.Id, out int id))
+            // 把原来的实例塞回去
+            if (_item.Instance != null)
             {
-                MonsterStorageModel.Instance.Add(id);   // ★ 内部生成新实例
-                Board.RemoveItem(_item);
-                shop.SwitchToStorage();
-                Destroy(gameObject);
+                MonsterStorageModel.Instance.Reclaim(_item.Instance);
             }
             else
             {
-                Debug.LogWarning($"[ItemView] Def.Id 非数字，无法退回：{_item.Def.Id}");
+                // 兜底：老物品没实例的情况
+                if (int.TryParse(_item.Def.Id, out int id))
+                    MonsterStorageModel.Instance.Add(id);
             }
+
+            Board.RemoveItem(_item);
+            shop.SwitchToStorage();
+            Destroy(gameObject);
             return;
         }
         // 处理落点
@@ -336,10 +398,10 @@ public class ItemView : MonoBehaviour,
             var cell = Board.GetCell(c);
             if (cell == null || cell.Image == null) continue;
 
-            var original = cell.Image.color;
+            // 透明度直接写死 0.8f
             var tint = valid
-                ? new Color(0.4f, 1f, 0.4f, original.a)
-                : new Color(1f, 0.4f, 0.4f, original.a);
+                ? new Color(0.4f, 1f, 0.4f, 0.8f)
+                : new Color(1f, 0.4f, 0.4f, 0.8f);
             cell.Image.color = tint;
             _highlighted.Add(cell);
         }
@@ -400,6 +462,173 @@ public class ItemView : MonoBehaviour,
                 parentRect, e.position, e.pressEventCamera, out var lp))
         {
             _rect.localPosition = lp - _grabPixelOffset;
+        }
+    }
+    /// <summary>
+    /// 点击的失散代码
+    /// </summary>
+    /// <param name="e"></param>
+    public void OnPointerClick(PointerEventData e)
+    {
+        if (Vector2.Distance(e.pressPosition, e.position) > 10f) return;
+        if (IsGhost) return;
+
+        // 拦截右键点击
+        if (e.button == PointerEventData.InputButton.Right)
+        {
+            // 通知棋盘，我右键了一个魔物
+            BackpackBoard.Instance.NotifyItemRightClicked(_item);
+            return;
+        }
+        //左键点击逻辑
+        if (Board == null || !Board.AllowClick) return;
+        if (_isInteracted) return;
+
+        var inst = _item.Instance;
+        if (inst == null)
+        {
+            Debug.Log($"[点击] {_item.Def.DisplayName}（无运行时实例）");
+            Board.NotifyItemClicked(_item);
+            return;
+        }
+
+        var db = ConfigDatabase.Instance;
+        MonsterConfig cfg = null;
+        ItemConfig icfg = null;
+        if (db != null)
+        {
+            db.Monsters?.TryGetValue(inst.monsterId, out cfg);
+            db.Items?.TryGetValue(inst.monsterId, out icfg);
+        }
+
+        // 用工厂从 ItemConfig 生成展示用 ItemData
+        ItemData display;
+        if (icfg != null)
+        {
+            display = ItemData.FromConfig(icfg);
+        }
+        else
+        {
+            // 兜底：没有 Items 配置时不崩，名字用运行时数据
+            display = new ItemData
+            {
+                id = inst.monsterId,
+                itemName = cfg != null ? cfg.name : _item.Def.DisplayName,
+                description = "（无描述）",
+                iconAddress = null,
+                shapeId = null,
+            };
+        }
+
+        if (cfg != null && !string.IsNullOrEmpty(cfg.name))
+            display.itemName = cfg.name;
+
+        var args = new DescriptionPanelArgs
+        {
+            Item = display,
+            Level = cfg != null ? cfg.level.ToString() : null,
+
+            // 如果已经进化过，就不显示按钮了
+            ShowUseButton = !inst.isEvolved,
+
+            OnUse = () =>
+            {
+                // 1. 拦截已进化
+                if (inst.isEvolved)
+                {
+                    Debug.LogWarning("[进化] 该魔物已经进化过了");
+                    return;
+                }
+
+                // 2. 尝试消耗进化道具（id=7）
+                if (!BackpackPanel.TryConsumeItem(7))
+                {
+                    Debug.LogWarning("[进化] 缺少进化道具(id=7)，进化失败");
+                    return;
+                }
+
+                // 3. 消耗成功，开始进化
+                // 随机获取一个非 None 的进化方向
+                var dirs = (EvolutionDirection[])System.Enum.GetValues(typeof(EvolutionDirection));
+                EvolutionDirection chosenDir = EvolutionDirection.Aggressive; // 默认兜底
+                if (dirs.Length > 1)
+                {
+                    // 跳过下标 0（None），随机选一个方向
+                    chosenDir = dirs[Random.Range(1, dirs.Length)];
+                }
+
+                // 4. 修改实例状态并发提升
+                if (inst.Evolve(chosenDir))
+                {
+                    ToastManager.Show($"[进化成功] 魔物ID {inst.monsterId} 进化方向：{chosenDir}");
+                    Rebuild();
+
+                    // 顺便把面板关掉，免得玩家重复点击
+                    UIManager.Instance.Close<DescriptionPanel>();
+                }
+            },
+
+            UseButtonInteractable = true,
+        };
+
+        if (!UIManager.Instance.IsOpen<DescriptionPanel>())
+            UIManager.Instance.Open<DescriptionPanel>(args);
+
+        Board.NotifyItemClicked(_item);
+    }
+
+
+    public bool IsInteracted => _isInteracted;
+
+    private void RefreshMask()
+    {
+        if (Def == null) return;
+        if (_item == null) _item = new PlacedItem(Def) { View = this };
+
+        var shape = Def.GetNormalizedShape(_item.Rotation);
+
+        // 补齐遮罩格子
+        while (_maskCells.Count < shape.Length)
+        {
+            GameObject go;
+            if (MaskCellPrefab != null)
+            {
+                go = Instantiate(MaskCellPrefab, _rect);
+            }
+            else
+            {
+                go = new GameObject("MaskCell", typeof(RectTransform), typeof(Image));
+                go.transform.SetParent(_rect, false);
+                var img = go.GetComponent<Image>();
+                img.color = MaskColor;
+                img.raycastTarget = false;
+            }
+
+            var r = go.GetComponent<RectTransform>();
+            r.pivot = new Vector2(0f, 0f);
+            r.anchorMin = new Vector2(0f, 0f);
+            r.anchorMax = new Vector2(0f, 0f);
+
+            _maskCells.Add(go);
+        }
+
+        for (int i = 0; i < _maskCells.Count; i++)
+        {
+            var go = _maskCells[i];
+            if (i < shape.Length && _isInteracted)
+            {
+                go.SetActive(true);
+                go.transform.SetAsLastSibling();   // 保证盖在 shapeCells 上面
+                var r = go.GetComponent<RectTransform>();
+                r.sizeDelta = new Vector2(CellSize, CellSize);
+                r.anchoredPosition = new Vector2(
+                    shape[i].x * (CellSize + Spacing),
+                    shape[i].y * (CellSize + Spacing));
+            }
+            else
+            {
+                go.SetActive(false);
+            }
         }
     }
 

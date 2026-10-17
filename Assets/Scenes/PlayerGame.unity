@@ -207,7 +207,7 @@ GameObject:
   m_Component:
   - component: {fileID: 192524680}
   - component: {fileID: 192524679}
-  - component: {fileID: 192524678}
+  - component: {fileID: 192524681}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -215,14 +215,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &192524678
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 192524677}
-  m_Enabled: 1
 --- !u!20 &192524679
 Camera:
   m_ObjectHideFlags: 0
@@ -289,6 +281,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &192524681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 192524677}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a437cfbdc5866d2469ebce48a91b243b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  masterVolume: 1
+  musicVolume: 1
+  sfxVolume: 1
+  isMusicOn: 1
+  isSfxOn: 1
 --- !u!1 &460048973
 GameObject:
   m_ObjectHideFlags: 0
@@ -1167,6 +1176,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22073967904ff1d4faaa3a91f893d444, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LayerTop: {fileID: 4444889650255731597}
   _configs:
   - panelName: NamePanel
     prefab: {fileID: 870810134307260015, guid: d4481c3b25605b242a9920b9d936ca67, type: 3}

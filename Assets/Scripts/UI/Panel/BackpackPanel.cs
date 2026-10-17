@@ -48,6 +48,7 @@ public class BackpackPanel : PanelBase
     // 按 ESC 关闭背包，并消费这次 ESC
     public override bool OnEscapePressed()
     {
+        AudioManager.Instance.PlaySFX(AudioKeys.SFX_Back); // ★ 按 ESC 关闭音效
         UIManager.Instance.Close(this);
         return true;
     }
@@ -72,6 +73,18 @@ public class BackpackPanel : PanelBase
         foreach (var slot in _itemSlots)
             slot.SetSelected(false);
     }
+    public static bool TryConsumeItem(int itemId, int count = 1)
+    {
+        // 尝试消耗
+        bool success = InventoryModel.Instance.TryConsumeById(itemId, count);
 
-  
+        // ★ 如果消耗成功，播放道具使用音效
+        if (success)
+        {
+            AudioManager.Instance.PlaySFX(AudioKeys.SFX_ItemUse);
+        }
+
+        return success;
+    }
+
 }

@@ -32,6 +32,7 @@ public class GameBootstrap : MonoBehaviour
     {
         // 3. 生成今日来客手动触发一次
         NextDayEvent.Trigger();//放在start 因为ReceptionPanel要先注册事件
+        AudioManager.Instance.PlayBGM(AudioKeys.AMB_Dungeon);
     }
 
     private void OnDestroy()

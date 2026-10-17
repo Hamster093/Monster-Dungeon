@@ -28,7 +28,13 @@ public class SpecialCommissionDetailPanel : MonoBehaviour
     private void Awake()
     {
         if (_acceptButton != null) _acceptButton.onClick.AddListener(OnAcceptClick);
-        if (_closeButton != null) _closeButton.onClick.AddListener(Hide);
+        //点击关闭时，先播返回音效，再执行隐藏
+        if (_closeButton != null)
+            _closeButton.onClick.AddListener(() =>
+            {
+                AudioManager.Instance.PlaySFX(AudioKeys.SFX_Back);
+                Hide();
+            });
 
         gameObject.SetActive(false);
     }
@@ -62,6 +68,7 @@ public class SpecialCommissionDetailPanel : MonoBehaviour
     private void OnAcceptClick()
     {
         if (_config == null) return;
+        AudioManager.Instance.PlaySFX(AudioKeys.SFX_Click); // ★ 点击接取音效
         _onAccept?.Invoke(_config);
     }
 

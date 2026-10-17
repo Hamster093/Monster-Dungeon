@@ -14,9 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Id: 107
   DisplayName: "\u5730\u72F1\u72AC"
-  Color: {r: 0.8078432, g: 0.47058827, b: 0.34901962, a: 1}
+  NormalSprite: {fileID: 21300000, guid: b778581ed9feccd42a5d124f63205ae0, type: 3}
+  EvolvedSprite: {fileID: 0}
   Shape:
   - {x: 0, y: 0}
   - {x: 1, y: 0}
   - {x: 2, y: 0}
   CanRotate: 1
+  Color: {r: 0.8078432, g: 0.47058827, b: 0.34901962, a: 1}

@@ -231,6 +231,7 @@ public class TalkPanel : PanelBase, IPointerClickHandler
         if (Typewriter != null && Typewriter.IsTyping)
         {
             Typewriter.Skip();
+            AudioManager.Instance.PlaySFX(AudioKeys.SFX_Click);
             return;
         }
 
@@ -241,6 +242,7 @@ public class TalkPanel : PanelBase, IPointerClickHandler
         }
 
         PlayCurrentLine();
+        AudioManager.Instance.PlaySFX(AudioKeys.SFX_Click); // ★ 推进对话音效
         _lastAdvanceTime = Time.unscaledTime;
     }
 
@@ -375,6 +377,17 @@ public class TalkPanel : PanelBase, IPointerClickHandler
             ? cfg.IllustrationName
             : id.ToString();
     }
+    private async void LoadAndSetArchiveAsync(int id)
+    {
+        string key = $"{id}_portrait";
+
+        Sprite sp = await SpriteLoader.LoadAsync(key);
+
+        if (this == null || _archivePanel == null) return;
+
+        // 传给档案面板
+        _archivePanel.Refresh(id, sp);
+    }
 
     #endregion
 
@@ -383,6 +396,7 @@ public class TalkPanel : PanelBase, IPointerClickHandler
 
     private void OnDescription()
     {
+        AudioManager.Instance.PlaySFX(AudioKeys.SFX_Click); // ★ 点击历史对话
         //点击了历史对话按钮，打开历史对话面板
         UIManager.Instance.Open<DialogueHistoryPanel>();
     }
@@ -399,6 +413,11 @@ public class TalkPanel : PanelBase, IPointerClickHandler
         }
 
         bool willShow = !leftDisplayArea.activeSelf;
+        // ★ 区分打开和关闭的音效
+        if (willShow)
+            AudioManager.Instance.PlaySFX(AudioKeys.SFX_Click); // 打开档案
+        else
+            AudioManager.Instance.PlaySFX(AudioKeys.SFX_Back);  // 关闭档案
         leftDisplayArea.SetActive(willShow);
 
         if (willShow)
@@ -412,7 +431,7 @@ public class TalkPanel : PanelBase, IPointerClickHandler
             if (_archivePanel != null)
                 _archivePanel.Refresh(id, _iconImage != null ? null : null);
             // 异步加载头像，不阻塞UI切换
-            LoadAndSetPortraitAsync(id);
+            LoadAndSetArchiveAsync(id);
         }
     }
    
@@ -431,6 +450,7 @@ public class TalkPanel : PanelBase, IPointerClickHandler
     /// <summary>补写最后一句 + 触发完成事件</summary>
     private void CompleteDialogue()
     {
+
         FlushLastLine();
         OnDialogueComplete?.Invoke();
     }
@@ -463,6 +483,7 @@ public class TalkPanel : PanelBase, IPointerClickHandler
 
     public void RecordPlayerChoice(string buttonText)
     {
+        AudioManager.Instance.PlaySFX(AudioKeys.SFX_Confirm); // ★ 选中选项音效
         //  当前面板的每日历史
         _historyView.AppendChoice(buttonText);
 

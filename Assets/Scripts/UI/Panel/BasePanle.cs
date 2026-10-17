@@ -32,6 +32,7 @@ public abstract class PanelBase : MonoBehaviour, IPanel
     {
         IsOpen = false;
         gameObject.SetActive(false);
+        AudioManager.Instance.PlaySFX(AudioKeys.SFX_Click);
     }
 
     public virtual void OnRefresh(object data = null) { }

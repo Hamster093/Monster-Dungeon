@@ -14,12 +14,23 @@ public class ItemShapeDefinition : ScriptableObject
 {
     public string Id = "item";
     public string DisplayName = "Item";
-    public Color Color = Color.white;
 
+    [Header("图片配置")]
+    [Tooltip("未进化的普通图片")]
+    public Sprite NormalSprite;
+
+    [Tooltip("进化后的图片（留空则用普通图片）")]
+    public Sprite EvolvedSprite;
+
+    [Header("形状配置")]
     [Tooltip("以 (0,0) 为基准的占格偏移，可以不在第一象限，代码会自动归一化")]
     public Vector2Int[] Shape = { Vector2Int.zero };
 
     public bool CanRotate = true;
+
+    [Header("兜底颜色")]
+    [Tooltip("如果图片都没配，用这个纯色兜底")]
+    public Color Color = Color.white;
 
     private Dictionary<int, Vector2Int[]> _cache;
 

@@ -32,6 +32,11 @@ public class UIPanelManager : MonoBehaviour
     [SerializeField] private Button btn_close_load_game;
     [SerializeField] private Button[] btn_save_slots;          // 5个存档槽位的按钮数组
 
+    [Header("音乐引用")]
+    public AudioClip mainMenuBGM;
+    [Header("音效配置")]
+    public AudioClip btnClickSfx; 
+
     private void Awake()
     {
         BindButtons();
@@ -39,6 +44,20 @@ public class UIPanelManager : MonoBehaviour
         CloseAllPanels(); // 初始化时确保状态正确
         pnl_start_game.SetActive(true); // 默认显示主面板
     }
+    private void Start()
+    {
+        // 播放 BGM
+        AudioManager.Instance.PlayBGM(AudioKeys.AMB_Dungeon);
+    }
+    /// <summary>播放按钮点击音效</summary>
+    private void PlayClick()
+    {
+        if (btnClickSfx != null && AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlaySFX(AudioKeys.SFX_Click);
+        }
+    }
+
 
     /// <summary>
     /// 绑定所有按钮点击事件
@@ -46,28 +65,30 @@ public class UIPanelManager : MonoBehaviour
     private void BindButtons()
     {
         // 主面板
-        btn_close_settings.onClick.AddListener(() => TogglePanel(pnl_settings, false));
-        btn_start_game.onClick.AddListener(() => StartGame.Instance.StartNewGame());
-        btn_continue_game.onClick.AddListener(() => StartGame.Instance.ContinueGame());
-        btn_settings.onClick.AddListener(() => TogglePanel(pnl_settings, true));
+        // ★ 修复了你原来这行最后多出来的一个逗号
+        btn_close_settings.onClick.AddListener(() => {PlayClick(); TogglePanel(pnl_settings, false); });
+        btn_start_game.onClick.AddListener(() => { PlayClick(); StartGame.Instance.StartNewGame(); });
+        btn_continue_game.onClick.AddListener(() => { PlayClick(); StartGame.Instance.ContinueGame(); });
+        btn_settings.onClick.AddListener(() => { PlayClick(); TogglePanel(pnl_settings, true); });
 
         // 存档面板关闭
-        btn_close_load_game.onClick.AddListener(() => TogglePanel(pnl_load_game, false));
+        btn_close_load_game.onClick.AddListener(() => { PlayClick(); TogglePanel(pnl_load_game, false); });
 
         // 设置面板功能按钮
         if (btn_read_save_in_settings != null)
-            btn_read_save_in_settings.onClick.AddListener(() => TogglePanel(pnl_load_game, true));
+            btn_read_save_in_settings.onClick.AddListener(() => { PlayClick(); TogglePanel(pnl_load_game, true); });
 
-        btn_save_game.onClick.AddListener(() => StartGame.Instance.SaveSystem());
+        btn_save_game.onClick.AddListener(() => { PlayClick(); StartGame.Instance.SaveSystem(); });
 
-        // 音量与音效滑块
+        // 音量与音效滑块 (注：滑块通常不播点击音效，不然拖动时会响成一片)
         sld_music.onValueChanged.AddListener((val) => AudioManager.Instance.SetMusicVolume(val));
-        sld_sfx.onValueChanged.AddListener((val) => Debug.Log($"音效音量改变为: {val}"));
+        sld_sfx.onValueChanged.AddListener((val) => {
+            AudioManager.Instance.SetSfxVolume(val); // 补全了你原本只打Log没设音量的逻辑
+        });
 
         // 音乐/音效开关
-        tgl_music.onValueChanged.AddListener((state) => AudioManager.Instance.ToggleMusic(state));
-        tgl_sfx.onValueChanged.AddListener((state) => AudioManager.Instance.ToggleSfx(state));
-
+        tgl_music.onValueChanged.AddListener((state) => { PlayClick(); AudioManager.Instance.ToggleMusic(state); });
+        tgl_sfx.onValueChanged.AddListener((state) => { PlayClick(); AudioManager.Instance.ToggleSfx(state); });
         // 全屏开关
         tgl_fullscreen.onValueChanged.AddListener((state) => {
             Screen.fullScreen = state;

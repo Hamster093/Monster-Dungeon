@@ -60,7 +60,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -91,12 +91,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Coordinate: {x: 0, y: 0}
   _specialType: 0
-  NormalColor: {r: 1, g: 1, b: 1, a: 0.1}
+  NormalColor: {r: 1, g: 1, b: 1, a: 0}
   OreBlockColor: {r: 0.7882353, g: 0.60784316, b: 0.28235295, a: 1}
   HumusPoolColor: {r: 0.3882353, g: 0.58431375, b: 0.4745098, a: 1}
   PrisonBlockColor: {r: 0.5803922, g: 0.47058824, b: 0.67058825, a: 1}
   RiftBlockColor: {r: 0.7411765, g: 0.42352942, b: 0.44313726, a: 1}
   ObstacleColor: {r: 0.15, g: 0.15, b: 0.15, a: 1}
+  _oreBlockSprite: {fileID: 21300000, guid: 6e799bc58db826948a79dcef194a0c3e, type: 3}
+  _humusPoolSprite: {fileID: 21300000, guid: fa98b9723bd8f8a4e9982e201b42ac3e, type: 3}
+  _prisonBlockSprite: {fileID: 21300000, guid: d0954d825541ed648bd1477970e2cbd3, type: 3}
+  _riftBlockSprite: {fileID: 21300000, guid: 5bdd050eddb3bfd4087e1f71ba9ca20c, type: 3}
   Image: {fileID: 5093651918150105480}
 --- !u!1 &8774441302856892227
 GameObject:

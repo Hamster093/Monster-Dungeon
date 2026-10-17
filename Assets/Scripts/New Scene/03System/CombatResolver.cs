@@ -22,8 +22,14 @@ public static class CombatResolver
 {
     private static readonly D20Service _d20 = new D20Service();
 
-    public static InjuryResult Resolve(int adventurerId, int monsterId)
+    public static InjuryResult Resolve(int adventurerId, MonsterInstance monsterInst)
     {
+        if(monsterInst == null)
+        {
+            Debug.LogWarning("[CombatResolver] 传入的魔物实例为空");
+            return InjuryResult.None;
+        }
+
         var config = ConfigDatabase.Instance;
 
         if (!config.Adventurers.TryGetValue(adventurerId, out var advCfg) || advCfg == null)
@@ -32,14 +38,20 @@ public static class CombatResolver
             return InjuryResult.None;
         }
 
-        if (!config.Monsters.TryGetValue(monsterId, out var monCfg) || monCfg == null)
+        if (!config.Monsters.TryGetValue(monsterInst.monsterId, out var monCfg) || monCfg == null)
         {
-            Debug.LogWarning($"[CombatResolver] 找不到魔物 {monsterId}");
+            Debug.LogWarning($"[CombatResolver] 找不到魔物 {monsterInst.monsterId}");
             return InjuryResult.None;
         }
 
         int advLv = (int)advCfg.baseLevel;   // A=4, B=3, C=2, D=1
         int monLv = (int)monCfg.level;
+
+        //  如果有进化加成，可以在这里处理（比如进化后等级视为+1）
+        if (monsterInst.isEvolved)
+        {
+            //monLv += 1; // 如进化视为强 1 级
+        }
 
         int modifier = (advLv - monLv) * 5;   // 魔物强 → 负数；魔物弱 → 正数
 
@@ -58,7 +70,7 @@ public static class CombatResolver
         else if (final <= 10) result = InjuryResult.Light;
         else result = InjuryResult.None;
 
-        Debug.Log($"[战斗检定] 冒险者{adventurerId}({advCfg.baseLevel}) vs 魔物{monsterId}({monCfg.level}) | " +
+        Debug.Log($"[战斗检定] 冒险者{adventurerId}({advCfg.baseLevel}) vs 魔物{monsterInst.monsterId}({monCfg.level}) | " +
                   $"骰={roll} + 修正{modifier} = {final} → {result}");
 
         return result;

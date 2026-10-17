@@ -70,4 +70,10 @@ public class NamePanel : PanelBase
     // 保留旧 API，方便已有调用处
     public void Show(string itemName) => OnOpen(itemName);
     public void Hide() => OnClose();
+
+    public override void OnClose()
+    {
+        IsOpen = false;
+        gameObject.SetActive(false);
+    }
 }

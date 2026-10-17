@@ -15,6 +15,8 @@ public class PlacedItem
     public int Rotation;         // 0 / 90 / 180 / 270
     public ItemView View;
 
+    public MonsterInstance Instance;   
+
     public PlacedItem(ItemShapeDefinition def) { Def = def; }
 
     public Vector2Int[] GetCells()

@@ -81,6 +81,7 @@ public class SettingsPanel : PanelBase
 
     public override bool OnEscapePressed()
     {
+        AudioManager.Instance.PlaySFX(AudioKeys.SFX_Back); // ★ ESC 关闭音效
         OnClose();
         return true;
     }
@@ -94,13 +95,22 @@ public class SettingsPanel : PanelBase
         _bindsDone = true;
 
         if (btn_close != null)
-            btn_close.onClick.AddListener(OnClose);
+            btn_close.onClick.AddListener(() => {
+                AudioManager.Instance.PlaySFX(AudioKeys.SFX_Back); // ★ 关闭音效
+                OnClose();
+            });
 
         if (btn_read_save != null)
-            btn_read_save.onClick.AddListener(() => OnReadSaveClicked?.Invoke());
+            btn_read_save.onClick.AddListener(() => {
+                AudioManager.Instance.PlaySFX(AudioKeys.SFX_Click); // ★ 读档点击
+                OnReadSaveClicked?.Invoke();
+            });
 
         if (btn_save_game != null)
-            btn_save_game.onClick.AddListener(() => OnSaveGameClicked?.Invoke());
+            btn_save_game.onClick.AddListener(() => {
+                AudioManager.Instance.PlaySFX(AudioKeys.SFX_Click); // ★ 存档点击
+                OnSaveGameClicked?.Invoke();
+            });
 
         if (sld_music != null) sld_music.onValueChanged.AddListener(OnMusicVolumeChanged);
         if (sld_sfx != null) sld_sfx.onValueChanged.AddListener(OnSfxVolumeChanged);
@@ -219,7 +229,7 @@ public class SettingsPanel : PanelBase
     private void OnMusicToggleChanged(bool state)
     {
         if (_suppressEvents) return;
-
+        AudioManager.Instance.PlaySFX(AudioKeys.SFX_Click); // ★ 切换音效
         PlayerPrefs.SetInt(KeyMusicOn, state ? 1 : 0);
         AudioManager.Instance?.ToggleMusic(state);
     }
@@ -227,7 +237,7 @@ public class SettingsPanel : PanelBase
     private void OnSfxToggleChanged(bool state)
     {
         if (_suppressEvents) return;
-
+        AudioManager.Instance.PlaySFX(AudioKeys.SFX_Click); // ★ 切换音效 (注意这里会在静音边缘试探)
         PlayerPrefs.SetInt(KeySfxOn, state ? 1 : 0);
         AudioManager.Instance?.ToggleSfx(state);
     }

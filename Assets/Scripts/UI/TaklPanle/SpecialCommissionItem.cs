@@ -34,7 +34,11 @@ public class SpecialCommissionItem : MonoBehaviour
         if (_viewButton != null)
         {
             _viewButton.onClick.RemoveAllListeners();
-            _viewButton.onClick.AddListener(() => _onView?.Invoke(_config));
+            _viewButton.onClick.AddListener(() =>
+            {
+                AudioManager.Instance.PlaySFX(AudioKeys.SFX_Click); // ★ 点击查看音效
+                _onView?.Invoke(_config);
+            });
         }
     }
 

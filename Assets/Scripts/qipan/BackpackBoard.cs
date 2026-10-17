@@ -9,9 +9,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum BoardMode { Edit, Click }
+
 public class BackpackBoard : MonoBehaviour
 {
     public static BackpackBoard Instance { get; private set; }
+
+    [Header("UI 引用")]
+    [Tooltip("整个棋盘界面的 UI 根节点（包含格子背景和物品层，比如 BoardPanel 或 GridBackpack）")]
+    public RectTransform BoardUIRoot;
+    [Header("交互开关")]
+    [Tooltip("允许在该棋盘上拖拽物品")]
+    public bool AllowDrag = true;
+
+    [Tooltip("允许点击物品触发 OnItemClicked")]
+    public bool AllowClick = true;
+
+    /// <summary>Click 模式下点击物品时触发</summary>
+    public event System.Action<PlacedItem> OnItemClicked;
+    public void NotifyItemClicked(PlacedItem item) => OnItemClicked?.Invoke(item);
 
     [Header("拖拽层（留空则运行时自动创建 DragLayer_Runtime）")]
     public RectTransform DragLayer;
@@ -180,14 +196,11 @@ public class BackpackBoard : MonoBehaviour
         _items.Remove(v);
     }
 
-    /// <summary>在棋盘上创建一个 ItemView（用于商店购买后落位）</summary>
-    public ItemView CreateItemOnBoard(ItemShapeDefinition def, Vector2Int origin,
-                                      int rotation, ItemView prefab)
+    public ItemView CreateItemOnBoard(ItemShapeDefinition def, Vector2Int origin,int rotation, ItemView prefab,MonsterInstance instance = null)   
     {
         if (!CanPlace(def, origin, rotation)) return null;
-
         var view = Instantiate(prefab, ItemsRoot);
-        view.Init(def, this, rotation, origin);
+        view.Init(def, this, rotation, origin, instance);   
         return view;
     }
 
@@ -215,5 +228,15 @@ public class BackpackBoard : MonoBehaviour
     public void CleanupDestroyedItems()
     {
         _items.RemoveAll(v => v == null);
+    }
+
+    /// <summary>
+    /// 指路逻辑
+    /// </summary>
+    public event System.Action<PlacedItem> OnItemRightClicked;
+    public void NotifyItemRightClicked(PlacedItem item)
+    {
+        // 只有棋盘上的物品有实例，且是指路状态时才触发（交由外部判断）
+        OnItemRightClicked?.Invoke(item);
     }
 }
