@@ -2,10 +2,10 @@
   {
     "id": 1,
     "checkType": 1,
-    "baseTarget": 10,
-    "levelModifiers": "等级差每级+/-2",
-    "stateModifiers": "受损+3, 濒危+6",
-    "routeModifiers": "编造+2",
-    "resultBands": "1:大失败,2-9:失败,10-18:成功,19-20:大成功"
+    "baseTarget": 52,
+    "levelModifiers": "等级差每级18点",
+    "stateModifiers": "轻伤修正-6，重伤修正-12",
+    "routeModifiers": "编造路线难度+10",
+    "resultBands": "D100：1-5大失败，96-100大成功；6-95按实际阈值判定。数值以d100Rules.json为准"
   }
 ]

@@ -16,7 +16,7 @@ MonoBehaviour:
   - tileType: 1
     adaptedTypes: 010000000400000005000000
   - tileType: 2
-    adaptedTypes: 000000000300000005000000
+    adaptedTypes: 000000000300000002000000
   - tileType: 3
     adaptedTypes: 010000000200000004000000
   - tileType: 4

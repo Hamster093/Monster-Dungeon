@@ -1,4 +1,4 @@
-﻿/****************************************************
+/****************************************************
     文件：AbyssalAltarPanel.cs
 	作者：DADI
     邮箱: 1581507659@qq.com
@@ -41,6 +41,7 @@ public class AbyssalAltarPanel : PanelBase
     public override void OnOpen(object data = null)
     {
         base.OnOpen(data);
+        AudioManager.Instance?.PlayCue("altar");
         // 地狱面板现在由 UIManager 管，不再自己 SetActive
     }
 
@@ -50,8 +51,14 @@ public class AbyssalAltarPanel : PanelBase
         return true;
     }
 
+    public override void OnClose()
+    {
+        // 左右窗口独立：关闭或替换左侧祭坛不关闭右侧地狱。
+        base.OnClose();
+    }
+
     // ---------- 按钮回调 ----------
-    private void OnNewMonsterClick() => ShopPanel.OpenMonsterShop();
+    private void OnNewMonsterClick() => UIManager.Instance.OpenAltarMonsterShop();
 
     private void OnReturnClick()
     {
@@ -62,8 +69,6 @@ public class AbyssalAltarPanel : PanelBase
 
     private void OnClosePanelClick()
     {
-        // 顺手关掉分解窗口，避免它独立残留
-        UIManager.Instance.Close<DecomposePanel>();
         UIManager.Instance.Close(this);
     }
 }

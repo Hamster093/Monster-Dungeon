@@ -1,4 +1,4 @@
-﻿/****************************************************
+/****************************************************
     文件：RunStateManager.cs
 	作者：DADI
     邮箱: 1581507659@qq.com
@@ -23,7 +23,7 @@ public class RunStateManager
             return _instance;
         }
     }
-    public const int InitialCash = 2000;
+    public const int InitialCash = 2500;
     public const int InitialActionPoint = 5;
 
     public RunState run;
@@ -42,9 +42,11 @@ public class RunStateManager
         run.remainingDays = 3;
         run.installmentPayment = 325;
 
-        // 假设调查道具 id=1，先给 5 个 TEST
-        run.itemInventory[1] = 5;
-        Debug.Log("初始化调查道具 道具id=1 数量5");
+        // 新局提供两枚透镜，足够完整调查一位人物；读档不经过此初始化。
+        run.itemInventory[1] = 2;
+        // 正式开局补给：一次重投和一次赔礼，旧档不会经过NewRun重新领取。
+        run.itemInventory[2] = 1;
+        run.itemInventory[5] = 1;
 
         foreach (var adv in ConfigDatabase.Instance.Adventurers.Values)
         {
@@ -68,17 +70,32 @@ public class RunStateManager
     /// </summary>
     public void Save()
     {
+        SystemManager.Instance.Narrative?.Capture();
         if (run == null)
         {
             Debug.LogError("当前没有运行状态，无法保存！");
             return;
         }
+        run.savedUtc = System.DateTime.UtcNow.Ticks;
         SaveAndLoadManager.Save("run_state", run);
         Debug.Log("游戏已保存");
     }
     /// <summary>
     /// 从本地读取运行状态
     /// </summary>
+    /// <summary>手动槽与自动续玩共用同一份快照，但互不覆盖。</summary>
+    public bool SaveSlot(int id)
+    {
+        if (run == null) return false;
+        try
+        {
+            SystemManager.Instance.Narrative?.Capture();
+            run.savedUtc = System.DateTime.UtcNow.Ticks;
+            SaveAndLoadManager.Save(SaveAndLoadManager.SlotKey(id), run);
+            return true;
+        }
+        catch (System.Exception e) { Debug.LogWarning(e.Message); return false; }
+    }
     public void Load()
     {
         RunState loadedState = SaveAndLoadManager.Load<RunState>("run_state");
@@ -120,8 +137,11 @@ public class RunStateManager
     /// <returns></returns>
     public bool TrySpendCash(int amount)
     {
-        if (run == null || run.cash < amount) return false;
+        if (run == null || run.cash < amount) {AudioManager.Instance?.PlayCue("denied");return false;}
+        if (amount <= 0) return amount == 0;
         run.cash -= amount;
+        AudioManager.Instance?.CashChanged(-amount);
+        ToastManager.Show("你消耗了" + amount + "金币", System.Guid.NewGuid().ToString());
         TopBarRefreshEvent.Trigger();
         return true;
     }
@@ -133,6 +153,8 @@ public class RunStateManager
     {
         if (run == null || amount == 0) return;
         run.cash += amount;
+        AudioManager.Instance?.CashChanged(amount);
+        ToastManager.Show(amount > 0 ? "你获得了" + amount + "金币" : "你消耗了" + (-amount) + "金币", System.Guid.NewGuid().ToString());
         TopBarRefreshEvent.Trigger();
     }
 }

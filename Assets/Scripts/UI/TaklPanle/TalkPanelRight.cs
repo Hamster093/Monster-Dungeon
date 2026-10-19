@@ -19,6 +19,15 @@ public class TalkPanelRight :PanelBase
     private readonly List<DialogueOptionItem> _activeOptions = new();
     // 限制最大显示条数
     private const int MaxShowCount = 50;
+    private readonly List<DialogueOption> _optionData=new();
+    // 库存变化后同步置灰；可视按钮与真正提交读取同一项需求。
+    private void LateUpdate()=>RefreshOptionAvailability();
+    private void RefreshOptionAvailability()
+    {
+        var narrative=SystemManager.Instance.Narrative;
+        for(int i=0;i<_activeOptions.Count&&i<_optionData.Count;i++)
+            if(_activeOptions[i])_activeOptions[i].SetInteractable(narrative==null||narrative.IsOptionAvailable(_optionData[i]));
+    }
 
     public override void OnInit()
     {
@@ -100,7 +109,7 @@ public class TalkPanelRight :PanelBase
             item.transform.SetAsLastSibling();
 
             var captured = opt;
-            item.SetData(opt.text, () =>
+            item.SetData(string.IsNullOrEmpty(opt.displayText) ? opt.text : opt.displayText, () =>
             {
                 // 先禁用所有选项，防重复点击
                 foreach (var o in _activeOptions)
@@ -111,8 +120,8 @@ public class TalkPanelRight :PanelBase
 
                 if (keep)
                 {
-                    foreach (var o in _activeOptions)
-                        if (o != null) o.SetInteractable(true);
+                    for(int i=0;i<_activeOptions.Count;i++)
+                        if(_activeOptions[i]!=null)_activeOptions[i].SetInteractable(SystemManager.Instance.Narrative?.IsOptionAvailable(_optionData[i])!=false);
                 }
                 else
                 {
@@ -120,7 +129,8 @@ public class TalkPanelRight :PanelBase
                 }
             });
 
-            _activeOptions.Add(item);
+            _activeOptions.Add(item);_optionData.Add(opt);
+            item.SetInteractable(SystemManager.Instance.Narrative?.IsOptionAvailable(opt)!=false);
         }
 
         ScrollToBottom();
@@ -136,7 +146,7 @@ public class TalkPanelRight :PanelBase
             if (_activeOptions[i] != null)
                 Destroy(_activeOptions[i].gameObject);
         }
-        _activeOptions.Clear();
+        _activeOptions.Clear();_optionData.Clear();
     }
 
     /// <summary>

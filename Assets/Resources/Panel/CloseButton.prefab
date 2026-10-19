@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2033470014092776480}
   - component: {fileID: 5680405879349611791}
   - component: {fileID: 4970832252013229235}
+  - component: {fileID: 5078495915004222309}
   m_Layer: 5
   m_Name: CloseButton
   m_TagString: Untagged
@@ -121,6 +122,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &5078495915004222309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3548298703775637029}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0e2f03862c81e647aeee9c20bfad252, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cue: back
 --- !u!1 &6028380792790657003
 GameObject:
   m_ObjectHideFlags: 0
@@ -180,14 +194,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: a454859a2cb84494497b36376876eccd, type: 3}
     m_FontSize: 39
     m_FontStyle: 0
     m_BestFit: 0

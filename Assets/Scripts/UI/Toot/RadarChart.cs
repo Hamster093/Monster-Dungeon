@@ -1,4 +1,4 @@
-﻿/****************************************************
+/****************************************************
     文件：RadarChart.cs
 	作者：DADI
     邮箱: 1581507659@qq.com
@@ -88,7 +88,7 @@ public class RadarChart : MaskableGraphic
 
         if (attributes == null || attributes.Length != 7) return;
 
-        Vector2 center = new Vector2(rectTransform.rect.width / 2, rectTransform.rect.height / 2);
+        Vector2 center = rectTransform.rect.center;
         float actualRadius = Mathf.Min(radius, Mathf.Min(rectTransform.rect.width, rectTransform.rect.height) * 0.45f);
 
         int sides = 7;

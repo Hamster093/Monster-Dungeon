@@ -1,4 +1,4 @@
-﻿/****************************************************
+/****************************************************
     文件：StageTileApplier.cs
 	作者：DADI
     邮箱: 1581507659@qq.com
@@ -85,7 +85,7 @@ public static class StageTileApplier
             if (v == null || v.Item == null || v.Item.Def == null) continue;  //  再保一层
 
             if (int.TryParse(v.Item.Def.Id, out int id))
-                MonsterStorageModel.Instance.Add(id);
+                MonsterStorageModel.Instance.Add(id, v.Item.Uid, v.Item.Evolved);
 
             board.RemoveItem(v.Item);
             UnityEngine.Object.Destroy(v.gameObject);

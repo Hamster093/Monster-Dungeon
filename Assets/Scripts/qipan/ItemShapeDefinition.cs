@@ -15,6 +15,10 @@ public class ItemShapeDefinition : ScriptableObject
     public string Id = "item";
     public string DisplayName = "Item";
     public Color Color = Color.white;
+    [Header("单格美术：严格区分实例进化状态，等级不等于进化")]
+    public Sprite NormalIcon;
+    public Sprite EvolvedIcon;
+    public Sprite GetIcon(bool evolved) => evolved ? EvolvedIcon : NormalIcon;
 
     [Tooltip("以 (0,0) 为基准的占格偏移，可以不在第一象限，代码会自动归一化")]
     public Vector2Int[] Shape = { Vector2Int.zero };

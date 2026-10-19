@@ -1,4 +1,4 @@
-﻿/****************************************************
+/****************************************************
     文件：ShopPanel.cs
 	作者：DADI
     邮箱: 1581507659@qq.com
@@ -8,6 +8,7 @@
 
 using System;
 using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -55,6 +56,21 @@ public class ShopPanel : PanelBase
     [Header("槽位")]
     public ItemSlot[] _itemSlots;
     [SerializeField] private Sprite _emptySprite;
+    [SerializeField] private Text[] _monsterGrades=Array.Empty<Text>();
+    [SerializeField] private GameObject[] _priceDecorations=Array.Empty<GameObject>();
+    [Header("仓库专用比例；商店价格与等级沿用原位置")]
+    [SerializeField] private GridLayoutGroup _slotGrid;
+    [SerializeField] private Image[] _slotIcons=Array.Empty<Image>();
+    [SerializeField] private Vector2 _storageCellSize=new Vector2(196,202);
+    [SerializeField] private Vector2 _storageIconSize=new Vector2(176,176);
+    private Vector2 _tradeCellSize;
+    private RectSnapshot[] _iconLayouts, _gradeLayouts;
+    private struct RectSnapshot
+    {
+        public Vector2 min,max,pivot,position,size;
+        public RectSnapshot(RectTransform r){min=r.anchorMin;max=r.anchorMax;pivot=r.pivot;position=r.anchoredPosition;size=r.sizeDelta;}
+        public void Restore(RectTransform r){r.anchorMin=min;r.anchorMax=max;r.pivot=pivot;r.anchoredPosition=position;r.sizeDelta=size;}
+    }
 
     [Header("商品配置：填 items.json 里的 id，顺序即槽位顺序")]
     [SerializeField] private List<int> _itemShopIds = new();
@@ -108,6 +124,7 @@ public class ShopPanel : PanelBase
 
     public override void OnInit()
     {
+        CacheSlotGeometry();
         var dragLayer = GetOrCreateDragLayer();   // 创建拖拽层（Canvas 顶层）
 
         for (int i = 0; i < _itemSlots.Length; i++)
@@ -125,16 +142,16 @@ public class ShopPanel : PanelBase
 
             dragger.SlotIndex = i;
             dragger.Panel = this;
-            dragger.Board = FindObjectOfType<BackpackBoard>();
+            dragger.Board = BackpackBoard.Instance; // 首次未打开整备时允许为空，拖动入口会再次绑定。
             dragger.DragLayer = dragLayer;
             dragger.ItemViewPrefab = _itemViewPrefab;
-            dragger.CellSize = 95f;
-            dragger.Spacing = 5f;
+            dragger.CellSize = _cellSize > 0 ? _cellSize : 115f;
+            dragger.Spacing = _spacing;
         }
 
         if (_closeButton != null)
         {
-            _closeButton.onClick.AddListener(() => UIManager.Instance.Close(this));
+            _closeButton.onClick.AddListener(() => UIManager.Instance.ReturnFromShop());
         }
 
         StartCoroutine(PreloadOwnIcons());   // 预加载图标
@@ -193,7 +210,7 @@ public class ShopPanel : PanelBase
 
     public override bool OnEscapePressed()
     {
-        UIManager.Instance.Close(this);
+        UIManager.Instance.ReturnFromShop();
         return true;
     }
 
@@ -211,6 +228,7 @@ public class ShopPanel : PanelBase
     private static void OpenShop(ShopCategory category)
     {
         var ui = UIManager.Instance;
+        ui.NotifyShopRootSwitch();
 
         // 已打开 → 直接切分类
         if (ui.IsOpen<ShopPanel>())
@@ -240,6 +258,7 @@ public class ShopPanel : PanelBase
     public static void OpenMonsterStorage()
     {
         var ui = UIManager.Instance;
+        ui.NotifyShopRootSwitch();
 
         if (ui.IsOpen<ShopPanel>())
         {
@@ -281,6 +300,7 @@ public class ShopPanel : PanelBase
     private void BuildSlots()
     {
         _slots.Clear();
+        SystemManager.Instance.RunState.run.EnsureBusinessDay();
 
         if (ConfigDatabase.Instance == null)
         {
@@ -291,7 +311,7 @@ public class ShopPanel : PanelBase
         //  仓库模式：按实例列表构建
         if (_freeMode && _customMonsters != null)
         {
-            foreach (var inst in _customMonsters)
+            foreach (var inst in _customMonsters.OrderBy(m=>ConfigDatabase.Instance.Monsters[m.monsterId].level).ThenByDescending(m=>m.evolved))
             {
                 if (!ConfigDatabase.Instance.Items.TryGetValue(inst.monsterId, out var cfg))
                 {
@@ -299,7 +319,9 @@ public class ShopPanel : PanelBase
                     continue;
                 }
 
-                var data = ItemData.FromConfig(cfg);
+                var data = ItemData.FromMonster(inst);
+                var icon = data.shape != null ? data.shape.GetIcon(inst.evolved) : null;
+                if (icon != null) data.iconAddress = "Art/Board/" + icon.name;
                 _slots.Add(new ShopSlot
                 {
                     config = cfg,
@@ -313,7 +335,8 @@ public class ShopPanel : PanelBase
         }
 
         // 商店模式
-        var sourceIds = _currentCategory == ShopCategory.Item ? _itemShopIds : _monsterShopIds;
+        var run=SystemManager.Instance.RunState.run;
+        var sourceIds = _currentCategory == ShopCategory.Item ? ConfigDatabase.Instance.Items.Values.Where(c=>c.id<=7).OrderBy(c=>c.price).Select(c=>c.id).ToList() : run.monsterOffers;
         foreach (var id in sourceIds)
         {
             if (!ConfigDatabase.Instance.Items.TryGetValue(id, out var cfg))
@@ -328,7 +351,7 @@ public class ShopPanel : PanelBase
                 config = cfg,
                 data = data,
                 stack = new ItemStack { data = data, quantity = 1 },
-                stock = cfg.stock,
+                stock = run.shopStock.TryGetValue(id,out var remaining)?remaining:cfg.stock,
             });
         }
     }
@@ -351,11 +374,9 @@ public class ShopPanel : PanelBase
     /// <summary>进入新经营阶段时调用：按配置补充库存</summary>
     public void RestockForNewPhase()
     {
-        foreach (var s in _slots)
-            if (s.config.restockPerPhase > 0)
-                s.stock = s.config.restockPerPhase;
-
-        RefreshAll();
+        // 库存由存档中的阶段号决定；旧入口重复调用也不会刷新当日库存。
+        RunStateManager.Instance.run.EnsureBusinessDay();
+        BuildSlots();RefreshAll();
     }
 
     #endregion
@@ -365,6 +386,7 @@ public class ShopPanel : PanelBase
 
     private void RefreshAll()
     {
+        RefreshSlotGeometry();
         // 仓库模式：显示到容量上限（空槽也显示），方便玩家拖回
         // 商店模式：只显示有货的槽
         int displayCount = _freeMode
@@ -381,6 +403,7 @@ public class ShopPanel : PanelBase
             }
 
             var slot = GetSlot(i);
+            RefreshSlotDecorations(i,slot);
 
             // ---- 仓库模式：空槽也显示 ----
             if (_freeMode)
@@ -390,7 +413,7 @@ public class ShopPanel : PanelBase
                 if (slot == null)
                 {
                     // 空槽
-                    _itemSlots[i].Refresh(null, _emptySprite);
+                    _itemSlots[i].Refresh(null, null); // 仓库空位只留底框，不显示斜线占位图。
                     _itemSlots[i].SetSubText("");
                     _itemSlots[i].SetGray(false);
                     continue;
@@ -398,9 +421,12 @@ public class ShopPanel : PanelBase
 
                 // 有魔物
                 _itemSlots[i].Refresh(slot.stack, _emptySprite);
-                _itemSlots[i].SetSubText("");               // 仓库不显示价格
-                _itemSlots[i].SetGray(false);
-                LoadIconAsync(i, slot.data.iconAddress);
+                bool resting=slot.instance?.usedDay==RunStateManager.Instance.run.currentDay;
+                _itemSlots[i].SetSubText(""); // 仓库底栏沿用原行为，不显示价格或状态文字。
+                _itemSlots[i].SetGray(resting);
+                if (slot.data.shape != null)
+                    _itemSlots[i].SetIcon(slot.data.shape.GetIcon(slot.instance != null && slot.instance.evolved));
+                else LoadIconAsync(i, slot.data.iconAddress);
                 continue;
             }
 
@@ -414,7 +440,9 @@ public class ShopPanel : PanelBase
             if (slot.stock == 0)
             {
                 _itemSlots[i].gameObject.SetActive(true);
-                _itemSlots[i].Refresh(null, _emptySprite);
+                _itemSlots[i].Refresh(slot.stack, _emptySprite);
+                if(slot.data.shape!=null)_itemSlots[i].SetIcon(slot.data.shape.GetIcon(false));else LoadIconAsync(i,slot.data.iconAddress);
+                _itemSlots[i].SetStock(0);
                 _itemSlots[i].SetSubText("售罄");
                 _itemSlots[i].SetGray(true);
                 continue;
@@ -423,9 +451,47 @@ public class ShopPanel : PanelBase
             _itemSlots[i].gameObject.SetActive(true);
             _itemSlots[i].Refresh(slot.stack, _emptySprite);
             _itemSlots[i].SetSubText($"{slot.config.price}G");
+            _itemSlots[i].SetStock(slot.stock);
             _itemSlots[i].SetGray(false);
             LoadIconAsync(i, slot.data.iconAddress);
         }
+    }
+
+    private void CacheSlotGeometry()
+    {
+        if(_slotGrid)_tradeCellSize=_slotGrid.cellSize;
+        _iconLayouts=new RectSnapshot[_slotIcons.Length];
+        for(int i=0;i<_slotIcons.Length;i++)if(_slotIcons[i])_iconLayouts[i]=new RectSnapshot(_slotIcons[i].rectTransform);
+        _gradeLayouts=new RectSnapshot[_monsterGrades.Length];
+        for(int i=0;i<_monsterGrades.Length;i++)if(_monsterGrades[i])_gradeLayouts[i]=new RectSnapshot((RectTransform)_monsterGrades[i].transform.parent);
+    }
+    private void RefreshSlotGeometry()
+    {
+        // 仓库没有价格底栏：格子收回近方形，图片居中等比显示；回商店完整恢复原布局。
+        if(_slotGrid)_slotGrid.cellSize=_freeMode?_storageCellSize:_tradeCellSize;
+        for(int i=0;i<_slotIcons.Length;i++)if(_slotIcons[i])
+        {
+            var r=_slotIcons[i].rectTransform;_slotIcons[i].preserveAspect=true;
+            if(_freeMode){r.anchorMin=r.anchorMax=r.pivot=new Vector2(.5f,.5f);r.anchoredPosition=Vector2.zero;r.sizeDelta=_storageIconSize;}
+            else _iconLayouts[i].Restore(r);
+        }
+        for(int i=0;i<_monsterGrades.Length;i++)if(_monsterGrades[i])
+        {
+            var r=(RectTransform)_monsterGrades[i].transform.parent;
+            if(_freeMode)r.anchoredPosition=new Vector2(58,70);else _gradeLayouts[i].Restore(r);
+        }
+        if(_slotGrid)LayoutRebuilder.MarkLayoutForRebuild((RectTransform)_slotGrid.transform);
+    }
+
+    private void RefreshSlotDecorations(int index,ShopSlot slot)
+    {
+        // 价格装饰只属于购买页；等级独立放在魔物图标右上角，不占价格栏。
+        if(index<_priceDecorations.Length&&_priceDecorations[index])_priceDecorations[index].SetActive(!_freeMode);
+        if(index>=_monsterGrades.Length||!_monsterGrades[index])return;
+        var grade=_monsterGrades[index];
+        bool show=slot!=null&&slot.config.type==ItemType.Monster;
+        grade.transform.parent.gameObject.SetActive(show);
+        if(show)grade.text=ConfigDatabase.Instance.Monsters[slot.config.id].level+"级";
     }
 
     /// <summary>按需异步加载图标，命中缓存直接设置</summary>
@@ -489,7 +555,8 @@ public class ShopPanel : PanelBase
         // 魔物：左键只弹详情，不参与选中
         if (slot.config.type == ItemType.Monster)
         {
-            UIManager.Instance.Open<DescriptionPanel>(slot.data);
+            if(slot.instance!=null)UIManager.Instance.Open<DescriptionPanel>(new DescriptionPanel.OpenContext{item=ItemData.FromMonster(slot.instance),icon=slot.data.shape.GetIcon(slot.instance.evolved)});
+            else UIManager.Instance.Open<DescriptionPanel>(slot.data);
             return;
         }
 
@@ -506,13 +573,13 @@ public class ShopPanel : PanelBase
         }
     }
 
-    /// <summary>右键：物品弹出商店操作面板（查看/购买）；魔物无响应</summary>
+    /// <summary>右键弹出原购买菜单；魔物购买后进入仓库。</summary>
     private void OnSlotRightClicked(int index)
     {
         var slot = GetSlot(index);
         if (slot == null || slot.stock == 0) return;
 
-        if (slot.config.type == ItemType.Monster) return;
+        if (_freeMode) return;
 
         UIManager.Instance.Open<ShopItemActionPanel>(new ShopActionData
         {
@@ -534,12 +601,14 @@ public class ShopPanel : PanelBase
         // 1. 先扣钱（返回值 false = 现金不够）
         if (!SystemManager.Instance.Economy.SpendCash(cfg.price)) return;
 
-        // 2. 再进背包
-        int remain = InventoryModel.Instance.AddItem(
-            new ItemStack { data = slot.data, quantity = 1 });
+        // 魔物先买入原仓库，摆盘仍从仓库拖拽；不会因棋盘满格而丢失购买。
+        int remain=0;
+        if(cfg.type==ItemType.Monster){MonsterStorageModel.Instance.Add(cfg.id);AudioManager.Instance?.PlayCue("monster");}
+        else remain = InventoryModel.Instance.AddItem(new ItemStack { data = slot.data, quantity = 1 });
 
         if (remain > 0)
         {
+            AudioManager.Instance?.PlayCue("denied");
             Debug.Log("背包满了");
             Refund(cfg);       // 退款
             return;
@@ -547,6 +616,8 @@ public class ShopPanel : PanelBase
 
         // 3. 减库存（-1 表示无限）
         if (slot.stock > 0) slot.stock--;
+        SystemManager.Instance.RunState.run.shopStock[slot.config.id]=slot.stock;
+        SystemManager.Instance.Narrative?.Save();
 
         DeselectAllSlots();
         RefreshAll();
@@ -566,6 +637,7 @@ public class ShopPanel : PanelBase
     /// <summary>给外部用的购买入口（拖拽到棋盘时调用，不进背包）</summary>
     public bool TryBuyForDrag(int index)
     {
+        if (RouteSelectionPanel.IsShowing || EvolutionPanel.IsShowing) return false;
         var slot = GetSlot(index);
         if (slot == null || slot.stock == 0) return false;
 
@@ -584,6 +656,8 @@ public class ShopPanel : PanelBase
         // 商店模式：扣钱
         if (!SystemManager.Instance.Economy.SpendCash(cfg.price)) return false;
         if (slot.stock > 0) slot.stock--;
+        SystemManager.Instance.RunState.run.shopStock[slot.config.id]=slot.stock;
+        SystemManager.Instance.Narrative?.Save();
         DeselectAllSlots();
         RefreshAll();
         return true;
@@ -592,8 +666,9 @@ public class ShopPanel : PanelBase
     /// <summary>库存是否允许购买</summary>
     public bool CanBuy(int index)
     {
+        if (RouteSelectionPanel.IsShowing || EvolutionPanel.IsShowing) return false;
         var s = GetSlot(index);
-        return s != null && s.stock != 0;
+        return s != null && s.stock != 0 && _freeMode; // 疲惫可退仓重摆，出战日期仍随同一实例保存。
     }
 
     /// <summary>屏幕点是否落在任意一个可见槽位上；命中返回槽位索引</summary>
@@ -601,6 +676,9 @@ public class ShopPanel : PanelBase
     {
         hitIndex = -1;
         if (_itemSlots == null) return false;
+        // 被滚动遮罩裁掉的槽仍是active；退仓只接受真正落在可见视口内的指针。
+        var scroll=_slotGrid?_slotGrid.GetComponentInParent<ScrollRect>():GetComponentInChildren<ScrollRect>();
+        if(scroll&&scroll.viewport&&!RectTransformUtility.RectangleContainsScreenPoint(scroll.viewport,screenPos,cam))return false;
 
         for (int i = 0; i < _itemSlots.Length; i++)
         {
@@ -625,6 +703,8 @@ public class ShopPanel : PanelBase
     #region 给 ShopSlotDragger 的访问接口
 
     /// <summary>给 ShopSlotDragger 拿数据用</summary>
+    public MonsterInstance GetSlotInstance(int index) => GetSlot(index)?.instance;
+
     public ItemData GetSlotData(int index)
     {
         var s = GetSlot(index);

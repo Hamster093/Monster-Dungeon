@@ -1,4 +1,4 @@
-﻿/****************************************************
+/****************************************************
     文件：System.cs
 	作者：DADI
     邮箱: 1581507659@qq.com
@@ -37,13 +37,17 @@ public class ScheduleSystem
     /// </summary>
     public void AdvanceDay()
     {
-        if (IsPhaseEndDay(_runState.run.currentDay))
+        // 完整剧情会在 action:fee 时扣费，不能在次日事件里再扣一次。
+        if (SystemManager.Instance.Narrative?.Enabled != true && IsPhaseEndDay(_runState.run.currentDay))
         { 
             EndPhase();
         
         }
 
         _runState.run.currentDay++;
+        _runState.run.currentPhase=_config.Schedules.Find(s=>_runState.run.currentDay<=s.deadlineDay)?.phase??5;
+        _runState.run.EnsureBusinessDay();
+        if(BackpackBoard.Instance!=null)foreach(var v in BackpackBoard.Instance.Items)if(v!=null)v.Rebuild();
         Debug.Log($"进入第 {_runState.run.currentDay} 天");
 
         foreach (var m in _runState.run.monsters.Values)

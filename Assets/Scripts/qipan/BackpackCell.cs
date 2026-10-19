@@ -1,4 +1,4 @@
-﻿/****************************************************
+/****************************************************
     文件：BackpackCell.cs
 	作者：DADI
     邮箱: 1581507659@qq.com
@@ -51,6 +51,8 @@ public class BackpackCell : MonoBehaviour
     public Color ObstacleColor = new Color(0.15f, 0.15f, 0.15f, 1f);
 
     public Image Image;
+    [Header("特殊地块图片：矿石、池沼、监牢、裂口") ]
+    public Sprite[] SpecialIcons = new Sprite[4];
     public RectTransform Rect { get; private set; }
 
     [HideInInspector] public PlacedItem Occupant;
@@ -71,7 +73,10 @@ public class BackpackCell : MonoBehaviour
     private void ApplyColor()
     {
         if (Image == null) return;
-        Image.color = GetColorFor(_specialType);
+        int index = (int)_specialType - 1;
+        Image.sprite = index >= 0 && index < SpecialIcons.Length ? SpecialIcons[index] : null;
+        Image.color = Image.sprite != null ? Color.white : GetColorFor(_specialType);
+        Image.preserveAspect = true;
     }
 
     private void OnValidate()

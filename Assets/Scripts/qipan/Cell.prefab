@@ -60,7 +60,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.1}
+  m_Color: {r: 0, g: 0, b: 0, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -69,7 +69,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 0}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -91,13 +91,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Coordinate: {x: 0, y: 0}
   _specialType: 0
-  NormalColor: {r: 1, g: 1, b: 1, a: 0.1}
+  NormalColor: {r: 0, g: 0, b: 0, a: 0}
   OreBlockColor: {r: 0.7882353, g: 0.60784316, b: 0.28235295, a: 1}
   HumusPoolColor: {r: 0.3882353, g: 0.58431375, b: 0.4745098, a: 1}
   PrisonBlockColor: {r: 0.5803922, g: 0.47058824, b: 0.67058825, a: 1}
   RiftBlockColor: {r: 0.7411765, g: 0.42352942, b: 0.44313726, a: 1}
   ObstacleColor: {r: 0.15, g: 0.15, b: 0.15, a: 1}
   Image: {fileID: 5093651918150105480}
+  SpecialIcons:
+  - {fileID: 21300000, guid: f0513634002426744b339852c1c449cc, type: 3}
+  - {fileID: 21300000, guid: 37f10a91ae7e6664eadb280dbdcfd20a, type: 3}
+  - {fileID: 21300000, guid: 8ba932b25c91da949a4fb532adea6e94, type: 3}
+  - {fileID: 21300000, guid: 28e4786f22366f94b967800516eac5a9, type: 3}
 --- !u!1 &8774441302856892227
 GameObject:
   m_ObjectHideFlags: 0
@@ -150,21 +155,21 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8774441302856892227}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: a454859a2cb84494497b36376876eccd, type: 3}
     m_FontSize: 14
     m_FontStyle: 0
     m_BestFit: 1

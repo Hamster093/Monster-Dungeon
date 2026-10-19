@@ -1,4 +1,4 @@
-﻿/****************************************************
+/****************************************************
     文件：DialogueData.cs
 	作者：DADI
     邮箱: 1581507659@qq.com
@@ -22,6 +22,12 @@ public class DialogueOption
     public string callbackKey;   // 可为空
     public string tag;
     public int param;
+    // Ink 原始选项位置是稳定标识；显示文案和列表序号都不能作为结算去重键。
+    public string choiceId;
+    public string checkAttribute, checkKind;
+    public int requiredItemId; // 明确的剧情道具门槛，显示与提交共用。
+    public string displayText; // 仅供界面显示的标注，历史记录仍保存原始 text。
+
 }
 
 /// <summary>
@@ -46,6 +52,7 @@ public class DialogueNode
 [Serializable]
 public class DialogueLineData
 {
+    public string sourceId; // 原稿稳定句地址，供差分演出配置。
     public string speaker;
     public string icon;
     public string content;

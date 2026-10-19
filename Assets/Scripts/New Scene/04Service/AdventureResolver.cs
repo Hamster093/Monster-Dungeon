@@ -41,21 +41,23 @@ public class AdventureResolver
 
     public AdventureResult Resolve(AdventureContext ctx)
     {
-        int target = 10;
+        var balance=D20Service.Balance;
+        int target = balance.adventureTarget;
 
         int levelDiff = (int)ctx.adventurerLevel - (int)ctx.monsterLevel;
-        target -= levelDiff * 2;
+        target -= levelDiff * balance.levelStep;
 
-        if (ctx.health == HealthState.Damaged) target += 3;
-        if (ctx.health == HealthState.Critical) target += 6;
-        if (ctx.equipment == EquipmentState.Damaged) target += 2;
-        if (ctx.equipment == EquipmentState.Critical) target += 4;
-        if (!ctx.isTruthRoute) target += 2;
+        if (ctx.health == HealthState.Damaged) target += balance.lightPenalty;
+        if (ctx.health == HealthState.Critical) target += balance.severePenalty;
+        if (ctx.equipment == EquipmentState.Damaged) target += balance.equipmentDamagedPenalty;
+        if (ctx.equipment == EquipmentState.Critical) target += balance.equipmentCriticalPenalty;
+        if (!ctx.isTruthRoute) target += balance.falseRoutePenalty;
 
         var check = _d20.Check(target);
 
         if (check.IsCritical) return AdventureResult.FlawlessSuccess;
-        if (check.IsFumble) return AdventureResult.Death;
+        // 与正式委托战斗一致：第一次大失败重伤，已有重伤时再次重伤才死亡。
+        if (check.IsFumble) return ctx.health==HealthState.Critical?AdventureResult.Death:AdventureResult.HeavyRetreat;
 
         if (check.Success)
         {

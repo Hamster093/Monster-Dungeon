@@ -1,4 +1,4 @@
-﻿/****************************************************
+/****************************************************
     文件：BackpackBoard.cs
 	作者：DADI
     邮箱: 1581507659@qq.com
@@ -8,6 +8,7 @@
 
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BackpackBoard : MonoBehaviour
 {
@@ -31,6 +32,25 @@ public class BackpackBoard : MonoBehaviour
     private readonly List<ItemView> _items = new List<ItemView>();
 
     public IReadOnlyList<ItemView> Items => _items;
+    public bool IsEditing => ShopSlotDragger.IsAnyDragging || System.Array.Exists(FindObjectsOfType<ItemView>(),v=>!v.IsGhost&&v.IsPlacing);
+    public void CancelPlacement(){foreach(var v in FindObjectsOfType<ItemView>())if(!v.IsGhost)v.CancelPlacement();}
+    [SerializeField] private Text _editHint;
+    public const string IdleHint = "左键点击查看魔物详情，长按拖动改变魔物位置。";
+    public const string DragHint = "按R旋转";
+    private void Update()
+    {
+        if(!_editHint)return;
+        bool visible=SystemManager.Instance?.Narrative?.IsPreparing!=false&&!RouteSelectionPanel.IsShowing;
+        _editHint.gameObject.SetActive(visible);
+        if(visible)_editHint.text=IsEditing?DragHint:IdleHint;
+    }
+    /// <summary>只在松手成功改变棋盘后调用；初始化／读档的PlaceItem不会触发保存。</summary>
+    public void CommitEdit()
+    {
+        AudioManager.Instance?.PlayCue("place");
+        BackpackChanged.Trigger();
+        SystemManager.Instance?.Narrative?.Save();
+    }
 
 
     [Header("收益配置")]
@@ -47,11 +67,20 @@ public class BackpackBoard : MonoBehaviour
 
         BuildCellMap();
         GetOrCreateDragLayer();
+        Canvas.willRenderCanvases += AlignItemVisuals;
     }
 
     private void OnDestroy()
     {
+        Canvas.willRenderCanvases -= AlignItemVisuals;
         if (Instance == this) Instance = null;
+    }
+    private void AlignItemVisuals()
+    {
+        // 画布缩放、布局或读档后，显示位置按真实格子重新对齐，不修改占格数据。
+        foreach (var view in _items)
+            if (view != null && view.Item != null && view.transform.parent == ItemsRoot)
+                view.ApplyPosition(GetCellLocalPosition(view.Item.Origin));
     }
 
     private void BuildCellMap()
@@ -85,6 +114,8 @@ public class BackpackBoard : MonoBehaviour
     /// <summary>能否放置</summary>
     public bool CanPlace(ItemShapeDefinition def, Vector2Int origin, int rotation, PlacedItem ignore = null)
     {
+        int other=0;foreach(var v in _items)if(v!=null&&!v.IsGhost&&v.Item!=null&&v.Item!=ignore)other++;
+        if(other>=8)return false;
         var shape = def.GetNormalizedShape(rotation);
         foreach (var offset in shape)
         {
@@ -170,6 +201,7 @@ public class BackpackBoard : MonoBehaviour
     public void RegisterItem(ItemView v)
     {
         if (v == null) return;
+        if(v.IsGhost)return;
         if (_items.Contains(v)) return;   // 幂等
         _items.Add(v);
     }

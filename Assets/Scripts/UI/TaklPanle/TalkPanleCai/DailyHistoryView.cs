@@ -1,4 +1,4 @@
-﻿/****************************************************
+/****************************************************
     文件：DailyHistoryView.cs
 	作者：DADI
     邮箱: 1581507659@qq.com
@@ -42,13 +42,13 @@ public class DailyHistoryView
         string text = $"{line.speakerName}: {line.content}";
         if (text == _lastText) return;   // ← 跟紧邻的上一条完全相同，不重复记
 
-        Append(text);
+        Append(text,line.speakerName?.Length??0);
     }
 
     public void AppendChoice(string buttonText)
     {
         string text = $"你：选择'{buttonText}'";
-        Append(text);
+        Append(text,1);
     }
 
     /// <summary>跨天则清空，同一天内不动</summary>
@@ -61,13 +61,13 @@ public class DailyHistoryView
 
     public void Clear()
     {
-        _lastRecordedIndex = -1;
+        _lastRecordedIndex = -1;_lastText=null;
         if (_content == null) return;
         for (int i = _content.childCount - 1; i >= 0; i--)
-            Object.Destroy(_content.GetChild(i).gameObject);
+            { var child=_content.GetChild(i).gameObject;child.SetActive(false);Object.Destroy(child); }
     }
 
-    private void Append(string text)
+    private void Append(string text,int speakerLength=0)
     {
         if (_content == null || _itemPrefab == null)
         {
@@ -79,7 +79,9 @@ public class DailyHistoryView
         go.SetActive(true);
 
         var txt = go.GetComponentInChildren<Text>();
-        if (txt != null) txt.text = text;
+        var item=go.GetComponent<DialogueHistoryItem>();
+        if(item)item.SetDisplayText(text,speakerLength);
+        else if(txt!=null)txt.text=text;
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(_content as RectTransform);
         Canvas.ForceUpdateCanvases();

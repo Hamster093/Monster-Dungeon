@@ -16,9 +16,10 @@ public class ItemActionData
 {
     public ItemData data;
     public Action onDrop;
+    public Action onUse;
 }
 
-public class ItemSlot : MonoBehaviour ,IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
+public class ItemSlot : MonoBehaviour ,IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     //=====物品格子=====//
     [SerializeField] private Text _quantityText;
@@ -199,6 +200,33 @@ public class ItemSlot : MonoBehaviour ,IPointerClickHandler, IPointerEnterHandle
         _subText.text = text;
     }
 
+    public void SetStock(int stock)
+    { _quantityText.enabled=stock>=0;_quantityText.text=stock>=0?stock.ToString():""; }
+
+    private Image _residueGhost;
+    private PlacedItem _evolutionTarget;
+    public void OnBeginDrag(PointerEventData e)
+    {
+        if(GetComponentInParent<BackpackPanel>()==null||_stack?.data?.id!=7||SystemManager.Instance.Narrative?.IsPreparing!=true||EvolutionPanel.IsShowing)return;
+        var go=new GameObject("残质拖拽预览",typeof(RectTransform),typeof(Image),typeof(Outline));
+        go.transform.SetParent(UIManager.Instance.RootCanvas.transform,false);_residueGhost=go.GetComponent<Image>();_residueGhost.sprite=_itemImage.sprite;_residueGhost.raycastTarget=false;
+        var r=(RectTransform)go.transform;r.sizeDelta=new Vector2(92,92);go.GetComponent<Outline>().effectDistance=new Vector2(3,3);OnDrag(e);
+    }
+    public void OnDrag(PointerEventData e)
+    {
+        if(!_residueGhost)return;var r=(RectTransform)_residueGhost.transform;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle((RectTransform)r.parent,e.position,e.pressEventCamera,out var p);r.anchoredPosition=p;
+        _evolutionTarget=null;var board=BackpackBoard.Instance;
+        if(board.ScreenToBoardCoord(e.position,e.pressEventCamera,out var cell))
+        {var item=board.GetCell(cell)?.Occupant;if(item!=null&&!item.Evolved&&!item.IsResting)_evolutionTarget=item;}
+        _residueGhost.GetComponent<Outline>().effectColor=_evolutionTarget!=null?new Color(.25f,1,.45f):new Color(.8f,.2f,.2f);
+    }
+    public void OnEndDrag(PointerEventData e)
+    {
+        if(!_residueGhost)return;OnDrag(e);Destroy(_residueGhost.gameObject);_residueGhost=null;
+        if(_evolutionTarget!=null)UIManager.Instance.Open<EvolutionPanel>(_evolutionTarget.Uid);
+        _evolutionTarget=null;
+    }
     public void SetGray(bool gray)
     {
         if (_itemImage == null) return;

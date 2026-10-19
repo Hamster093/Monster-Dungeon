@@ -28,10 +28,14 @@ public class GameBootstrap : MonoBehaviour
 
         InitGame();
     }
-    private void Start()
+    private System.Collections.IEnumerator Start()
     {
+        // 等原 UI/棋盘的 Start 完成，再恢复棋盘或显示开场，避免初始化覆盖读档结果。
+        yield return null;
         // 3. 生成今日来客手动触发一次
-        NextDayEvent.Trigger();//放在start 因为ReceptionPanel要先注册事件
+        if (SystemManager.Instance.Narrative.Enabled)
+            SystemManager.Instance.Narrative.Boot();
+        else NextDayEvent.Trigger();//放在start 因为ReceptionPanel要先注册事件
     }
 
     private void OnDestroy()
@@ -41,12 +45,18 @@ public class GameBootstrap : MonoBehaviour
 
     private void OnApplicationQuit()
     {
-        if (_inited) SystemManager.Instance.Dispose();
+        if (_inited)
+        {
+            SystemManager.Instance.RunState.Save();
+            SystemManager.Instance.Dispose();
+        }
     }
 
     /// <summary>初始化游戏</summary>
     private void InitGame()
     {
+        // 允许直接从游戏场景调试；正常首页进入时复用已有音频管理器。
+        if (AudioManager.Instance == null) new GameObject("AudioManager").AddComponent<AudioManager>();
         Debug.Log("[GameBootstrap] 开始初始化");
 
         // 1. 可选：强制新局

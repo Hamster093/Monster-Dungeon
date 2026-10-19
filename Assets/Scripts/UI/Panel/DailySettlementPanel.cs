@@ -1,4 +1,4 @@
-﻿/****************************************************
+/****************************************************
     文件：DailySettlementPanel.cs
 	作者：DADI
     邮箱: 1581507659@qq.com
@@ -21,6 +21,7 @@ public class SettlementData
     public int specialCommissionIncome;  // 特殊委托收益
     public int monsterBusinessIncome;    // 魔物经营收益
     public int totalIncome;              // 总收益
+    public System.Collections.Generic.List<string> notes = new();
     public int installmentDue;           // 下阶段应缴纳分期
 
     public SettlementData() { }
@@ -47,10 +48,12 @@ public class DailySettlementPanel : PanelBase
     [Header("关闭")]
     [SerializeField] private Button btn_Close;
 
-    public override bool IsModal => false;
+    public override bool IsModal => true;
 
     /// <summary>面板关闭时触发（点遮罩、点关闭按钮、ESC 都会走这里）</summary>
 
+    [SerializeField] private Text _detailsText;
+    [SerializeField] private ScrollRect _detailsScroll;
     private SettlementData _data;
 
     public override void OnInit()
@@ -71,6 +74,8 @@ public class DailySettlementPanel : PanelBase
     {
         base.OnOpen(data);
         _closedNotified = false;
+        // 接单等操作提示不能覆盖结算标题；账目是独立的确认层。
+        ToastManager.Instance?.Clear();
 
         if (data is SettlementData d)
             _data = d;
@@ -110,21 +115,23 @@ public class DailySettlementPanel : PanelBase
     private void RefreshUI()
     {
         if (_data == null) _data = new SettlementData();
+        if(_detailsText)_detailsText.text=string.Join("\n\n",_data.notes.ConvertAll(NarrativeSystem.HidePrivateSuccessionProgress));
+        if(_detailsScroll){Canvas.ForceUpdateCanvases();_detailsText.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical,Mathf.Max(_detailsScroll.viewport.rect.height,_detailsText.preferredHeight+24));_detailsScroll.StopMovement();_detailsScroll.verticalNormalizedPosition=1;}
 
         if (txt_LegacyCommission != null)
-            txt_LegacyCommission.text = $"旧版委托收益:{_data.legacyCommissionIncome}";
+            txt_LegacyCommission.text = $"普通委托\n<size=42>{_data.legacyCommissionIncome}</size> 金币";
 
         if (txt_SpecialCommission != null)
-            txt_SpecialCommission.text = $"特殊委托收益:{_data.specialCommissionIncome}";
+            txt_SpecialCommission.gameObject.SetActive(false); // 旧存档字段可读，当前结算不再展示此栏。
 
         if (txt_MonsterBusiness != null)
-            txt_MonsterBusiness.text = $"魔物经营收益:{_data.monsterBusinessIncome}";
+            txt_MonsterBusiness.text = $"魔物经营\n<size=42>{_data.monsterBusinessIncome}</size> 金币";
 
         if (txt_Total != null)
-            txt_Total.text = $"总收益:{_data.totalIncome}";
+            txt_Total.text = $"今日收入\n<size=62>{_data.totalIncome}</size> 金币";
 
         if (txt_Installment != null)
-            txt_Installment.text = $"下阶段应缴纳分期:{_data.installmentDue}";
+            txt_Installment.text = $"阶段应缴：{_data.installmentDue} 金币";
     }
 
     // ───────────── 按钮 ─────────────
@@ -133,6 +140,13 @@ public class DailySettlementPanel : PanelBase
     {
         if (_closedNotified) return;
         _closedNotified = true;
+
+        if (SystemManager.Instance.Narrative?.Enabled == true)
+        {
+            UIManager.Instance.Close(this);
+            SystemManager.Instance.Narrative.CompleteSettlement(_data);
+            return;
+        }
 
         if (_data != null)
             SystemManager.Instance.Economy.AddCash(_data.totalIncome);

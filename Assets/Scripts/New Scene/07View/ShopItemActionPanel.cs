@@ -83,20 +83,9 @@ public class ShopItemActionPanel : PanelBase
 
     private void ApplyFixedPosition()
     {
-        var canvas = GetComponentInParent<Canvas>();
-
-        if (canvas != null && canvas.renderMode != RenderMode.ScreenSpaceOverlay)
-        {
-            RectTransformUtility.ScreenPointToWorldPointInRectangle(
-                canvas.transform as RectTransform,
-                _fixedPosition,
-                canvas.worldCamera,
-                out Vector3 worldPos);
-            transform.position = worldPos;
-        }
-        else
-        {
-            transform.position = (Vector3)_fixedPosition;
-        }
+        // 使用画布设计坐标，随 CanvasScaler 缩放，不能把它当作屏幕像素。
+        var rect = (RectTransform)transform;
+        rect.anchorMin = rect.anchorMax = new Vector2(.5f,.5f);
+        rect.anchoredPosition = _fixedPosition;
     }
 }

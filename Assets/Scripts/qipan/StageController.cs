@@ -74,7 +74,7 @@ public class StageController : MonoBehaviour
             }
 
             if (int.TryParse(v.Item.Def.Id, out int id))
-                MonsterStorageModel.Instance.Add(id);
+                MonsterStorageModel.Instance.Add(id, v.Item.Uid, v.Item.Evolved,v.Item.UsedDay,v.Item.EvolutionKind);
 
             board.RemoveItem(v.Item);
             Destroy(v.gameObject);

@@ -1,0 +1,274 @@
+{
+  "contexts": {
+    "title": {
+      "music": "BGM_001",
+      "ambient": null,
+      "loop": true,
+      "ambientGain": 0
+    },
+    "archive": {
+      "music": "BGM_001",
+      "ambient": null,
+      "loop": true,
+      "ambientGain": 1
+    },
+    "preparation": {
+      "music": "BGM_002",
+      "ambient": "AMB_001_Loop",
+      "loop": true,
+      "ambientGain": 1
+    },
+    "reception": {
+      "music": "BGM_003",
+      "ambient": "AMB_002_Loop",
+      "loop": true,
+      "ambientGain": 1
+    },
+    "uneasy": {
+      "music": "BGM_004",
+      "ambient": "AMB_003_Loop",
+      "loop": true,
+      "ambientGain": 1
+    },
+    "danger": {
+      "music": "BGM_005",
+      "ambient": "AMB_003_Loop",
+      "loop": true,
+      "ambientGain": 1
+    },
+    "stage": {
+      "music": "BGM_006",
+      "ambient": "AMB_001_Loop",
+      "loop": false,
+      "ambientGain": 0.35
+    },
+    "ending": {
+      "music": "BGM_007",
+      "ambient": null,
+      "loop": false,
+      "ambientGain": 0
+    },
+    "credits": {
+      "music": "BGM_007",
+      "ambient": null,
+      "loop": true,
+      "ambientGain": 0
+    }
+  },
+  "cues": {
+    "click": {
+      "clip": "SFX_001",
+      "priority": 10,
+      "gain": 0.65,
+      "pitch": 1
+    },
+    "confirm": {
+      "clip": "SFX_002",
+      "priority": 15,
+      "gain": 0.8,
+      "pitch": 1
+    },
+    "back": {
+      "clip": "SFX_003",
+      "priority": 15,
+      "gain": 0.8,
+      "pitch": 1
+    },
+    "denied": {
+      "clip": "SFX_004",
+      "priority": 25,
+      "gain": 0.8,
+      "pitch": 1
+    },
+    "info": {
+      "clip": "SFX_005",
+      "priority": 25,
+      "gain": 0.8,
+      "pitch": 1
+    },
+    "stat_up": {
+      "clip": "SFX_006",
+      "priority": 25,
+      "gain": 0.8,
+      "pitch": 1
+    },
+    "stat_down": {
+      "clip": "SFX_007",
+      "priority": 25,
+      "gain": 0.8,
+      "pitch": 1
+    },
+    "item": {
+      "clip": "SFX_013",
+      "priority": 25,
+      "gain": 0.8,
+      "pitch": 1
+    },
+    "altar": {
+      "clip": "SFX_014",
+      "priority": 25,
+      "gain": 0.8,
+      "pitch": 1
+    },
+    "monster": {
+      "clip": "SFX_015",
+      "priority": 25,
+      "gain": 0.8,
+      "pitch": 1
+    },
+    "place": {
+      "clip": "SFX_017",
+      "priority": 25,
+      "gain": 0.8,
+      "pitch": 1
+    },
+    "coins_in": {
+      "clip": "SFX_012_More",
+      "priority": 25,
+      "gain": 0.8,
+      "pitch": 1
+    },
+    "coins_out": {
+      "clip": "SFX_012_Less",
+      "priority": 25,
+      "gain": 0.8,
+      "pitch": 1
+    },
+    "decompose": {
+      "clip": "SFX_016_Low",
+      "priority": 25,
+      "gain": 0.8,
+      "pitch": 1
+    },
+    "evolve": {
+      "clip": "SFX_016_High",
+      "priority": 25,
+      "gain": 0.8,
+      "pitch": 1
+    },
+    "dice": {
+      "clip": "SFX_017",
+      "priority": 30,
+      "gain": 0.8,
+      "pitch": 1
+    },
+    "check_success": {
+      "clip": "SFX_002",
+      "priority": 30,
+      "gain": 0.8,
+      "pitch": 1
+    },
+    "check_failure": {
+      "clip": "SFX_004",
+      "priority": 30,
+      "gain": 0.8,
+      "pitch": 1
+    },
+    "adventure_success": {
+      "clip": "SFX_002",
+      "priority": 30,
+      "gain": 0.8,
+      "pitch": 1
+    },
+    "adventure_failure": {
+      "clip": "SFX_004",
+      "priority": 30,
+      "gain": 0.8,
+      "pitch": 1
+    },
+    "death": {
+      "clip": "SFX_016_Low",
+      "priority": 40,
+      "gain": 0.8,
+      "pitch": 1
+    },
+    "warning": {
+      "clip": "SFX_007",
+      "priority": 30,
+      "gain": 0.8,
+      "pitch": 1
+    },
+    "danger": {
+      "clip": "SFX_014",
+      "priority": 30,
+      "gain": 0.8,
+      "pitch": 1
+    },
+    "trap": {
+      "clip": "SFX_016_Low",
+      "priority": 40,
+      "gain": 0.8,
+      "pitch": 1
+    },
+    "day": {
+      "clip": "SFX_005",
+      "priority": 30,
+      "gain": 0.8,
+      "pitch": 1
+    },
+    "phase": {
+      "clip": "SFX_002",
+      "priority": 30,
+      "gain": 0.8,
+      "pitch": 1
+    },
+    "succession": {
+      "clip": "SFX_014",
+      "priority": 40,
+      "gain": 0.8,
+      "pitch": 1
+    },
+    "fumble": {
+      "clip": "SFX_004",
+      "priority": 35,
+      "gain": 0.8,
+      "pitch": 0.82
+    }
+  },
+  "nodes": {
+    "SUCCESSION_MY_01": "ending",
+    "SUCCESSION_MY_02": "ending",
+    "SUCCESSION_MY_03": "ending",
+    "SUCCESSION_MY_04": "ending",
+    "SUCCESSION_FE_01": "ending",
+    "SUCCESSION_FE_02": "ending",
+    "SUCCESSION_FE_03": "ending",
+    "SUCCESSION_FE_04": "ending",
+    "SUCCESSION_DW_01": "ending",
+    "SUCCESSION_DW_02": "ending",
+    "SUCCESSION_DW_03": "ending",
+    "SUCCESSION_DW_04": "ending",
+    "SUCCESSION_SA_01": "ending",
+    "SUCCESSION_SA_02": "ending",
+    "SUCCESSION_SA_03": "ending",
+    "SUCCESSION_AU_01": "ending",
+    "SUCCESSION_AU_02": "ending",
+    "SUCCESSION_AU_03": "ending",
+    "SUCCESSION_AU_04": "ending",
+    "SUCCESSION_AU_05": "ending",
+    "SUCCESSION_DA_01": "ending",
+    "SUCCESSION_DA_02": "ending",
+    "SUCCESSION_DA_03": "ending",
+    "SUCCESSION_DA_04": "ending",
+    "SUCCESSION_UN_01": "ending",
+    "SUCCESSION_UN_02": "ending",
+    "SUCCESSION_UN_03": "ending",
+    "SUCCESSION_UN_04": "ending",
+    "SUCCESSION_SA_04": "ending",
+    "REVENGE": "revenge",
+    "REVENGE_OPTIONS": "revenge",
+    "REVENGE_TALK": "revenge",
+    "REVENGE_GIFT": "revenge",
+    "REVENGE_TACTIC": "revenge",
+    "REVENGE_TRAP_CONFIRM": "revenge",
+    "END_KILLED": "danger",
+    "END_SWALLOWED": "danger",
+    "END_SELECTION": "uneasy",
+    "END_STAY": "uneasy",
+    "DAY03_END": "stage",
+    "DAY07_END": "stage",
+    "DAY12_END": "stage",
+    "DAY19_END": "stage",
+    "DAY27_END": "stage"
+  }
+}

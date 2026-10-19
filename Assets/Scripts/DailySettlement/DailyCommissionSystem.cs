@@ -1,28 +1,28 @@
-﻿/****************************************************
+/****************************************************
     文件：DailyCommissionSystem.cs
 	作者：DADI
     邮箱: 1581507659@qq.com
     日期：2026/10/15 17:15:54
-	功能：每日委托收益系统。两个独立队列：普通 / 特殊 跨天清空
+	功能：每日委托收益系统。普通委托队列，跨天清空；特殊委托已撤除
 *****************************************************/
 
 using System.Collections.Generic;
+using System;
+using System.Linq;
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
 public class DailyCommissionSystem
 {
     private readonly List<CommissionEntry> _normalCommissions = new List<CommissionEntry>();
-    private readonly List<CommissionEntry> _specialCommissions = new List<CommissionEntry>();
 
     public IReadOnlyList<CommissionEntry> NormalCommissions => _normalCommissions;
-    public IReadOnlyList<CommissionEntry> SpecialCommissions => _specialCommissions;
+    public IReadOnlyList<CommissionEntry> SpecialCommissions => Array.Empty<CommissionEntry>(); // 旧工具兼容，只读空集合。
 
     private ConfigDatabase Config => ConfigDatabase.Instance;
 
-    public bool IsEmpty => _normalCommissions.Count == 0 && _specialCommissions.Count == 0;
+    public bool IsEmpty => _normalCommissions.Count == 0;
 
-    private readonly D20Service _d20 = new D20Service();
 
     // ============================================================
     //  Add 接口（接委托时调用）
@@ -31,24 +31,21 @@ public class DailyCommissionSystem
     public void AddNormal(CommissionEntry entry)
     {
         if (entry == null) return;
-        _normalCommissions.Add(entry);
+        if (!_normalCommissions.Exists(e => e.contractId == entry.contractId && e.adventurerId == entry.adventurerId)) _normalCommissions.Add(entry);
     }
+
+    public void RemoveNormal(int contractId, int adventurerId) => _normalCommissions.RemoveAll(e => e.contractId == contractId && e.adventurerId == adventurerId);
+
+    public void RemoveNormal(int adventurerId) => _normalCommissions.RemoveAll(e => e.adventurerId == adventurerId);
 
     public void AddNormal(int contractId, int adventurerId, float completionRate = 1f)
     {
-        _normalCommissions.Add(new CommissionEntry(contractId, adventurerId, completionRate));
+        AddNormal(new CommissionEntry(contractId, adventurerId, completionRate));
     }
 
-    public void AddSpecial(CommissionEntry entry)
-    {
-        if (entry == null) return;
-        _specialCommissions.Add(entry);
-    }
-
-    public void AddSpecial(int contractId, int adventurerId, float completionRate = 1f)
-    {
-        _specialCommissions.Add(new CommissionEntry(contractId, adventurerId, completionRate));
-    }
+    // 旧工具兼容入口，正式游戏已没有特殊委托派发路径。
+    public void AddSpecial(CommissionEntry entry) { }
+    public void AddSpecial(int contractId, int adventurerId, float completionRate = 1f) { }
 
     /// <summary>
     /// 外部（检定系统）回调里用它来设置完成度
@@ -56,12 +53,13 @@ public class DailyCommissionSystem
     /// </summary>
     public void SetCompletionRate(bool isSpecial, int contractId, float rate)
     {
-        var list = isSpecial ? _specialCommissions : _normalCommissions;
+        if (isSpecial) return;
+        var list = _normalCommissions;
         for (int i = 0; i < list.Count; i++)
         {
             if (list[i].contractId == contractId)
             {
-                list[i].completionRate = Mathf.Clamp01(rate);
+                list[i].completionRate = Mathf.Clamp(rate,0,D20Service.Balance.criticalIncome);
                 return;
             }
         }
@@ -73,124 +71,109 @@ public class DailyCommissionSystem
     // ============================================================
 
     /// <summary>
-    /// 对队列里所有委托做检定：委托成败 + 战斗伤势 + 特殊委托属性提升
+    /// 普通委托只检定战斗伤势，报酬使用确定公式。
     /// </summary>
+    public bool CanOfferSpecial(int contractId, int actor) => false;
+    public int SpecialChance(int contractId, int actor, PlacedItem item = null) => 0;
+    private IEnumerable<CommissionEntry> All() => _normalCommissions;
+    /// <summary>同步接口留给旧流程/规则测试；正式界面使用同一数据的异步结果确认。</summary>
     public void ResolveAllChecks()
     {
-        int correctCount = RunStateManager.Instance.run.GetCorrectAnswerCount();
-        int modifier = correctCount * 2;
-
-        Debug.Log($"[委托检定] ===== 开始，正确回答数={correctCount}，修正=+{modifier} =====");
-
-        ResolveQueue(_normalCommissions, modifier, isSpecial: false);
-        ResolveQueue(_specialCommissions, modifier, isSpecial: true);
-
-        Debug.Log("[委托检定] ===== 结束 =====");
-    }
-
-    private void ResolveQueue(List<CommissionEntry> list, int modifier, bool isSpecial)
-    {
-        var config = ConfigDatabase.Instance;
-
-        foreach (var entry in list)
+        foreach(var e in All().Where(e=>!e.checksResolved))
         {
-            var check = _d20.Check(11, modifier);
-            entry.completionRate = check.Success ? 1f : 0.5f;
-
-            string tag = isSpecial ? "特殊" : "普通";
-            string resultStr = check.Success ? "成功 → 100%" : "失败 → 50%";
-            string flag = check.IsCritical ? "【暴击】" : check.IsFumble ? "【大失败】" : "";
-
-            Debug.Log($"[委托检定] {tag} 委托{entry.contractId} 冒险者{entry.adventurerId} | " +
-                      $"骰={check.Roll} + 修正{modifier} = {check.Roll + modifier} | {flag}{resultStr}");
-
-            // 特殊委托成功 → 提升影响属性
-            if (isSpecial && check.Success)
-                ApplySpecialStatBonus(entry);
-
-            // 有目标委托 → 战斗伤势检定
-            if (config.Contracts.TryGetValue(entry.contractId, out var cfg)
-                && cfg != null
-                && cfg.targetMonsterId > 0)
+            var cfg=Config.Contracts[e.contractId];
+            e.completionChecked=true;
+            if(!e.combatChecked){e.injury=cfg.targetMonsterId>0?CombatResolver.Resolve(e.adventurerId,e.targetMonsterId>0?e.targetMonsterId:cfg.targetMonsterId):InjuryResult.None;e.combatChecked=true;}
+        }
+        CommitResults();
+    }
+    private bool _checking;
+    public void ResolveAllChecksAsync(Action completed)
+    {
+        if(_checking||DiceCheckPanel.IsShowing)return;_checking=true;NextCheck(completed);
+    }
+    private void NextCheck(Action completed)
+    {
+        var run=RunStateManager.Instance.run;
+        foreach(var e in All().Where(e=>!e.checksResolved))
+        {
+            var cfg=Config.Contracts[e.contractId];
+            e.completionChecked=true;
+            if(!e.combatChecked)
             {
-                var injury = CombatResolver.Resolve(entry.adventurerId, cfg.targetMonsterId);
-                ApplyInjury(entry.adventurerId, injury);
+                if(cfg.targetMonsterId<=0){e.injury=InjuryResult.None;e.combatChecked=true;}
+                else
+                {
+                    int target=e.targetMonsterId>0?e.targetMonsterId:cfg.targetMonsterId;
+                    int modifier=CombatResolver.Modifier(e.adventurerId,target);
+                    Present(e,"遭遇 · "+Config.Monsters[target].name,D20Service.Balance.lightMax+1,modifier,"battle",true,r=>{e.injury=CombatResolver.Outcome(r,modifier);e.combatChecked=true;NextCheck(completed);});return;
+                }
             }
         }
+        CommitResults();_checking=false;completed?.Invoke();
     }
-
-    /// <summary>
-    /// 按 adventurerId 直接改属性，不依赖"当前访客"。
-    /// influenceStats 里每个属性 +1。
-    /// </summary>
-    private void ApplySpecialStatBonus(CommissionEntry entry)
+    private void Present(CommissionEntry entry,string title,int target,int modifier,string step,bool critical,Action<CheckResult> completed)
     {
-        if (entry == null || entry.statsApplied) return;
-        entry.statsApplied = true;
-
-        var config = ConfigDatabase.Instance;
-        if (config == null || config.Contracts == null) return;
-        if (!config.Contracts.TryGetValue(entry.contractId, out var cfg) || cfg == null) return;
-        if (cfg.influenceStats == null || cfg.influenceStats.Count == 0) return;
-
-        var run = RunStateManager.Instance?.run;
-        if (run == null || run.adventurers == null) return;
-        if (!run.adventurers.TryGetValue(entry.adventurerId, out var adv) || adv == null)
-        {
-            Debug.LogWarning($"[属性提升] 找不到冒险者 {entry.adventurerId}");
-            return;
-        }
-
-        foreach (var stat in cfg.influenceStats)
-        {
-            if (!adv.currentSevenStats.ContainsKey(stat))
-                adv.currentSevenStats[stat] = 0;
-
-            adv.currentSevenStats[stat] += 1;
-            Debug.Log($"[属性提升] 冒险者{entry.adventurerId} {GetStatName(stat)} +1 → 当前 {adv.currentSevenStats[stat]}");
-        }
+        var run=RunStateManager.Instance.run;string key="settle:"+run.currentDay+":"+entry.adventurerId+":"+entry.contractId+":"+step;
+        var request=run.pendingDice?.context=="settlement"&&run.pendingDice.key==key?run.pendingDice:D20Service.CreatePresentation(key,Config.Adventurers[entry.adventurerId].name+" · "+title,target,modifier,"settlement",critical);
+        run.pendingDice=request;D20Service.Show(request,completed);
     }
-
-    private void ApplyInjury(int adventurerId, InjuryResult injury)
+    private void CommitResults()
     {
-        var run = RunStateManager.Instance.run;
-        if (!run.adventurers.TryGetValue(adventurerId, out var adv) || adv == null) return;
-
-        switch (injury)
+        var run=RunStateManager.Instance.run;
+        // 两份任务只读取同一出发伤势，全部掷骰结束后取最重结果；不能在同一天重伤叠死。
+        foreach(var group in All().Where(e=>!e.checksResolved).GroupBy(e=>e.adventurerId))
         {
-            case InjuryResult.Severe:
-                if (adv.isSeverelyInjured)
-                {
-                    adv.isDead = true;
-                    adv.isSeverelyInjured = false;
-                    adv.severeInjuryDelay = 0;
-                    Debug.Log($"[伤势] 冒险者{adventurerId} 重伤叠加 → 死亡");
-                }
-                else
-                {
-                    adv.isSeverelyInjured = true;
-                    adv.severeInjuryDelay = 2;   // 第 1 次受伤 → 第 3 次来访恢复
-                    Debug.Log($"[伤势] 冒险者{adventurerId} 进入重伤，还需 {adv.severeInjuryDelay} 次来访恢复");
-                }
-                break;
-
-            case InjuryResult.Light:
-                if (adv.isSeverelyInjured)
-                {
-                    adv.severeInjuryDelay = 2;   // 重伤延续
-                    Debug.Log($"[伤势] 冒险者{adventurerId} 重伤延续，重置倒计时");
-                }
-                else
-                {
-                    Debug.Log($"[伤势] 冒险者{adventurerId} 轻伤，忽略");
-                }
-                break;
-
-            case InjuryResult.None:
-                Debug.Log($"[伤势] 冒险者{adventurerId} 无伤");
-                break;
+            int actor=group.Key;var adv=run.adventurers[actor];
+            if(!run.injuryAppliedDay.TryGetValue(actor,out int day)||day!=run.currentDay)
+            {
+                var worst=group.Min(e=>(int)e.injury);ApplyInjury(actor,(InjuryResult)worst);run.injuryAppliedDay[actor]=run.currentDay;
+            }
         }
+        foreach(var e in All().Where(e=>!e.checksResolved))
+        {
+            var adv=run.adventurers[e.adventurerId];var cfg=Config.Contracts[e.contractId];
+            e.completionRate=RewardRate(e,cfg);
+            var previous=new Dictionary<SevenDimension,int>(adv.currentSevenStats);
+            if(!e.statsApplied)
+            {
+                int i=EvolutionPanel.Index(e.evolutionKind);
+                if(i>=0&&!adv.isDead&&cfg.targetMonsterId>0){int n=SystemManager.Instance.Narrative?.EvolutionDelta??5;ChangeStat(adv,EvolutionPanel.Down[i],-n);ChangeStat(adv,EvolutionPanel.Up[i],n);}
+                e.statsApplied=true;
+            }
+            e.checksResolved=true;
+            AudioManager.Instance?.PlayCue(adv.isDead?"death":e.wrongRoute?"adventure_failure":"adventure_success");
+            if(adv.currentSevenStats.Any(v=>previous.TryGetValue(v.Key,out int old)&&v.Value!=old))AudioManager.Instance?.PlayCue("stat_up");
+            string who=adv.Config.name;
+            e.outcomeText=adv.isDead?who+"没有回来。":e.wrongRoute?who+"带回的材料类别不符。":e.injury==InjuryResult.Severe?who+"重伤返回。":e.injury==InjuryResult.Light?who+"轻伤返回。":who+"无伤返回。";
+            e.outcomeText += "\n" + (adv.isDead ? "报酬：0金币（未生还）" : e.wrongRoute ? "报酬：0金币（类别不符）" : "等级系数：" + Mathf.RoundToInt(e.completionRate*100) + "% · 报酬：" + Mathf.RoundToInt(cfg.reward*e.completionRate) + "金币");
+            // 保存真实净变化；读档及重复打开账目只读这份结果，不再次应用数值。
+            var changes=new List<string>();
+            foreach(var stat in adv.currentSevenStats){previous.TryGetValue(stat.Key,out int old);int delta=stat.Value-old;if(delta!=0)changes.Add(GetStatName(stat.Key)+(delta>0?" ＋":" −")+Math.Abs(delta));}
+            // 与剧情浮条共用前后评估，只追加本次结果；已应用属性的旧队列不会追补变化或再次培养。
+            string progress=changes.Count>0?SystemManager.Instance.Narrative?.DescribeSuccessionChange(e.adventurerId,previous):"";
+            if(!string.IsNullOrEmpty(progress))changes.Add(progress);
+            e.outcomeText="普通委托"+" · "+cfg.name+"\n"+e.outcomeText+(changes.Count>0?"\n"+string.Join("，",changes):"");
+        }
+        TopBarRefreshEvent.Trigger();UIManager.Instance?.Get<CharacterArchivePanel>()?.RefreshRecords();
     }
+    private void ChangeStat(AdventurerRuntimeData adv,SevenDimension stat,int amount)
+    {adv.currentSevenStats.TryGetValue(stat,out int old);adv.currentSevenStats[stat]=Mathf.Clamp(old+amount,0,100);}
+    private void ApplyInjury(int actor,InjuryResult injury)
+    {
+        var adv=RunStateManager.Instance.run.adventurers[actor];if(adv.isDead)return;
+        if(injury==InjuryResult.Severe)
+        {
+            if(adv.isSeverelyInjured)
+            {
+                adv.isDead=true;adv.isSeverelyInjured=false;adv.severeInjuryDelay=0;
+                if(Config.Items.TryGetValue(7,out var cfg))InventoryModel.Instance.AddItem(new ItemStack{data=ItemData.FromConfig(cfg),quantity=1});
+            }
+            else {adv.isSeverelyInjured=true;adv.severeInjuryDelay=2;adv.health=HealthState.Critical;}
+        }
+        else if(injury==InjuryResult.Light){if(adv.isSeverelyInjured)adv.severeInjuryDelay=2;else adv.health=HealthState.Damaged;}
+    }
+    public List<string> ResultNotes()=>All().Select(e=>e.outcomeText).Where(s=>!string.IsNullOrEmpty(s)).ToList();
 
     public CommissionIncomeResult ComputeAll()
     {
@@ -212,16 +195,28 @@ public class DailyCommissionSystem
             result.details.Add(detail);
         }
 
-        // 特殊委托
-        foreach (var entry in _specialCommissions)
-        {
-            var detail = CalcOne(entry, contracts, isSpecial: true);
-            if (detail == null) continue;
-            result.specialIncome += detail.actualIncome;
-            result.details.Add(detail);
-        }
-
         return result;
+    }
+
+    public static MonsterType TargetType(ContractConfig cfg) => cfg.targetMonsterType ?? ConfigDatabase.Instance.Monsters[cfg.targetMonsterId].monsterType;
+    public static string TypeName(MonsterType type)
+    {
+        switch(type) {
+            case MonsterType.Slime:return "史莱姆类"; case MonsterType.Goblin:return "哥布林类";
+            case MonsterType.Canine:return "犬类"; case MonsterType.Plant:return "植物类";
+            case MonsterType.Construct:return "构造类"; default:return "龙类";
+        }
+    }
+    public static float RankFactor(Level actor, Level monster) => new[]{1f,.8f,.5f,.25f}[Math.Abs((int)actor-(int)monster)];
+    /// <summary>唯一报酬公式。旧完成度/答对次数不再改变委托收入。</summary>
+    public static float RewardRate(CommissionEntry entry, ContractConfig cfg)
+    {
+        var db=ConfigDatabase.Instance;
+        int target=entry.targetMonsterId>0?entry.targetMonsterId:cfg.targetMonsterId;
+        var monster=db.Monsters[target];
+        var type=entry.requestedMonsterType??TargetType(cfg);
+        if(RunStateManager.Instance.run.adventurers[entry.adventurerId].isDead || monster.monsterType!=type || entry.wrongRoute) return 0;
+        return entry.rankFactor>=0?entry.rankFactor:RankFactor(db.Adventurers[entry.adventurerId].baseLevel,monster.level);
     }
 
     private CommissionDetail CalcOne(
@@ -237,15 +232,16 @@ public class DailyCommissionSystem
             return null;
         }
 
-        // 结算规则：报酬 × 完成度（100% / 75% / 50%）
-        int income = Mathf.RoundToInt(cfg.reward * entry.completionRate);
+        // 结算规则：正确类别且存活，基础报酬 × 等级系数。
+        float rate=RewardRate(entry,cfg);
+        int income = Mathf.RoundToInt(cfg.reward * rate);
 
         return new CommissionDetail
         {
             contractId = cfg.id,
             name = cfg.name,
             reward = cfg.reward,
-            completionRate = entry.completionRate,
+            completionRate = rate,
             actualIncome = income,
             isSpecial = isSpecial
         };
@@ -258,7 +254,6 @@ public class DailyCommissionSystem
     public void Clear()
     {
         _normalCommissions.Clear();
-        _specialCommissions.Clear();
     }
     private static string GetStatName(SevenDimension d)
     {
@@ -299,3 +294,4 @@ public class CommissionDetail
     public int actualIncome;
     public bool isSpecial;
 }
+

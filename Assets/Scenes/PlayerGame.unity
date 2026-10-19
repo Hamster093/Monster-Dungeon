@@ -232,8 +232,8 @@ Camera:
   m_GameObject: {fileID: 192524677}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -346,7 +346,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf2f4e705e4487247a7364ca05a7d2d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  newGameOnStart: 1
+  newGameOnStart: 0
 --- !u!1 &574768169
 GameObject:
   m_ObjectHideFlags: 0
@@ -366,7 +366,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &574768170
 RectTransform:
   m_ObjectHideFlags: 0
@@ -554,7 +554,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: a454859a2cb84494497b36376876eccd, type: 3}
     m_FontSize: 14
     m_FontStyle: 0
     m_BestFit: 0
@@ -743,12 +743,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
-  m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_ReferenceResolution: {x: 1920, y: 1080}
+  m_ScreenMatchMode: 1
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -827,20 +827,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65b516d1f52cf0b42afd48f364c4f0d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  duration: 1.5
+  duration: 2.25
   duplicateMode: 0
-  font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-  backgroundSprite: {fileID: 21300000, guid: 18b5f28f0aba8fe429d47e0e35221743, type: 3}
+  font: {fileID: 12800000, guid: a454859a2cb84494497b36376876eccd, type: 3}
+  backgroundSprite: {fileID: 0}
   fontSize: 28
   backgroundColor: {r: 0, g: 0, b: 0, a: 0.78}
   textColor: {r: 1, g: 1, b: 1, a: 1}
-  padding: {x: 900, y: 50}
-  anchorOffset: {x: 0, y: 350}
+  padding: {x: 40, y: 12}
+  anchorOffset: {x: 0, y: 360}
   sortingOrder: 32760
   fadeInRatio: 0.08
   fadeOutRatio: 0.2
-  startOffsetY: -18
-  riseDistance: 42
+  startOffsetY: -4
+  riseDistance: 10
 --- !u!4 &1989416038
 Transform:
   m_ObjectHideFlags: 0
@@ -960,7 +960,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.003921569}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.45}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1230,11 +1230,27 @@ MonoBehaviour:
     preload: 0
   - panelName: DailySettlementPanel
     prefab: {fileID: 6353251169615795990, guid: 39372b65ae3cb6d4e9e8a0305e275977, type: 3}
-    layer: 3
+    layer: 4
     preload: 0
-  - panelName: SpecialCommissionPanel
-    prefab: {fileID: -3110755188168613320, guid: 6b82b465d4fe10744ab7b8cda22a3f8d, type: 3}
-    layer: 3
+  - panelName: RouteSelectionPanel
+    prefab: {fileID: 4087198023563672006, guid: 02a2dfe69bfed4a4290a93f207907dfa, type: 3}
+    layer: 4
+    preload: 0
+  - panelName: EvolutionPanel
+    prefab: {fileID: 2688235496887031506, guid: 39d0f9c03989753429a67bcaaaa5fd52, type: 3}
+    layer: 4
+    preload: 0
+  - panelName: DiceCheckPanel
+    prefab: {fileID: 6649197002804685157, guid: a5dede864fba0584b8559d73e64772ef, type: 3}
+    layer: 4
+    preload: 0
+  - panelName: PlayerBuildPanel
+    prefab: {fileID: 609638588423072793, guid: e1f30d524964cbd4cb38fd9b47f92e96, type: 3}
+    layer: 4
+    preload: 0
+  - panelName: EndingPresentationPanel
+    prefab: {fileID: 6868374276668280505, guid: 3e4a89590de8a0f4bb365c264b891089, type: 3}
+    layer: 4
     preload: 0
   _panelRoot: {fileID: 8590773820909108777}
   _modalBlocker: {fileID: 593321511807248539}

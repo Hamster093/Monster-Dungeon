@@ -19,6 +19,7 @@ using UnityEngine.UI;
 public class DialogueLine
 {
     public string iconName;     // 完整地址；留空 = 不替换图片
+    public string sourceId;     // 稳定剧情地址，仅用于表现与记录，不执行业务动作。
     public string speakerName;
     public string content;
 }
@@ -32,8 +33,19 @@ public class TalkPanel : PanelBase, IPointerClickHandler
     [SerializeField] private MonoBehaviour _typewriterComponent;
     [SerializeField] private Text _speakerNameText;
     [SerializeField] private Image _iconImage;
+    [Serializable] public sealed class PortraitLayout
+    {
+        public string addressPrefix;
+        public float height=920,maxWidth=840;
+        public Vector2 baseline=new Vector2(-35,-530);
+    }
+    [Header("人物独立显示预设：高度、最大宽度和脚下基线")]
+    [SerializeField] private PortraitLayout[] _portraitLayouts;
+    private int _portraitRequest;
+    public bool IsPortraitLoading { get; private set; }
     [SerializeField] private TalkPanelRight _talkPanelRight;
     private CharacterArchivePanel _archivePanel;
+    private VisitSystem _archiveVisitors;
 
     [Header("对话控制器")]
     [SerializeField] private DialogueController _dialogueController = new DialogueController();
@@ -58,9 +70,10 @@ public class TalkPanel : PanelBase, IPointerClickHandler
 
     [Header("点击冷却")]
     [Tooltip("两次推进对话之间的最小间隔（秒），防止连点一次性跳过所有文本")]
-    [SerializeField] private float _clickCooldown = 0.5f;
+    [SerializeField] private float _clickCooldown = 0.26f;
 
     private float _lastAdvanceTime = -999f;
+    private float _lastPointerAdvanceTime = -999f;
 
     public GameObject leftDisplayArea;
     public GameObject RightDisplayArea;
@@ -77,6 +90,7 @@ public class TalkPanel : PanelBase, IPointerClickHandler
     private string _currentSpeaker;
     private string _currentIcon;        // 当前已加载的 iconName，避免重复加载
     private bool _isInitialized;
+    private bool _segmentCompleted;
 
 
     #region 生命周期与初始化
@@ -113,11 +127,14 @@ public class TalkPanel : PanelBase, IPointerClickHandler
         if (leftDisplayArea != null)
         {
             _archivePanel = leftDisplayArea.GetComponentInChildren<CharacterArchivePanel>(true);
+            if (_archivePanel != null) { UIManager.Instance.RegisterEmbedded(_archivePanel, leftDisplayArea); leftDisplayArea.SetActive(false); }
             if (_archivePanel == null)
                 Debug.LogWarning("[TalkPanel] leftDisplayArea 下找不到 CharacterArchivePanel", this);
         }
 
         TodayVisitorsReadyEvent.Register(OnTodayVisitorsReady);
+        _archiveVisitors = SystemManager.Instance.VisitSystem;
+        if (_archiveVisitors != null) _archiveVisitors.OnCurrentVisitorChanged += OnArchiveVisitorChanged;
     }
 
     public override void OnDestroy()
@@ -142,6 +159,15 @@ public class TalkPanel : PanelBase, IPointerClickHandler
         OnLineStart = null;
 
         TodayVisitorsReadyEvent.UnRegister(OnTodayVisitorsReady);
+        if (_archiveVisitors != null) _archiveVisitors.OnCurrentVisitorChanged -= OnArchiveVisitorChanged;
+    }
+
+    private void OnArchiveVisitorChanged(int id)
+    {
+        // 档案允许与剧情并行；下一位来访时跟随人物刷新，保留所选页签。
+        if (_archivePanel == null || !_archivePanel.IsOpen || id < 1) return;
+        _archivePanel.Refresh(id);
+        RefreshArchivePortrait(id);
     }
 
     /// <summary>初始化方法，传入对话列表</summary>
@@ -193,6 +219,8 @@ public class TalkPanel : PanelBase, IPointerClickHandler
         }
 
         _currentIndex = 0;
+        _lastAdvanceTime = -999f;
+        _segmentCompleted = false;
         _currentSpeaker = null;
         _currentIcon = null;
         _speakerNameText.text = string.Empty;
@@ -212,13 +240,19 @@ public class TalkPanel : PanelBase, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        // 档案嵌在对话预制体里；左侧正文的点击不能沿父节点冒泡成剧情点击。
+        if (_archivePanel != null && _archivePanel.IsOpen && leftDisplayArea.activeInHierarchy &&
+            RectTransformUtility.RectangleContainsScreenPoint((RectTransform)_archivePanel.transform, eventData.position, eventData.pressEventCamera)) return;
+        // 指针输入跨剧情帧保持间隔；内部开始显示下一帧仍即时执行。
+        if(UIManager.Instance.HasLeftOverlay||Time.unscaledTime-_lastPointerAdvanceTime<_clickCooldown)return;
+        _lastPointerAdvanceTime=Time.unscaledTime;
         MoveNext();
     }
 
     /// <summary>推进对话到下一步（点击或外部强制推进）</summary>
     public void MoveNext()
     {
-        if (!_isInitialized) return;
+        if (!_isInitialized || UIManager.Instance.HasLeftOverlay) return;
 
         // 冷却时间内忽略点击（打字机跳过除外）
         if (Typewriter != null && !Typewriter.IsTyping)
@@ -231,6 +265,7 @@ public class TalkPanel : PanelBase, IPointerClickHandler
         if (Typewriter != null && Typewriter.IsTyping)
         {
             Typewriter.Skip();
+            _lastAdvanceTime=Time.unscaledTime;
             return;
         }
 
@@ -255,6 +290,7 @@ public class TalkPanel : PanelBase, IPointerClickHandler
         }
 
         DialogueLine line = _dialogueList[_currentIndex];
+        if(_dialogueController.IsNarrativeMode)SystemManager.Instance.Narrative.ApplyAudioLine(line.sourceId);
 
         // ★ 图标：仅在 iconName 非空且变化时才替换
         if (!string.IsNullOrEmpty(line.iconName) && _currentIcon != line.iconName)
@@ -290,7 +326,7 @@ public class TalkPanel : PanelBase, IPointerClickHandler
     private IEnumerator WaitTypewriterEndThenComplete()
     {
         yield return null;
-        yield return new WaitUntil(() => !Typewriter.IsTyping);
+        yield return new WaitUntil(() => !Typewriter.IsTyping && !UIManager.Instance.HasLeftOverlay);
         _autoCompleteCoroutine = null;
         CompleteDialogue();
     }
@@ -310,6 +346,15 @@ public class TalkPanel : PanelBase, IPointerClickHandler
             return;
         }
         _talkPanelRight.ShowOptions(options, onSelected);
+    }
+
+    public DialogueLine CurrentDisplayedLine => _currentIndex>0 && _currentIndex<=_dialogueList.Count ? _dialogueList[_currentIndex-1] : null;
+    /// <summary>自动检定也在当前句后标注。仅刷新已有文本，不推进、不额外写历史。</summary>
+    public void ShowCheckAnnotation(D20Service.Presentation check)
+    {
+        if(string.IsNullOrEmpty(check.storyText))return;
+        _speakerNameText.text=check.storySpeaker??"";
+        Typewriter.Play(check.storyText+"\n"+check.annotation); Typewriter.Skip();
     }
 
     public void ClearOptions()
@@ -333,11 +378,54 @@ public class TalkPanel : PanelBase, IPointerClickHandler
     /// </summary>
     private async void LoadIconAsync(string address)
     {
-        if (string.IsNullOrEmpty(address)) return;   // ★ 留空 → 不动
-
-        var sp = await SpriteLoader.LoadAsync(address);
-        if (this == null || _iconImage == null) return;
-        if (sp != null) _iconImage.sprite = sp;
+        int request=++_portraitRequest;
+        if(address=="Narrative/blank")
+        {
+            IsPortraitLoading=false;
+            if(_iconImage)_iconImage.enabled=false;
+            return;
+        }
+        if(string.IsNullOrEmpty(address)){IsPortraitLoading=false;return;}
+        IsPortraitLoading=true;
+        var sprite=await SpriteLoader.LoadAsync(address);
+        if(this==null||request!=_portraitRequest)return;
+        IsPortraitLoading=false;
+        if(!_iconImage)return;
+        // 旧异步请求不能覆盖新人物；缺图时也不继续显示上一位来客。
+        if(sprite==null){_iconImage.enabled=false;return;}
+        if(_currentIcon!=address&&_currentIcon!=null)return;
+        _iconImage.sprite=sprite;_iconImage.preserveAspect=true;_iconImage.raycastTarget=false;
+        ApplyPortraitLayout(address,sprite);
+        _iconImage.enabled=true;
+    }
+    private void ApplyPortraitLayout(string address,Sprite sprite)
+    {
+        if(_portraitLayouts==null)return;
+        foreach(var layout in _portraitLayouts)
+        {
+            if(layout==null||string.IsNullOrEmpty(layout.addressPrefix)||!address.StartsWith(layout.addressPrefix,StringComparison.Ordinal))continue;
+            float aspect=sprite.rect.width/sprite.rect.height;
+            float height=Mathf.Min(layout.height,layout.maxWidth/aspect);
+            var rect=_iconImage.rectTransform;
+            rect.anchorMin=rect.anchorMax=new Vector2(.5f,.5f);rect.pivot=new Vector2(.5f,0);
+            rect.localScale=Vector3.one;rect.sizeDelta=new Vector2(height*aspect,height);rect.anchoredPosition=layout.baseline;
+            break;
+        }
+    }
+    /// <summary>只在人物转场的黑幕下清除旧画面并预载下一位；不提前登记或推进台词。</summary>
+    /// <summary>在跨天全黑时撤掉旧画面，只清可见当日日志；不删除历史模型或人物记录。</summary>
+    public void PrepareBusinessDay()
+    {
+        if(_autoCompleteCoroutine!=null){StopCoroutine(_autoCompleteCoroutine);_autoCompleteCoroutine=null;}
+        ClearOptions();Typewriter?.Clear();_currentSpeaker=null;_currentIcon=null;
+        ++_portraitRequest;IsPortraitLoading=false;if(_iconImage)_iconImage.enabled=false;
+        if(_speakerNameText)_speakerNameText.text="";
+        _historyView?.CheckDayChangedAndClear(RunStateManager.Instance.run.currentDay);
+    }
+    public void PrepareVisitorPortrait(string address)
+    {
+        ClearOptions();Typewriter?.Clear();if(_speakerNameText)_speakerNameText.text="";
+        if(!string.IsNullOrEmpty(address))UpdateBackgroundImage(address);
     }
 
     /// <summary>
@@ -353,20 +441,10 @@ public class TalkPanel : PanelBase, IPointerClickHandler
     }
 
     /// <summary>异步加载并设置角色头像</summary>
-    private async void LoadAndSetPortraitAsync(int id)
+    private void RefreshArchivePortrait(int id)
     {
-        var run = RunStateManager.Instance.run;
-        bool injured = run.adventurers.TryGetValue(id, out var adv)
-                       && adv != null
-                       && adv.isSeverelyInjured;
-
-        string name = GetIllustrationName(id);
-        string key = injured ? $"{name}_hurt" : $"{name}_idle";
-
-        Sprite sp = await SpriteLoader.LoadAsync(key);
-        if (this == null || _archivePanel == null || _iconImage == null) return;
-
-        _archivePanel.Refresh(id, sp);
+        // 档案拥有自己的头像绑定，不再异步加载中央整张立绘覆盖头像裁片。
+        _archivePanel?.Refresh(id);
     }
     private string GetIllustrationName(int id)
     {
@@ -398,8 +476,7 @@ public class TalkPanel : PanelBase, IPointerClickHandler
             return;
         }
 
-        bool willShow = !leftDisplayArea.activeSelf;
-        leftDisplayArea.SetActive(willShow);
+        bool willShow = _archivePanel != null && (!_archivePanel.IsOpen || !leftDisplayArea.activeSelf);
 
         if (willShow)
         {
@@ -409,11 +486,17 @@ public class TalkPanel : PanelBase, IPointerClickHandler
                 Debug.LogWarning("[TalkPanel] 当前没有访客，无法刷新档案");
                 return;
             }
-            if (_archivePanel != null)
-                _archivePanel.Refresh(id, _iconImage != null ? null : null);
-            // 异步加载头像，不阻塞UI切换
-            LoadAndSetPortraitAsync(id);
+            OpenArchive(id, _archivePanel.CurrentTab);
         }
+        else if (_archivePanel != null) UIManager.Instance.Close(_archivePanel);
+    }
+    public void OpenArchive(int id, int tab)
+    {
+        if (_archivePanel == null) return;
+        UIManager.Instance.Open<CharacterArchivePanel>();
+        _archivePanel.Refresh(id);
+        _archivePanel.SelectTab(tab);
+        RefreshArchivePortrait(id);
     }
    
     #endregion
@@ -426,11 +509,14 @@ public class TalkPanel : PanelBase, IPointerClickHandler
         if (index == _lastModelIndex) return;
         _lastModelIndex = index;
         DialogueHistoryModel.Instance?.Add(_dialogueList[index]);
+        if (_dialogueController.IsNarrativeMode) SystemManager.Instance.Narrative.RecordDisplayed(_dialogueList[index], "line:" + index);
     }
 
     /// <summary>补写最后一句 + 触发完成事件</summary>
     private void CompleteDialogue()
     {
+        if (_segmentCompleted) return;
+        _segmentCompleted = true;
         FlushLastLine();
         OnDialogueComplete?.Invoke();
     }
@@ -463,6 +549,7 @@ public class TalkPanel : PanelBase, IPointerClickHandler
 
     public void RecordPlayerChoice(string buttonText)
     {
+        AudioManager.Instance?.PlayCue("click");
         //  当前面板的每日历史
         _historyView.AppendChoice(buttonText);
 
@@ -476,6 +563,7 @@ public class TalkPanel : PanelBase, IPointerClickHandler
 
         //  再追加选项本身
         DialogueHistoryModel.Instance?.AddChoice(buttonText);
+        if (_dialogueController.IsNarrativeMode) SystemManager.Instance.Narrative.RecordDisplayed(new DialogueLine { speakerName = "你", content = buttonText }, "choice:" + buttonText);
     }
 
     #endregion

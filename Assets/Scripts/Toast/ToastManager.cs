@@ -1,4 +1,4 @@
-﻿/****************************************************
+/****************************************************
     文件：ToastDuplicateMode.cs
 	作者：DADI
     邮箱: 1581507659@qq.com
@@ -11,6 +11,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 /// <summary>重复消息的处理策略</summary>
 public enum ToastDuplicateMode
@@ -33,7 +34,7 @@ public enum ToastDuplicateMode
 /// 特性：
 ///   · 队列串行播放，前一条播完才轮到下一条
 ///   · 去重范围是「正在显示的 + 整个待显示队列」，而不是只比相邻一条
-///   · 单条动画：快速淡入出现 → 向上飘 + 缓慢淡出 → 消失，共 2 秒
+///   · 单条动画：快速淡入出现 → 向上飘 + 缓慢淡出 → 消失，共 2.25 秒
 /// </summary>
 [DisallowMultipleComponent]
 public class ToastManager : MonoBehaviour
@@ -45,7 +46,7 @@ public class ToastManager : MonoBehaviour
     // ------------------------------------------------------------
     [Header("行为")]
     [Tooltip("单条提示的完整生命周期（秒）")]
-    [SerializeField] float duration = 2f;
+    [SerializeField] float duration = 2.25f;
 
     [Tooltip("重复消息的处理方式")]
     [SerializeField] ToastDuplicateMode duplicateMode = ToastDuplicateMode.Merge;
@@ -91,9 +92,13 @@ public class ToastManager : MonoBehaviour
     }
 
     readonly List<Entry> pending = new List<Entry>();
+    readonly List<Entry> feedbackPending = new List<Entry>();
     ToastItem current;
+    ToastItem feedbackCurrent;
     Coroutine loop;
+    Coroutine feedbackLoop;
     RectTransform container;
+    int sceneHandle;
 
     // ------------------------------------------------------------
     // 生命周期
@@ -107,13 +112,23 @@ public class ToastManager : MonoBehaviour
         }
 
         Instance = this;
+        sceneHandle=gameObject.scene.handle;
         DontDestroyOnLoad(gameObject);   // 不需要跨场景可以删掉这一行
         BuildUI();
+        SceneManager.sceneLoaded+=OnSceneLoaded;
     }
 
     void OnDestroy()
     {
+        SceneManager.sceneLoaded-=OnSceneLoaded;
         if (Instance == this) Instance = null;
+    }
+    private void OnSceneLoaded(Scene scene,LoadSceneMode mode)
+    {
+        // 新局、读档重进游戏、返回标题都创建了新的主场景；同场景切面板不清队列。
+        if(mode!=LoadSceneMode.Single)return;
+        if(scene.handle!=sceneHandle)Clear();
+        sceneHandle=scene.handle;
     }
 
     // ------------------------------------------------------------
@@ -136,11 +151,18 @@ public class ToastManager : MonoBehaviour
         }
         Instance.Enqueue(text, key);
     }
+    /// <summary>当前操作的原因与结果可立即显示；业务变化仍用 Show，避免盖住功能弹窗。</summary>
+    public static void ShowFeedback(string text,string key=null)
+    {
+        if(Instance==null){Debug.LogWarning("[ToastManager] 场景中没有 ToastManager 实例");return;}
+        Instance.Enqueue(text,key,true);
+    }
 
     /// <summary>清空队列并立即移除当前提示</summary>
     public void Clear()
     {
         pending.Clear();
+        feedbackPending.Clear();
 
         if (current != null)
         {
@@ -153,43 +175,50 @@ public class ToastManager : MonoBehaviour
             StopCoroutine(loop);
             loop = null;
         }
+        if(feedbackCurrent!=null){Destroy(feedbackCurrent.gameObject);feedbackCurrent=null;}
+        if(feedbackLoop!=null){StopCoroutine(feedbackLoop);feedbackLoop=null;}
     }
 
     // ------------------------------------------------------------
     // 入队 + 去重
     // ------------------------------------------------------------
-    void Enqueue(string text, string key)
+    void Enqueue(string text, string key,bool feedback=false)
     {
+        text=NarrativeSystem.HidePrivateSuccessionProgress(text);
+        if(string.IsNullOrWhiteSpace(text))return;
         text = text ?? string.Empty;
         if (string.IsNullOrEmpty(key)) key = text;
 
+        var queue=feedback?feedbackPending:pending;
+        var showing=feedback?feedbackCurrent:current;
         if (duplicateMode != ToastDuplicateMode.Allow)
         {
             // ① 与「正在显示的那条」比较
-            if (current != null && current.Key == key)
+            if (showing != null && showing.Key == key)
             {
                 if (duplicateMode == ToastDuplicateMode.Merge)
-                    current.Merge(text);
+                    showing.Merge(text);
                 return;
             }
 
             // ② 与「整个待显示队列」比较（不是只比相邻一条）
-            for (int i = 0; i < pending.Count; i++)
+            for (int i = 0; i < queue.Count; i++)
             {
-                if (pending[i].Key != key) continue;
+                if (queue[i].Key != key) continue;
 
                 if (duplicateMode == ToastDuplicateMode.Merge)
                 {
-                    pending[i].Count++;
-                    pending[i].Text = text;
+                    queue[i].Count++;
+                    queue[i].Text = text;
                 }
                 return;
             }
         }
 
-        pending.Add(new Entry { Key = key, Text = text, Count = 1 });
+        queue.Add(new Entry { Key = key, Text = text, Count = 1 });
 
-        if (loop == null) loop = StartCoroutine(RunQueue());
+        if(feedback){if(feedbackLoop==null)feedbackLoop=StartCoroutine(RunFeedbackQueue());}
+        else if (loop == null) loop = StartCoroutine(RunQueue());
     }
 
     // ------------------------------------------------------------
@@ -199,6 +228,7 @@ public class ToastManager : MonoBehaviour
     {
         while (pending.Count > 0)
         {
+            while(BusinessPaused())yield return null;
             var e = pending[0];
             pending.RemoveAt(0);
 
@@ -216,13 +246,55 @@ public class ToastManager : MonoBehaviour
               duration, fadeInRatio, fadeOutRatio,   // 新增
               startOffsetY, riseDistance);
 
-            yield return current.Play();
+            // 手动推进原动画迭代器，功能操作期间不计时、不消失，返回后从原进度续播。
+            var animation=current.Play();
+            while(current!=null)
+            {
+                bool paused=BusinessPaused();
+                current.gameObject.SetActive(!paused);
+                if(paused){yield return null;continue;}
+                if(!animation.MoveNext())break;
+                yield return animation.Current;
+            }
 
             if (current != null) Destroy(current.gameObject);
             current = null;
         }
 
         loop = null;
+    }
+    private bool BusinessPaused()
+    {
+        if(GuideHelpOverlay.IsShowing||PresentationEffects.IsBusy||feedbackLoop!=null||feedbackCurrent!=null||feedbackPending.Count>0||SaveSlotsPanel.IsShowing)return true;
+        var ui=UIManager.Instance;
+        if(ui==null)return false;
+        foreach(var panel in ui.OpenStack)
+            if(panel!=null&&panel.IsOpen&&panel.gameObject.activeInHierarchy&&
+                (panel.IsModal||panel is BackpackPanel bag&&bag.IsFunctionContext))return true;
+        // 冒险者档案和浏览背包都是非模态，继续显示正常业务提示。
+        return false;
+    }
+    private IEnumerator RunFeedbackQueue()
+    {
+        if(current!=null)current.gameObject.SetActive(false);
+        while(feedbackPending.Count>0)
+        {
+            var e=feedbackPending[0];feedbackPending.RemoveAt(0);
+            feedbackCurrent=ToastItem.Create(container,new ToastStyle{font=font,fontSize=fontSize,
+                backgroundColor=backgroundColor,backgroundSprite=backgroundSprite,textColor=textColor,padding=padding});
+            feedbackCurrent.Init(e.Key,e.Text,e.Count,duration,fadeInRatio,fadeOutRatio,startOffsetY,riseDistance);
+            var animation=feedbackCurrent.Play();
+            while(feedbackCurrent!=null) {
+                bool paused=GuideHelpOverlay.IsShowing||PresentationEffects.IsBusy;
+                feedbackCurrent.gameObject.SetActive(!paused);
+                if(paused){yield return null;continue;}
+                if(!animation.MoveNext())break;
+                yield return animation.Current;
+            }
+            if(feedbackCurrent!=null)Destroy(feedbackCurrent.gameObject);
+            feedbackCurrent=null;
+        }
+        feedbackLoop=null;
     }
 
     // ------------------------------------------------------------
@@ -231,16 +303,18 @@ public class ToastManager : MonoBehaviour
     void BuildUI()
     {
         var canvasGo = new GameObject("ToastCanvas",
-            typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
+            typeof(Canvas), typeof(CanvasScaler), typeof(CanvasGroup));
         canvasGo.transform.SetParent(transform, false);
 
         var canvas = canvasGo.GetComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
         canvas.sortingOrder = sortingOrder;
+        var group=canvasGo.GetComponent<CanvasGroup>();
+        group.interactable=false;group.blocksRaycasts=false; // 提示只展示，不截获鼠标或键盘操作。
 
         var scaler = canvasGo.GetComponent<CanvasScaler>();
         scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
-        scaler.referenceResolution = new Vector2(1080f, 1920f);
+        scaler.referenceResolution = new Vector2(1920f, 1080f);
         scaler.matchWidthOrHeight = 0.5f;
 
         var containerGo = new GameObject("Container", typeof(RectTransform));

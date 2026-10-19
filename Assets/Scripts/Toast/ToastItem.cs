@@ -81,7 +81,8 @@ public class ToastItem : MonoBehaviour
         layout.childForceExpandHeight = false;
 
         var fitter = go.AddComponent<ContentSizeFitter>();
-        fitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
+        fitter.horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
+        item.rect.sizeDelta = new Vector2(720, 64);
         fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
         // 文本
@@ -93,9 +94,10 @@ public class ToastItem : MonoBehaviour
         item.label.fontSize = style.fontSize;
         item.label.color = style.textColor;
         item.label.alignment = TextAnchor.MiddleCenter;
-        item.label.horizontalOverflow = HorizontalWrapMode.Overflow;
+        item.label.horizontalOverflow = HorizontalWrapMode.Wrap;
         item.label.verticalOverflow = VerticalWrapMode.Overflow;
         item.label.raycastTarget = false;
+        var width = textGo.AddComponent<LayoutElement>(); width.preferredWidth = 640; width.flexibleWidth = 1;
 
         if (item.label.font == null)
             Debug.LogWarning("[Toast] 没有可用字体，请给 ToastManager 指定 Font（中文需指定中文字体）");

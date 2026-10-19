@@ -53,6 +53,8 @@ public class EconomySystem
     /// </summary>
     private void OnPhaseEnded(int phase)
     {
+        // 完整剧情已在 fee 动作中扣款，本事件只通知棋盘等系统切换阶段。
+        if (SystemManager.Instance.Narrative?.Enabled == true) return;
         var schedule = ConfigDatabase.Instance.Schedules.Find(s => s.phase == phase);
         if (schedule == null) return;
 

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7666124293083701059}
   - component: {fileID: 6773134505694428758}
   - component: {fileID: 8436849192664922437}
+  - component: {fileID: 5925828838300685790}
   m_Layer: 5
   m_Name: ExamineButton
   m_TagString: Untagged
@@ -120,6 +121,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &5925828838300685790
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1914021463323197984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0e2f03862c81e647aeee9c20bfad252, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cue: click
 --- !u!1 &3782623851852639074
 GameObject:
   m_ObjectHideFlags: 0
@@ -155,10 +169,10 @@ RectTransform:
   - {fileID: 1951369076380471785}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 42.00818, y: 51.528076}
-  m_SizeDelta: {x: 215, y: 198}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -420, y: 80}
+  m_SizeDelta: {x: 214, y: 199}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &834252718560622022
 CanvasRenderer:
@@ -188,7 +202,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 9de9091435bf48649bd418300e82e9e8, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8c2f5124870039843b3ec2e3f974f1dc, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -213,6 +227,7 @@ MonoBehaviour:
   _examineButton: {fileID: 8436849192664922437}
   _buyButton: {fileID: 354534864523385985}
   _buttonOffset: {x: 200, y: -50}
+  _fixedPosition: {x: -420, y: 80}
 --- !u!1 &8110769971425789750
 GameObject:
   m_ObjectHideFlags: 0
@@ -225,6 +240,7 @@ GameObject:
   - component: {fileID: 478459002795372792}
   - component: {fileID: 3107659248609200971}
   - component: {fileID: 354534864523385985}
+  - component: {fileID: 4243613464274480970}
   m_Layer: 5
   m_Name: BuyButton
   m_TagString: Untagged
@@ -333,3 +349,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &4243613464274480970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8110769971425789750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0e2f03862c81e647aeee9c20bfad252, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cue: click

@@ -15,10 +15,13 @@ MonoBehaviour:
   Id: 116
   DisplayName: "\u53CC\u8DB3\u98DE\u9F99"
   Color: {r: 0.5764706, g: 0.44705886, b: 0.69411767, a: 1}
+  NormalIcon: {fileID: 21300000, guid: bcb8f08f05aca774da803006f8f4b71f, type: 3}
+  EvolvedIcon: {fileID: 21300000, guid: bf148522affe91640b990804f1438e38, type: 3}
   Shape:
-  - {x: 0, y: 1}
+  - {x: 0, y: 2}
+  - {x: 1, y: 2}
+  - {x: 2, y: 2}
+  - {x: 3, y: 2}
   - {x: 1, y: 1}
-  - {x: 2, y: 1}
-  - {x: 3, y: 1}
   - {x: 1, y: 0}
   CanRotate: 1

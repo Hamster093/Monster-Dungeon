@@ -1,4 +1,4 @@
-﻿/****************************************************
+/****************************************************
     文件：BoardIncomeCalculator.cs
 	作者：DADI
     邮箱: 1581507659@qq.com
@@ -37,7 +37,7 @@ public static class BoardIncomeCalculator
         if (entry == null) return 0;
 
         MonsterType selfType = GetMonsterType(monsterId);
-        int income = entry.baseIncome;   // 进化后换成 evolvedIncome
+        int income = view.Item.Evolved ? entry.evolvedIncome : entry.baseIncome;   // 进化后换成 evolvedIncome
 
         // ② 相邻魔物收益（可反复计算：每个邻居都独立加一次）
         foreach (var neighbor in GetAdjacentMonsters(view.Item, board))
@@ -47,13 +47,13 @@ public static class BoardIncomeCalculator
             income += (nType == selfType) ? IncomeSameType : IncomeDiffType;
         }
 
-        // ③ 相邻地块收益（同种地块只算一次）
-        var seenTiles = new HashSet<SpecialTileType>();
+        // ③ 同类特殊地块按四向连通组计费；多格接触同一组不重复，不相连的两组各算一次。
+        var seenTiles = new HashSet<string>();
         foreach (var tile in GetAdjacentSpecialTiles(view.Item, board))
         {
-            if (!seenTiles.Add(tile)) continue;          // 已算过这种地块就跳过
-            if (tileConfig.IsAdapted(tile, selfType))
-                income += tileConfig.GetAdaptedIncome(tile);
+            if (!seenTiles.Add(tile.key)) continue;          // 该连通组已计费
+            if (tileConfig.IsAdapted(tile.type, selfType))
+                income += tileConfig.GetAdaptedIncome(tile.type);
         }
 
         return income;
@@ -77,13 +77,13 @@ public static class BoardIncomeCalculator
     }
 
     /// <summary>获取与该物品相邻的所有特殊地块类型</summary>
-    private static IEnumerable<SpecialTileType> GetAdjacentSpecialTiles(PlacedItem item, BackpackBoard board)
+    private static IEnumerable<(SpecialTileType type,string key)> GetAdjacentSpecialTiles(PlacedItem item, BackpackBoard board)
     {
         foreach (var cell in GetAdjacentCells(item))
         {
             var c = board.GetCell(cell);
             if (c != null && c.SpecialType != SpecialTileType.None)
-                yield return c.SpecialType;
+                yield return (c.SpecialType,TileGroupKey(cell,c.SpecialType,board));
         }
     }
 
@@ -104,6 +104,12 @@ public static class BoardIncomeCalculator
         }
     }
 
+    private static string TileGroupKey(Vector2Int start,SpecialTileType type,BackpackBoard board)
+    {
+        var seen=new HashSet<Vector2Int>{start};var queue=new Queue<Vector2Int>();queue.Enqueue(start);var minimum=start;
+        while(queue.Count>0){var p=queue.Dequeue();if(p.y<minimum.y||p.y==minimum.y&&p.x<minimum.x)minimum=p;foreach(var d in Directions4){var n=p+d;if(board.GetCell(n)?.SpecialType==type&&seen.Add(n))queue.Enqueue(n);}}
+        return type+":"+minimum.x+":"+minimum.y;
+    }
     private static readonly Vector2Int[] Directions4 =
     {
         Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right

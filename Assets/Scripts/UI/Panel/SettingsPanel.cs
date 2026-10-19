@@ -9,11 +9,13 @@
 *****************************************************/
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class SettingsPanel : PanelBase
 {
+    public override bool IsModal => true;
     // ============================================================
     //  配置项 Key
     // ============================================================
@@ -27,8 +29,40 @@ public class SettingsPanel : PanelBase
     private const float DefaultVolume = 1f;
     private const bool DefaultOn = true;
 
-    // ★ 唯一分辨率（写死）
+    // 窗口的设计基准；全屏使用所在显示器的真实像素，不能把720p画面放大。
     private static readonly Vector2Int FixedResolution = new Vector2Int(1920, 1080);
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    private static void ApplyStartupDisplay()
+    {
+#if !UNITY_EDITOR
+        // 主菜单出现前就纠正旧版保存的低分辨率，不要求玩家先打开设置。
+        ApplyDisplayMode(PlayerPrefs.GetInt(KeyFullscreen, 1) == 1);
+#endif
+    }
+
+    private static Vector2Int FullscreenResolution()
+    {
+        var display = Screen.mainWindowDisplayInfo;
+        return display.width > 0 && display.height > 0
+            ? new Vector2Int(display.width, display.height) : FixedResolution;
+    }
+
+    private static void ApplyDisplayMode(bool fullscreen)
+    {
+        var resolution = fullscreen ? FullscreenResolution() : FixedResolution;
+        Screen.SetResolution(resolution.x, resolution.y,
+            fullscreen ? FullScreenMode.FullScreenWindow : FullScreenMode.Windowed);
+    }
+
+    private void RefreshResolutionLabel(bool fullscreen)
+    {
+        if (dropdown_resolution == null || dropdown_resolution.options.Count == 0) return;
+        var resolution = fullscreen ? FullscreenResolution() : FixedResolution;
+        if (_resolutions.Count > 0) _resolutions[0] = resolution;
+        dropdown_resolution.options[0].text = resolution.x + "x" + resolution.y;
+        dropdown_resolution.RefreshShownValue();
+    }
 
     [Header("音频")]
     [SerializeField] private Slider sld_music;
@@ -76,8 +110,12 @@ public class SettingsPanel : PanelBase
     {
         EnsureBinds();
         SyncUIToRuntime();  // 每次打开时刷新一次显示
+        if (btn_save_game) btn_save_game.interactable = SystemManager.Instance.IsInitialized;
         base.OnOpen(data);
     }
+
+    public override void OnClose()
+    { if (UIManager.Instance != null && UIManager.Instance.OpenStack.Contains(this)) UIManager.Instance.Close(this); else base.OnClose(); }
 
     public override bool OnEscapePressed()
     {
@@ -97,10 +135,18 @@ public class SettingsPanel : PanelBase
             btn_close.onClick.AddListener(OnClose);
 
         if (btn_read_save != null)
-            btn_read_save.onClick.AddListener(() => OnReadSaveClicked?.Invoke());
+            btn_read_save.onClick.AddListener(() =>
+            {
+                if (OnReadSaveClicked != null) OnReadSaveClicked.Invoke();
+                else SaveSlotsPanel.Show(false);
+            });
 
         if (btn_save_game != null)
-            btn_save_game.onClick.AddListener(() => OnSaveGameClicked?.Invoke());
+            btn_save_game.onClick.AddListener(() =>
+            {
+                if (OnSaveGameClicked != null) OnSaveGameClicked.Invoke();
+                else SaveSlotsPanel.Show(true);
+            });
 
         if (sld_music != null) sld_music.onValueChanged.AddListener(OnMusicVolumeChanged);
         if (sld_sfx != null) sld_sfx.onValueChanged.AddListener(OnSfxVolumeChanged);
@@ -163,12 +209,15 @@ public class SettingsPanel : PanelBase
         if (tgl_music != null) tgl_music.isOn = musicOn;
         if (tgl_sfx != null) tgl_sfx.isOn = sfxOn;
         if (tgl_fullscreen != null) tgl_fullscreen.isOn = fullscreen;
+        RefreshFullscreenGraphic(fullscreen);
 
         // 应用到运行时
         AudioManager.Instance?.SetMusicVolume(musicVol);
+        AudioManager.Instance?.SetSfxVolume(sfxVol);
         AudioManager.Instance?.ToggleMusic(musicOn);
         AudioManager.Instance?.ToggleSfx(sfxOn);
-        Screen.fullScreen = fullscreen;
+        ApplyDisplayMode(fullscreen);
+        RefreshResolutionLabel(fullscreen);
 
         // 分辨率：只有一个选项，始终选中 0
         if (dropdown_resolution != null)
@@ -192,6 +241,8 @@ public class SettingsPanel : PanelBase
         }
 
         if (tgl_fullscreen != null) tgl_fullscreen.isOn = Screen.fullScreen;
+        RefreshFullscreenGraphic(Screen.fullScreen);
+        RefreshResolutionLabel(Screen.fullScreen);
 
         _suppressEvents = false;
     }
@@ -213,7 +264,7 @@ public class SettingsPanel : PanelBase
 
         PlayerPrefs.SetFloat(KeySfxVolume, val);
         Debug.Log($"音效音量改变为: {val}");
-        // TODO: AudioManager.Instance?.SetSfxVolume(val);
+        AudioManager.Instance?.SetSfxVolume(val);
     }
 
     private void OnMusicToggleChanged(bool state)
@@ -240,7 +291,9 @@ public class SettingsPanel : PanelBase
         if (_suppressEvents) return;
 
         PlayerPrefs.SetInt(KeyFullscreen, state ? 1 : 0);
-        Screen.fullScreen = state;
+        ApplyDisplayMode(state);
+        RefreshResolutionLabel(state);
+        RefreshFullscreenGraphic(state);
     }
 
     private void OnResolutionChanged(int index)
@@ -249,8 +302,8 @@ public class SettingsPanel : PanelBase
         if (index < 0 || index >= _resolutions.Count) return;
 
         // 现在只有一个选项，实际上只会是 index = 0
-        var res = _resolutions[index];
-        Screen.SetResolution(res.x, res.y, Screen.fullScreen);
+        ApplyDisplayMode(Screen.fullScreen);
+        RefreshResolutionLabel(Screen.fullScreen);
         PlayerPrefs.SetInt(KeyResolution, index);
     }
 
@@ -258,4 +311,10 @@ public class SettingsPanel : PanelBase
     //  对外：手动刷新（外部改了设置后可调用）
     // ============================================================
     public void RefreshSettings() => ApplyFromPrefs();
+    private void RefreshFullscreenGraphic(bool state)
+    {
+        var image = tgl_fullscreen != null ? tgl_fullscreen.targetGraphic as Image : null;
+        if (image != null && image.name == "FullscreenChoice")
+            image.sprite = Resources.Load<Sprite>(state ? "Art/Settings/-_0010_√_选中全屏" : "Art/Settings/-_0009_√_选中窗口");
+    }
 }

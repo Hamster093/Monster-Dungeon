@@ -1,4 +1,4 @@
-﻿/****************************************************
+/****************************************************
     文件：ShopSlotDragger.cs
 	作者：DADI
     邮箱: 1581507659@qq.com
@@ -22,7 +22,7 @@ public class ShopSlotDragger : MonoBehaviour,
     [Header("拖拽参数")]
     public RectTransform DragLayer;       // 拖拽时幽灵的父节点（Canvas 顶层）
     public ItemView ItemViewPrefab;        // 你的 ItemView 预制体
-    public float CellSize = 95f;
+    public float CellSize = 115f;
     public float Spacing = 5f;
 
     private ItemView _ghost;
@@ -31,6 +31,8 @@ public class ShopSlotDragger : MonoBehaviour,
     private Vector2Int _targetOrigin;
     private int _rotation;
     private ScrollRect _scrollRect;
+    private PointerEventData _pointer;
+    public static bool IsAnyDragging => System.Array.Exists(FindObjectsOfType<ShopSlotDragger>(),d=>d._ghost!=null);
 
     [Header("高亮色")]
     public Color ValidColor = new Color(0.4f, 1f, 0.4f, 0.9f);
@@ -40,10 +42,23 @@ public class ShopSlotDragger : MonoBehaviour,
     {
         _scrollRect = GetComponentInParent<ScrollRect>();
     }
+    /// <summary>商店可能早于整备棋盘初始化；拖动时再绑定当前唯一真实棋盘，不创建替身。</summary>
+    public bool ResolveDragContext()
+    {
+        if(BackpackBoard.Instance)Board=BackpackBoard.Instance;
+        if(!Panel)Panel=GetComponentInParent<ShopPanel>();
+        if(!DragLayer&&Board)DragLayer=Board.GetOrCreateDragLayer();
+        if(!_scrollRect)_scrollRect=GetComponentInParent<ScrollRect>();
+        return Panel&&Board&&DragLayer&&ItemViewPrefab;
+    }
     public void OnBeginDrag(PointerEventData e)
     {
-        if (_scrollRect != null) _scrollRect.enabled = false;
-        if (Panel == null || Board == null) return;
+        if (e.button!=PointerEventData.InputButton.Left || GuideHelpOverlay.BlocksInput || PlayerBuildPanel.IsShowing || PresentationEffects.IsBusy || RouteSelectionPanel.IsShowing||EvolutionPanel.IsShowing) return;
+        bool ready=ResolveDragContext();
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        if(Application.productName.EndsWith("_NarrativeValidation"))Debug.Log("[BoardNativeDrag] begin slot="+SlotIndex+" ready="+ready+" board="+(Board!=null));
+#endif
+        if(!ready||Board.IsEditing)return;
 
         var data = Panel.GetSlotData(SlotIndex);      
 
@@ -51,18 +66,24 @@ public class ShopSlotDragger : MonoBehaviour,
         if (data.shape == null) { Debug.LogWarning("shape 为空，检查 JSON 的 shapeId 和 ShapeDatabase"); return; }
 
         if (!Panel.CanBuy(SlotIndex)) { Debug.LogWarning("CanBuy 为 false，库存不足"); return; }
+        if (_scrollRect != null) _scrollRect.enabled = false;
+        _targetValid=false;_pointer=e;e.eligibleForClick=false;
 
         _rotation = 0;
 
         // 创建幽灵
         _ghost = CreateGhost(data.shape);
+        var source = Panel.GetSlotInstance(SlotIndex);
+        if (source != null) _ghost.SetInstanceState(source.uid, source.evolved,source.usedDay,source.evolutionKind);
         _ghost.transform.SetParent(DragLayer, false);
+        OnDrag(e);
     }
 
     public void OnDrag(PointerEventData e)
     {
 
-        if (_ghost == null) return;
+        if (_ghost == null || GuideHelpOverlay.BlocksInput || PlayerBuildPanel.IsShowing || PresentationEffects.IsBusy) return;
+        _pointer=e;
 
         // 幽灵跟随鼠标
         FollowMouse(e);
@@ -89,6 +110,9 @@ public class ShopSlotDragger : MonoBehaviour,
         try
         {
             if (_ghost == null) return;
+            // 模态引导出现时丢弃预览；原仓库实例尚未扣除，不在遮罩后偷偷落位。
+            if(GuideHelpOverlay.BlocksInput || PlayerBuildPanel.IsShowing || PresentationEffects.IsBusy)return;
+            OnDrag(e);
             bool valid = _targetValid;
             Destroy(_ghost.gameObject);
             _ghost = null;
@@ -97,9 +121,11 @@ public class ShopSlotDragger : MonoBehaviour,
             if (!valid) return;
 
             // 1. 先生成到棋盘
+            var sourceInstance = Panel.GetSlotInstance(SlotIndex);
             var shape = Panel.GetSlotShape(SlotIndex);
             var newItem = Board.CreateItemOnBoard(shape, _targetOrigin, _rotation, ItemViewPrefab);
             if (newItem == null) return;
+            if (sourceInstance != null) newItem.SetInstanceState(sourceInstance.uid, sourceInstance.evolved,sourceInstance.usedDay,sourceInstance.evolutionKind);
 
             // 2. 生成成功再扣钱；扣钱失败则回滚
             if (!Panel.TryBuyForDrag(SlotIndex))
@@ -110,6 +136,7 @@ public class ShopSlotDragger : MonoBehaviour,
             }
 
             _real = newItem;
+            _real.StageFromStorage();
         }
         finally
         {
@@ -119,14 +146,22 @@ public class ShopSlotDragger : MonoBehaviour,
         }
         
     }
+    private void OnDisable()
+    {
+        if(_ghost){Destroy(_ghost.gameObject);_ghost=null;}
+        if(_scrollRect)_scrollRect.enabled=true;
+        ClearHighlight();_targetValid=false;
+    }
 
     private void Update()
     {
+        if(GuideHelpOverlay.BlocksInput || PlayerBuildPanel.IsShowing || PresentationEffects.IsBusy)return;
         if (_ghost != null && Input.GetKeyDown(KeyCode.R)
             && _ghost.Def != null && _ghost.Def.CanRotate)
         {
             _rotation = (_rotation + 90) % 360;
             _ghost.SetRotationSilently(_rotation);
+            if(_pointer!=null)OnDrag(_pointer);
         }
     }
 

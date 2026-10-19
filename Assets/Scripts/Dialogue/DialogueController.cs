@@ -1,4 +1,4 @@
-﻿/****************************************************
+/****************************************************
     文件：DialogueController.cs
 	作者：DADI
     邮箱: 1581507659@qq.com
@@ -26,6 +26,58 @@ public class DialogueController
     private string _pendingNextNodeId;//待处理的下一个节点ID
 
     private string _pendingStartKey;   // 待启动的下一位访客对话 key
+    [NonSerialized] private bool _narrativeMode;
+    [NonSerialized] private bool _narrativeAdvancing;
+    [NonSerialized] private bool _waitingPresentation;
+
+    /// <summary>完整剧情仍使用本控制器的现有节点显示逻辑；Ink 负责提供下一帧节点。</summary>
+    public void StartNarrative()
+    {
+        if(PresentationEffects.IsBusy) { WaitForPresentation(); return; }
+        _narrativeMode = true;
+        _narrativeAdvancing = false;
+        _talkPanel.CheckDayChangedAndClear();
+        var campaign = SystemManager.Instance.Narrative;
+        var frame = campaign.GetFrame();
+        if (frame == null) { campaign.PresentPause(); return; }
+        var visitorTransition=campaign.ConsumeVisitorTransition();
+        if(!string.IsNullOrEmpty(visitorTransition))
+        {
+            string portrait=null;
+            foreach(var part in frame.nodes)foreach(var line in part.lines)
+                if(portrait==null&&!string.IsNullOrEmpty(line.icon))portrait=line.icon;
+            var owner=_talkPanel;
+            PresentationEffects.PlayVisitor(visitorTransition,()=>{if(owner)owner.PrepareVisitorPortrait(portrait);},()=>!owner||!owner.IsPortraitLoading);
+            WaitForPresentation();return;
+        }
+        if(PresentationEffects.IsBusy) { WaitForPresentation(); return; }
+        _currentData = frame;
+        _nodeDict = new Dictionary<string, DialogueNode>();
+        foreach (var node in frame.nodes) _nodeDict[node.id] = node;
+        _talkPanel.SetInstantText(false);
+        PlayFromNode(frame.startNodeId);
+    }
+
+    private void WaitForPresentation()
+    {
+        if(_waitingPresentation||_disposed||_talkPanel==null)return;
+        _waitingPresentation=true;_talkPanel.StartCoroutine(ResumeAfterPresentation());
+    }
+    private System.Collections.IEnumerator ResumeAfterPresentation()
+    {
+        yield return null;
+        while(PresentationEffects.IsBusy||GuideHelpOverlay.BlocksInput)yield return null;
+        _waitingPresentation=false;
+        if(!_disposed&&_talkPanel!=null)StartNarrative();
+    }
+
+    // 延后一帧，等旧按钮清理完再生成新选项，避免新选项被旧回调清掉。
+    private System.Collections.IEnumerator AdvanceNarrative()
+    {
+        _narrativeAdvancing = true;
+        yield return null;
+        if (!_disposed && _talkPanel != null) StartNarrative();
+    }
 
     /// <summary>
     /// 访客间过渡台词提供者。参数 = 下一位访客的对话 key，返回 null/空表示不插过渡。
@@ -83,6 +135,7 @@ public class DialogueController
     /// </summary>
     public async void StartDialogue(string dialogueAddressableKey)
     {
+        _narrativeMode = false;
         if (_talkPanel == null)
         {
             Debug.LogError("[DialogueController] 未初始化或已被 Dispose，无法开始对话");
@@ -124,6 +177,7 @@ public class DialogueController
                     linearLines.Add(new DialogueLine
                     {
                         iconName = string.IsNullOrEmpty(line.icon) ? node.iconName : line.icon,
+                        sourceId = line.sourceId,
                         speakerName = line.speaker,
                         content = line.content
                     });
@@ -172,6 +226,18 @@ public class DialogueController
     /// </summary>
     private void OnTalkPanelComplete()
     {
+        if (_narrativeMode)
+        {
+            if (_narrativeAdvancing || _waitingForExternal || UIManager.Instance.HasLeftOverlay || _disposed || _talkPanel == null) return;
+            var node = _currentData.nodes[0];
+            if (node.options != null && node.options.Count > 0) ShowOptions(node.options);
+            else
+            {
+                SystemManager.Instance.Narrative.Next();
+                _talkPanel.StartCoroutine(AdvanceNarrative());
+            }
+            return;
+        }
         // 额外行播放完毕 → 继续原流程
         if (_playingExtraLines)
         {
@@ -297,6 +363,19 @@ public class DialogueController
     /// <param name="option"></param>
     private bool HandleOptionSelected(DialogueOption option)
     {
+        if (_narrativeMode)
+        {
+            if (_narrativeAdvancing || _waitingForExternal || UIManager.Instance.HasLeftOverlay) return true;
+            // 完整剧情同样走原回调注册表。功能按钮不会再当作普通台词分支展开。
+            if (!string.IsNullOrEmpty(option.callbackKey) && DialogueCallbackRegistry.TryInvoke(option.callbackKey, option, out var callback))
+            {
+                if (callback.cancelJump) return true;
+                if (callback.waitForExternal) { _waitingForExternal = true; return false; }
+            }
+            else if (!SystemManager.Instance.Narrative.Choose(option)) return true;
+            _talkPanel.StartCoroutine(AdvanceNarrative());
+            return false;
+        }
         string targetId = option.targetNodeId;
 
         if (DialogueCallbackRegistry.TryInvoke(option.callbackKey, option, out var result))
@@ -334,10 +413,18 @@ public class DialogueController
     /// <summary>外部（面板）通知：放弃，重放当前节点</summary>
     public void ResumeCurrentNode()
     {
+        if (_narrativeMode)
+        {
+            _waitingForExternal = false;
+            _talkPanel.StartCoroutine(AdvanceNarrative());
+            return;
+        }
         if (!_waitingForExternal) return;
         _waitingForExternal = false;
         PlayFromNode(_currentStopNodeId);
     }
+
+    public bool IsNarrativeMode => _narrativeMode;
     /// <summary>
     /// 播放额外台词
     /// </summary>

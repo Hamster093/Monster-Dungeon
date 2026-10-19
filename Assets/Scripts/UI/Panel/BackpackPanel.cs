@@ -6,13 +6,15 @@ using UnityEngine;
 
 public class BackpackPanel : PanelBase
 {
+    private System.Action _onReturned;
+    public bool IsFunctionContext => _onReturned != null;
     [Header("槽位")]
     public ItemSlot[] _itemSlots;
 
     [SerializeField] private Sprite _emptySprite;
 
     // 背包是模态面板，挡住下层
-    public override bool IsModal => true;
+    public override bool IsModal => false;
 
     public override void OnInit()
     {
@@ -33,16 +35,39 @@ public class BackpackPanel : PanelBase
     public override void OnOpen(object data = null)
     {
         base.OnOpen(data);        
-        Time.timeScale = 0f;
+        _onReturned = data as System.Action;
+
         RefreshAll();
+        foreach (var slot in _itemSlots)
+            slot.OnLeftClickedOverride = _onReturned != null ? (System.Action<int>)OpenItemActions : null;
     }
 
     public override void OnClose()
     {
-        Time.timeScale = 1f;      
+        UIManager.Instance.Close<ItemActionPanel>();
+        UIManager.Instance.Close<DescriptionPanel>();
+        foreach (var slot in _itemSlots) slot.OnLeftClickedOverride = null;
         base.OnClose();
-        var controller = UIManager.Instance.Get<TalkPanel>()?.Dialogue;
-        controller?.ResumeCurrentNode();
+        var callback = _onReturned; _onReturned = null;
+        if (callback != null) callback();
+
+    }
+
+    public override void OnRefresh(object data = null)
+    { _onReturned = data as System.Action; RefreshAll(); foreach (var slot in _itemSlots) slot.OnLeftClickedOverride = _onReturned != null ? (System.Action<int>)OpenItemActions : null; }
+
+    private void OpenItemActions(int index)
+    {
+        var stack = InventoryModel.Instance.GetSlot(index);
+        if (stack == null || stack.IsEmpty) return;
+        UIManager.Instance.Open<ItemActionPanel>(new ItemActionData {
+            data = stack.data,
+            onUse = stack.data.id == 1 || stack.data.id == 4 ? (System.Action)(() => {
+                if (SystemManager.Instance.Narrative.UseBagItem(stack.data.id))
+                    UIManager.Instance.Close(this);
+            }) : null,
+            onDrop = () => InventoryModel.Instance.RemoveItem(index)
+        });
     }
 
     // 按 ESC 关闭背包，并消费这次 ESC

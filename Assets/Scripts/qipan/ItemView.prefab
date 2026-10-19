@@ -59,7 +59,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Def: {fileID: 11400000, guid: 1d813dcd4b8ff3d49841c4b1951e4a56, type: 2}
   Board: {fileID: 0}
-  CellSize: 95
+  CellSize: 115
   Spacing: 5
   ShapeCellPrefab: {fileID: 0}
   DragAlpha: 0.85

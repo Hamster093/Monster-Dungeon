@@ -39,6 +39,8 @@ public class DialogueHistoryModel
         });
     }
 
+    public void Restore(IEnumerable<DialogueLine> lines)
+    { _lines.Clear(); if (lines != null) _lines.AddRange(lines); }
     public void Clear()
     {
         _lines.Clear();

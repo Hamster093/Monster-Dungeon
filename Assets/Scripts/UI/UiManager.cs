@@ -64,9 +64,50 @@ public class UIManager : MonoBehaviour
 
     private readonly Dictionary<string, PanelConfig> _configMap = new Dictionary<string, PanelConfig>();
     private readonly Dictionary<string, PanelBase> _cache = new Dictionary<string, PanelBase>();
+    private float _modalAlpha;
     private readonly List<PanelBase> _openStack = new List<PanelBase>();
+    private int _handledEscapeFrame = -1;
+    public int LastModalCloseFrame { get; private set; } = -1;
+    public void ConsumeModalCloseInput() => LastModalCloseFrame = Time.frameCount;
+    private readonly Dictionary<PanelBase, List<PanelBase>> _coveredLeft = new Dictionary<PanelBase, List<PanelBase>>();
+    private readonly Dictionary<PanelBase, GameObject> _embeddedRoots = new Dictionary<PanelBase, GameObject>();
+    private GameObject VisualRoot(PanelBase panel) => _embeddedRoots.TryGetValue(panel, out var root) ? root : panel.gameObject;
+    private static bool IsLeft(PanelBase p) => p is CharacterArchivePanel || p is CommissionPanel || p is BackpackPanel || p is ShopPanel || p is AbyssalAltarPanel;
+    public bool HasLeftOverlay => EndingCredits.IsShowing || GuideHelpOverlay.BlocksInput || CGGalleryPanel.BlocksInput || PresentationEffects.IsBusy || PlayerBuildPanel.IsShowing || RouteSelectionPanel.IsShowing || EvolutionPanel.IsShowing || DiceCheckPanel.IsShowing || SaveSlotsPanel.IsShowing || _openStack.Exists(p => p != null && p.IsOpen &&
+        (p is EndingPresentationPanel || p is CommissionPanel || p is BackpackPanel bag && bag.IsFunctionContext || p is SettingsPanel || p is DialogueHistoryPanel || p is ItemActionPanel));
+    public string CurrentLeftPanelName => _openStack.FindLast(p => p != null && p.IsOpen && IsLeft(p) && VisualRoot(p).activeSelf)?.GetType().Name;
 
+    /// <summary>档案是 TalkPanel 的嵌套预制体，注册现有实例，避免另生成一份丢失按钮绑定的档案。</summary>
+    public void RegisterEmbedded(PanelBase panel, GameObject visualRoot)
+    { _cache[panel.GetType().Name] = panel; _embeddedRoots[panel] = visualRoot; }
+
+    private bool _openingAltarChild, _returnToAltar;
     public IReadOnlyList<PanelBase> OpenStack => _openStack;
+
+    public void OpenAltarMonsterShop()
+    {
+        _openingAltarChild = true;
+        try { ShopPanel.OpenMonsterShop(); } finally { _openingAltarChild = false; }
+    }
+    public void NotifyShopRootSwitch()
+    {
+        _returnToAltar = _openingAltarChild;
+        Close<DescriptionPanel>(); Close<ItemActionPanel>(); Close<ShopItemActionPanel>();
+    }
+    public void ReturnFromShop()
+    {
+        bool parent = _returnToAltar; _returnToAltar = false;
+        Close<ShopPanel>();
+        if (parent) Open<AbyssalAltarPanel>();
+    }
+    /// <summary>开始接待时清理整备窗口；右侧未确认分解由原面板安全退回。</summary>
+    public void ClosePreparationViews()
+    {
+        _returnToAltar = false; _coveredLeft.Clear();
+        Close<DescriptionPanel>(); Close<ItemActionPanel>(); Close<ShopItemActionPanel>();
+        Close<ShopPanel>(); Close<AbyssalAltarPanel>(); Close<BackpackPanel>(); Close<DecomposePanel>();
+    }
+
 
     private void Awake()
     {
@@ -96,6 +137,7 @@ public class UIManager : MonoBehaviour
 
         if (_modalBlocker != null)
         {
+            _modalAlpha=_modalBlocker.color.a;
             _modalBlocker.gameObject.SetActive(false);
 
             //  用 EventTrigger 支持左右键点击遮罩关闭
@@ -115,7 +157,8 @@ public class UIManager : MonoBehaviour
                 if (ped.button == PointerEventData.InputButton.Left
                     || ped.button == PointerEventData.InputButton.Right)
                 {
-                    CloseTop();
+                    // 指路只能从明确返回入口退出，点击灰色背景不提交也不取消。
+                    if (!RouteSelectionPanel.IsShowing && !EvolutionPanel.IsShowing && !DiceCheckPanel.IsShowing) CloseTop();
                 }
             });
             trigger.triggers.Add(entry);
@@ -141,8 +184,12 @@ public class UIManager : MonoBehaviour
 
     private void Update()
     {
+        if (EndingCredits.IsShowing || GuideHelpOverlay.BlocksInput || PresentationEffects.IsBusy) return;
         if (_listenEscapeInUpdate && Input.GetKeyDown(KeyCode.Escape))
+        {
+            if(BackpackBoard.Instance?.IsEditing==true){BackpackBoard.Instance.CancelPlacement();return;}
             HandleEscape();
+        }
     }
 
     #region 打开
@@ -154,17 +201,50 @@ public class UIManager : MonoBehaviour
 
     public PanelBase Open(string panelName, object data = null)
     {
+        if (panelName == nameof(SpecialCommissionPanel)) return null;
         var panel = GetOrCreate(panelName);
         if (panel == null) return null;
 
-        // 已经打开就只刷新，不重复入栈
-        if (panel.IsOpen)
+        bool preparationLeft = SystemManager.Instance?.Narrative?.IsPreparing == true && IsLeft(panel);
+        if (preparationLeft)
         {
-            panel.OnRefresh();
+            // 一级入口直接替换，不在旧覆盖栈里留下可意外复现的页面。
+            _returnToAltar = _openingAltarChild;
+            _coveredLeft.Clear();
+            Close<DescriptionPanel>(); Close<ItemActionPanel>(); Close<ShopItemActionPanel>();
+            foreach (var old in new List<PanelBase>(_openStack))
+                if (old != null && old != panel && IsLeft(old)) Close(old);
+        }
+        // 替换等待中的功能窗口时，先取消旧上下文，再打开新窗口，防止旧返回回调覆盖新状态。
+        if (IsLeft(panel))
+        {
+            var previous = _openStack.FindLast(p => p != null && p.IsOpen && p != panel &&
+                (p is CommissionPanel || p is BackpackPanel bag && bag.IsFunctionContext));
+            if (previous != null) Close(previous);
+        }
+        if (panel is BackpackPanel currentBag && currentBag.IsOpen && currentBag.IsFunctionContext && !(data is Action)) Close(panel);
+        // 已经打开就只刷新，不重复入栈
+        if (panel.IsOpen && (!IsLeft(panel) || VisualRoot(panel).activeSelf))
+        {
+            panel.OnRefresh(data);
             return panel;
         }
 
+        if (IsLeft(panel))
+        {
+            var covered = new List<PanelBase>();
+            foreach (var previous in _openStack)
+                if (previous != panel && previous != null && IsLeft(previous) && VisualRoot(previous).activeSelf)
+                { VisualRoot(previous).SetActive(false); covered.Add(previous); }
+            _coveredLeft[panel] = covered;
+            VisualRoot(panel).SetActive(true);
+        }
+        // 全屏设置/历史挡住顶部入口，局部委托仍允许通过顶部切换档案或背包。
+        if (panel is PlayerBuildPanel || panel is SettingsPanel || panel is DialogueHistoryPanel || panel is RouteSelectionPanel || panel is EvolutionPanel || panel is DiceCheckPanel || panel is DescriptionPanel && RouteSelectionPanel.IsShowing) panel.transform.SetParent(GetLayerRoot(UILayer.Top), false);
+        // 非模态的浏览背包也要显示在同层剧情之前；嵌套档案保持原预制体层级。
+        if (!_embeddedRoots.ContainsKey(panel)) panel.transform.SetAsLastSibling();
         panel.OnOpen(data);
+        if(!panel.IsOpen)return panel;
 
         _openStack.Remove(panel);
         _openStack.Add(panel);
@@ -180,9 +260,16 @@ public class UIManager : MonoBehaviour
     public void Close(PanelBase panel)
     {
         if (panel == null || !panel.IsOpen) return;
+        if (panel.IsModal) LastModalCloseFrame = Time.frameCount;
 
-        panel.OnClose();
         _openStack.Remove(panel);
+        if (IsLeft(panel)) VisualRoot(panel).SetActive(false);
+        if (_coveredLeft.TryGetValue(panel, out var previousLeft))
+        {
+            _coveredLeft.Remove(panel);
+            foreach (var previous in previousLeft) if (previous != null && previous.IsOpen) VisualRoot(previous).SetActive(true);
+        }
+        panel.OnClose();
         UpdateModalBlocker();
     }
 
@@ -200,7 +287,7 @@ public class UIManager : MonoBehaviour
             var panel = _openStack[i];
             if (panel != null && panel.IsOpen)
             {
-                Close(panel);
+                if (!panel.OnEscapePressed()) Close(panel);
                 return;
             }
         }
@@ -248,6 +335,12 @@ public class UIManager : MonoBehaviour
     /// </summary>
     public void HandleEscape()
     {
+        if (EndingCredits.IsShowing || GuideHelpOverlay.HandleEscape() || CGGalleryPanel.HandleEscape() || PresentationEffects.IsBusy) return;
+        // 同一帧只分派一次，四槽是独立实例也由这里统一消费ESC。
+        if (_handledEscapeFrame == Time.frameCount) return;
+        _handledEscapeFrame = Time.frameCount;
+        LastModalCloseFrame = Time.frameCount;
+        if (SaveSlotsPanel.HandleEscape()) return;
         for (int i = _openStack.Count - 1; i >= 0; i--)
         {
             var panel = _openStack[i];
@@ -302,6 +395,9 @@ public class UIManager : MonoBehaviour
         }
 
         bool show = topPanel != null && topPanel.IsModal;
+        // 终局面板自带渐暗与输入遮挡，共用遮罩只拦输入，避免先瞬间压暗一次。
+        bool ownMask = topPanel is EndingPresentationPanel || topPanel is EvolutionPanel || topPanel is PlayerBuildPanel || topPanel is DiceCheckPanel;
+        var tint=_modalBlocker.color;tint.a=ownMask?0:_modalAlpha;_modalBlocker.color=tint;
         _modalBlocker.gameObject.SetActive(show);
 
         if (show)

@@ -23,8 +23,8 @@ MonoBehaviour:
     evolvedIncome: 39
   - monsterId: 103
     displayName: "\u5DE8\u5927\u53F2\u83B1\u59C6"
-    baseIncome: 14
-    evolvedIncome: 39
+    baseIncome: 24
+    evolvedIncome: 49
   - monsterId: 104
     displayName: "\u54E5\u5E03\u6797"
     baseIncome: 6
@@ -75,9 +75,9 @@ MonoBehaviour:
     evolvedIncome: 49
   - monsterId: 116
     displayName: "\u53CC\u8DB3\u98DE\u9F99"
-    baseIncome: 24
-    evolvedIncome: 49
+    baseIncome: 48
+    evolvedIncome: 73
   - monsterId: 117
     displayName: "\u6697\u9ED1\u9F99"
-    baseIncome: 40
-    evolvedIncome: 65
+    baseIncome: 80
+    evolvedIncome: 105

@@ -4,9 +4,16 @@
     "name": "Myth",
     "isParty": false,
     "baseLevel": 2,
-    "personalityAxes": [3, 0],
+    "personalityAxes": [
+      3,
+      0
+    ],
     "contractId": 1,
-    "backgrounds": ["曾是某骑士团成员", "因事故退役", "暗中寻找失踪的妹妹"],
+    "backgrounds": [
+      "曾是某骑士团成员",
+      "因事故退役",
+      "暗中寻找失踪的妹妹"
+    ],
     "briefStory": "一名曾有着坚定信仰的年轻骑士，如今因失去一切而变得疑神疑鬼。",
     "successorType": "理智型",
     "mainDimension": 0,
@@ -25,10 +32,17 @@
     "id": 2,
     "name": "Ferdia",
     "isParty": false,
-    "baseLevel": 2,
-    "personalityAxes": [3, 0],
+    "baseLevel": 4,
+    "personalityAxes": [
+      3,
+      0
+    ],
     "contractId": 1,
-    "backgrounds": ["曾是某骑士团成员", "因事故退役", "暗中寻找失踪的妹妹"],
+    "backgrounds": [
+      "曾是某骑士团成员",
+      "因事故退役",
+      "暗中寻找失踪的妹妹"
+    ],
     "briefStory": "一名曾有着坚定信仰的年轻骑士，如今因失去一切而变得疑神疑鬼。",
     "successorType": "理智型",
     "mainDimension": 0,
@@ -47,10 +61,17 @@
     "id": 3,
     "name": "Clot",
     "isParty": true,
-    "baseLevel": 2,
-    "personalityAxes": [3, 0],
+    "baseLevel": 3,
+    "personalityAxes": [
+      3,
+      0
+    ],
     "contractId": 1,
-    "backgrounds": ["曾是某骑士团成员", "因事故退役", "暗中寻找失踪的妹妹"],
+    "backgrounds": [
+      "曾是某骑士团成员",
+      "因事故退役",
+      "暗中寻找失踪的妹妹"
+    ],
     "briefStory": "一名曾有着坚定信仰的年轻骑士，如今因失去一切而变得疑神疑鬼。",
     "successorType": "理智型",
     "mainDimension": 0,
@@ -69,10 +90,17 @@
     "id": 4,
     "name": "Sarah",
     "isParty": false,
-    "baseLevel": 2,
-    "personalityAxes": [3, 0],
+    "baseLevel": 1,
+    "personalityAxes": [
+      3,
+      0
+    ],
     "contractId": 1,
-    "backgrounds": ["曾是某骑士团成员", "因事故退役", "暗中寻找失踪的妹妹"],
+    "backgrounds": [
+      "曾是某骑士团成员",
+      "因事故退役",
+      "暗中寻找失踪的妹妹"
+    ],
     "briefStory": "一名曾有着坚定信仰的年轻骑士，如今因失去一切而变得疑神疑鬼。",
     "successorType": "理智型",
     "mainDimension": 0,
@@ -92,9 +120,16 @@
     "name": "Audrey",
     "isParty": false,
     "baseLevel": 2,
-    "personalityAxes": [3, 0],
+    "personalityAxes": [
+      3,
+      0
+    ],
     "contractId": 1,
-    "backgrounds": ["曾是某骑士团成员", "因事故退役", "暗中寻找失踪的妹妹"],
+    "backgrounds": [
+      "曾是某骑士团成员",
+      "因事故退役",
+      "暗中寻找失踪的妹妹"
+    ],
     "briefStory": "一名曾有着坚定信仰的年轻骑士，如今因失去一切而变得疑神疑鬼。",
     "successorType": "理智型",
     "mainDimension": 0,
@@ -113,10 +148,17 @@
     "id": 6,
     "name": "Da",
     "isParty": false,
-    "baseLevel": 2,
-    "personalityAxes": [3, 0],
+    "baseLevel": 4,
+    "personalityAxes": [
+      3,
+      0
+    ],
     "contractId": 1,
-    "backgrounds": ["曾是某骑士团成员", "因事故退役", "暗中寻找失踪的妹妹"],
+    "backgrounds": [
+      "曾是某骑士团成员",
+      "因事故退役",
+      "暗中寻找失踪的妹妹"
+    ],
     "briefStory": "一名曾有着坚定信仰的年轻骑士，如今因失去一切而变得疑神疑鬼。",
     "successorType": "理智型",
     "mainDimension": 0,
@@ -135,10 +177,17 @@
     "id": 7,
     "name": "Nobody",
     "isParty": false,
-    "baseLevel": 2,
-    "personalityAxes": [3, 0],
+    "baseLevel": 3,
+    "personalityAxes": [
+      3,
+      0
+    ],
     "contractId": 1,
-    "backgrounds": ["曾是某骑士团成员", "因事故退役", "暗中寻找失踪的妹妹"],
+    "backgrounds": [
+      "曾是某骑士团成员",
+      "因事故退役",
+      "暗中寻找失踪的妹妹"
+    ],
     "briefStory": "一名曾有着坚定信仰的年轻骑士，如今因失去一切而变得疑神疑鬼。",
     "successorType": "理智型",
     "mainDimension": 0,

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class DecomposePanel : PanelBase
@@ -13,6 +13,7 @@ public class DecomposePanel : PanelBase
 
     private PlacedItem _pendingItem;
     private ItemStack _pendingStack;
+    public PlacedItem PendingItem => _pendingItem;
 
     public override bool IsModal => false;
 
@@ -34,6 +35,7 @@ public class DecomposePanel : PanelBase
     public override void OnOpen(object data = null)
     {
         base.OnOpen(data);
+        UIManager.Instance.Get<PreparationPanel>()?.SetRightCovered(true);
         Clear();
     }
 
@@ -74,7 +76,7 @@ public class DecomposePanel : PanelBase
 
         _slot.Refresh(_pendingStack, _emptySprite);
         _slot.SetSubText(cfg.materialValue > 0 ? $"{cfg.materialValue}G" : "");
-        LoadIconAsync(cfg.iconAddress);
+        _slot.SetIcon(item.Def.GetIcon(item.Evolved));
     }
 
     private async void LoadIconAsync(string addr)
@@ -87,7 +89,7 @@ public class DecomposePanel : PanelBase
 
     private void OnDecompose()
     {
-        if (_pendingItem == null) return;
+        if (_pendingItem == null || RouteSelectionPanel.IsShowing) return;
 
         if (int.TryParse(_pendingItem.Def.Id, out int id)
             && ConfigDatabase.Instance.Items.TryGetValue(id, out var cfg))
@@ -98,6 +100,7 @@ public class DecomposePanel : PanelBase
         if (_pendingItem.View != null)
             Destroy(_pendingItem.View.gameObject);
 
+        AudioManager.Instance?.PlayCue("decompose");
         Clear();
     }
 
@@ -117,7 +120,13 @@ public class DecomposePanel : PanelBase
         {
             if (!TryFindFreeOriginFor(board, out var freeOrigin))
             {
-                Debug.LogWarning("[DecomposePanel] 退回失败：棋盘没有空位");
+                // 保留地狱期间允许购买魔物，原位置可能被占满；此时退仓，不能吞掉实例。
+                if (int.TryParse(_pendingItem.Def.Id, out int monsterId))
+                {
+                    MonsterStorageModel.Instance.Add(monsterId, _pendingItem.Uid, _pendingItem.Evolved, _pendingItem.UsedDay, _pendingItem.EvolutionKind);
+                    Destroy(_pendingItem.View.gameObject);
+                    ToastManager.Show("棋盘没有空位，魔物已退回仓库。");
+                }
                 Clear();
                 return;
             }
@@ -172,5 +181,6 @@ public class DecomposePanel : PanelBase
     {
         ReturnToBoard();
         base.OnClose();
+        UIManager.Instance.Get<PreparationPanel>()?.SetRightCovered(false);
     }
 }

@@ -105,6 +105,17 @@ public class VisitSystem : IDisposable
 
     // ---------------- 推进 ----------------
 
+    /// <summary>完整剧情已决定当前人物；仅同步原访客模型和 UI，不重复结束接待。</summary>
+    public void SelectNarrativeVisitor(int id)
+    {
+        CurrentVisitorId = id;
+        int index = TodayVisitors.IndexOf(id);
+        if (index >= 0) VisitorIndex = index;
+        OnCurrentVisitorChanged?.Invoke(id);
+    }
+
+    public void FinishNarrativeVisitor(int id) => TickInjuryOnVisit(id);
+
     /// <summary>
     /// 接待完当前访客。返回是否还有下一位（同一天）。
     /// 当天全部结束会自动触发 NextDayEvent 推进下一天。
@@ -137,12 +148,13 @@ public class VisitSystem : IDisposable
     {
         var run = _runState.run;
         if (!run.adventurers.TryGetValue(adventurerId, out var adv) || adv == null) return;
-        if (!adv.isSeverelyInjured) return;
+        if (!adv.isSeverelyInjured) {adv.health=HealthState.Normal;return;}
 
         adv.severeInjuryDelay -= 1;
         if (adv.severeInjuryDelay <= 0)
         {
             adv.isSeverelyInjured = false;
+            adv.health=HealthState.Normal;
             adv.severeInjuryDelay = 0;
             Debug.Log($"[伤势] 冒险者{adventurerId} 重伤恢复");
         }

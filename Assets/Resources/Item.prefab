@@ -204,11 +204,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0c7fc428ccad3540adc66e2f3ffd560, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _itemName: Qube
+  _data:
+    id: 0
+    itemName: 
+    description: 
+    iconAddress: 
+    shapeId: 
+    shape: {fileID: 0}
   _quantity: 1
-  _maxNumber: 9
-  _sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  _itemDescription: "\u8FD9\u662F\u4E00\u4E2Aqube"
+  DestroyOnPickupComplete: 0
 --- !u!212 &9220734351119796184
 SpriteRenderer:
   m_ObjectHideFlags: 0

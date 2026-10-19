@@ -1,4 +1,4 @@
-﻿/****************************************************
+/****************************************************
     文件：MonsterStorageModel.cs
 	作者：DADI
     邮箱: 1581507659@qq.com
@@ -13,6 +13,9 @@ using System.Collections.Generic;
 public class MonsterInstance
 {
     public string uid;        // 唯一 id
+    public bool evolved;
+    public int usedDay = -1;
+    public string evolutionKind = "";
     public int monsterId;     // items.json 的 id（101~117）
 
     public MonsterInstance() { }
@@ -35,9 +38,10 @@ public class MonsterStorageModel
     public int Count => _items.Count;
 
     /// <summary>添加一只新魔物（内部生成实例）</summary>
-    public MonsterInstance Add(int monsterId)
+    public MonsterInstance Add(int monsterId, string uid = null, bool evolved = false, int usedDay = -1, string evolutionKind = "")
     {
-        var inst = new MonsterInstance(monsterId);
+        var inst = new MonsterInstance(monsterId) { evolved = evolved, usedDay = usedDay, evolutionKind = evolutionKind };
+        if (!string.IsNullOrEmpty(uid)) inst.uid = uid;
         _items.Add(inst);
         OnChanged?.Invoke();
         return inst;

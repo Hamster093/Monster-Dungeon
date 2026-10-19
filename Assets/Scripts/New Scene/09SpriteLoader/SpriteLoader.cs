@@ -25,6 +25,11 @@ public static class SpriteLoader
         if (string.IsNullOrEmpty(address))
             return Task.FromResult<Sprite>(null);
 
+        if (address.StartsWith("Art/")) {
+            if(!_tasks.TryGetValue(address,out var ready))_tasks[address]=ready=Task.FromResult(Resources.Load<Sprite>(address));
+            return ready;
+        }
+
         if (_tasks.TryGetValue(address, out var existing))
             return existing;
 

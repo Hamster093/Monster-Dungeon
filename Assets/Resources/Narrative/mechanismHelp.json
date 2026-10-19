@@ -1,0 +1,582 @@
+{
+  "entries": [
+    {
+      "id": "preparation",
+      "title": "整备与魔物地牢",
+      "sources": [
+        "D:/unity试水项目/Monster-Dungeon/Assets/Scripts/qipan/BoardIncomeCalculator/BoardIncomeCalculator.cs:15",
+        "D:/unity试水项目/Monster-Dungeon/Assets/Scripts/qipan/BoardIncomeCalculator/BoardIncomeCalculator.cs:50",
+        "D:/unity试水项目/Monster-Dungeon/Assets/Scripts/New Scene/07View/PreparationPanel.cs:100"
+      ],
+      "main": [
+        "你可以在接待前布置当天的魔物地牢。",
+        "你可以通过控制魔物的摆放来增加魔物收益。魔物与魔物相邻或者与特殊地块相邻都可以增加本阶段的魔物收益。",
+        "特殊地块亲和规则：\n矿石块→哥布林、构造类、龙；\n腐殖池→史莱姆、植物类、犬类；\n监牢块→哥布林、犬类、构造类；\n裂口块→史莱姆、植物类、龙；"
+      ],
+      "mainIds": [
+        "preparation.main.01",
+        "preparation.main.02",
+        "preparation.main.03"
+      ],
+      "details": [
+        "你可以将魔物仓库的魔物放置于沙盘上，魔物会根据与其相邻的魔物，或者相邻的特殊地块获得特殊收益。收益统一在当接待日日末领取；",
+        "你可以在背包中将深渊残质拖拽至魔物上令魔物进化，进化后的魔物会提供更多收益并具有改变冒险者七维属性的能力。"
+      ],
+      "detailsIds": [
+        "preparation.details.01",
+        "preparation.details.02"
+      ],
+      "intro": [],
+      "introIds": [],
+      "introTargets": [],
+      "introRevision": "e3b0c44298"
+    },
+    {
+      "id": "shop",
+      "title": "商店",
+      "sources": [
+        "D:/unity试水项目/Monster-Dungeon/Assets/Scripts/New Scene/07View/ShopPanel.cs:554"
+      ],
+      "main": [
+        "你可以在商店中用金币购买道具或魔物。",
+        "右键商品可以打开操作菜单。"
+      ],
+      "mainIds": [
+        "shop.main.01",
+        "shop.main.02"
+      ],
+      "details": [
+        "你购买的道具会在背包中储存，购买的魔物会在魔物仓库中储存。",
+        "你可以左键单击魔物查看其详情。"
+      ],
+      "detailsIds": [
+        "shop.details.01",
+        "shop.details.02"
+      ],
+      "intro": [],
+      "introIds": [],
+      "introTargets": [],
+      "introRevision": "e3b0c44298"
+    },
+    {
+      "id": "storage",
+      "title": "魔物仓库",
+      "sources": [
+        "D:/unity试水项目/Monster-Dungeon/Assets/Scripts/New Scene/07View/ShopPanel.cs:626",
+        "D:/unity试水项目/Monster-Dungeon/Assets/Scripts/Back/MonsterStorageModel.cs:17"
+      ],
+      "main": [
+        "你可在仓库保管尚未进入地牢中的魔物。",
+        "你可以通过长按左键拖动魔物，将其拖到你希望放置的位置。",
+        "魔物有“状态”。状态分为精神充沛和疲惫；疲惫状态下的魔物不能成为你向冒险者指路的目标。"
+      ],
+      "mainIds": [
+        "storage.main.01",
+        "storage.main.02",
+        "storage.main.03"
+      ],
+      "details": [],
+      "detailsIds": [],
+      "intro": [
+        "这里存放你拥有的魔物。你可以通过长按左键拖动魔物，将其拖到你希望放置的位置。",
+        "拖动时可以按R旋转。"
+      ],
+      "introIds": [
+        "storage.intro.01",
+        "storage.intro.02"
+      ],
+      "introTargets": [
+        0,
+        1
+      ],
+      "introRevision": "d06e005c00"
+    },
+    {
+      "id": "altar",
+      "title": "深渊祭坛",
+      "sources": [
+        "D:/unity试水项目/Monster-Dungeon/Assets/Scripts/New Scene/07View/AbyssalAltarPanel.cs:60",
+        "D:/unity试水项目/Monster-Dungeon/Assets/Scripts/New Scene/07View/DecomposePanel.cs:106"
+      ],
+      "main": [
+        "你可以进入深渊祭坛，购买魔物或将牠们送回深渊。"
+      ],
+      "mainIds": [
+        "altar.main.01"
+      ],
+      "details": [],
+      "detailsIds": [],
+      "intro": [],
+      "introIds": [],
+      "introTargets": [],
+      "introRevision": "e3b0c44298"
+    },
+    {
+      "id": "decompose",
+      "title": "地狱",
+      "sources": [
+        "D:/unity试水项目/Monster-Dungeon/Assets/Scripts/New Scene/07View/DecomposePanel.cs:90",
+        "D:/unity试水项目/Monster-Dungeon/Assets/Scripts/New Scene/07View/DecomposePanel.cs:106"
+      ],
+      "main": [
+        "你可以将魔物送回地狱，以获得魔物价值的部分金币。",
+        "你将魔物拖入槽位后，可以点击分解将魔物送回地狱。"
+      ],
+      "mainIds": [
+        "decompose.main.01",
+        "decompose.main.02"
+      ],
+      "details": [
+        "右键点击槽位可以退回当前待分解的魔物。"
+      ],
+      "detailsIds": [
+        "decompose.details.02"
+      ],
+      "intro": [],
+      "introIds": [],
+      "introTargets": [],
+      "introRevision": "e3b0c44298"
+    },
+    {
+      "id": "backpack",
+      "title": "背包与道具",
+      "sources": [
+        "D:/unity试水项目/Monster-Dungeon/Assets/Scripts/UI/Panel/ItemActionPanel.cs:67",
+        "D:/unity试水项目/Monster-Dungeon/Assets/Resources/Config/items.json:4",
+        "D:/unity试水项目/Monster-Dungeon/Assets/Scripts/New Scene/04Service/D20Service.cs:63"
+      ],
+      "main": [
+        "你可在背包查看、丢弃或使用道具。"
+      ],
+      "mainIds": [
+        "backpack.main.01"
+      ],
+      "details": [
+        "道具的具体效果与剩余数量可在详情中查看。"
+      ],
+      "detailsIds": [
+        "backpack.details.05"
+      ],
+      "intro": [
+        "你可在背包查看、丢弃或使用道具。部分道具可在对话界面的“使用道具”选项中进行使用。"
+      ],
+      "introIds": [
+        "backpack.intro.01"
+      ],
+      "introTargets": [
+        0
+      ],
+      "introRevision": "cbfd54b241"
+    },
+    {
+      "id": "commission",
+      "title": "普通委托",
+      "sources": [
+        "D:/unity试水项目/Monster-Dungeon/Assets/Scripts/DailySettlement/DailyCommissionSystem.cs:208",
+        "D:/unity试水项目/Monster-Dungeon/Assets/Scripts/UI/Panel/RouteSelectionPanel.cs:124"
+      ],
+      "main": [
+        "你可以选择接取冒险者的委托，并为冒险者寻找委托要求的魔物类别。",
+        "只有类别正确且冒险者未死亡的情况下，你才能获得报酬。"
+      ],
+      "mainIds": [
+        "commission.main.01",
+        "commission.main.03"
+      ],
+      "details": [
+        "若你指向非冒险者选择类别的魔物，冒险者会将你的行为视为欺骗，其轻伤或重伤返回时会实行报复。",
+        "冒险者与魔物相差0、1、2、3级时，报酬系数分别为100%、80%、50%、25%。"
+      ],
+      "detailsIds": [
+        "commission.details.02",
+        "commission.details.03"
+      ],
+      "intro": [
+        "这里是委托界面\n冒险者们会给你带来各项委托……\n冒险者们不清楚地牢里要怎么走，\n所以只能靠你这个地牢主人来指向对应的道路\n接了对应的委托，最好就给他们指对应的魔物……\nD级冒险者可无法处理巨龙\n除非……你想“杀掉”他们\n不过，我相信你不会的……\n记住，你不会的……\n（“杀掉”他们对我有什么好处吗？）"
+      ],
+      "introIds": [
+        "commission.intro.01"
+      ],
+      "introTargets": [
+        0
+      ],
+      "introRevision": "3799995e47"
+    },
+    {
+      "id": "route",
+      "title": "指路界面",
+      "sources": [
+        "D:/unity试水项目/Monster-Dungeon/Assets/Scripts/UI/Panel/RouteSelectionPanel.cs:90",
+        "D:/unity试水项目/Monster-Dungeon/Assets/Scripts/UI/Panel/RouteSelectionPanel.cs:124"
+      ],
+      "main": [
+        "接取委托后，你需要向冒险者进行指路。",
+        "你可以点击魔物占用的格子，并在详情中确认指路。"
+      ],
+      "mainIds": [
+        "route.main.01",
+        "route.main.02"
+      ],
+      "details": [
+        "魔物有“状态”。状态分为精神充沛和疲惫；疲惫状态下的魔物不能成为你向冒险者指路的目标。",
+        "战斗难度按当前冒险者等级、冒险者伤势和魔物等级计算。"
+      ],
+      "detailsIds": [
+        "route.details.01",
+        "route.details.02"
+      ],
+      "intro": [
+        "点击魔物给冒险者进行指路吧，要小心一点……"
+      ],
+      "introIds": [
+        "route.intro.01"
+      ],
+      "introTargets": [
+        0
+      ],
+      "introRevision": "c02290aa13"
+    },
+    {
+      "id": "archive",
+      "title": "冒险者档案",
+      "sources": [
+        "D:/unity试水项目/Monster-Dungeon/Assets/Scripts/New Scene/07View/CharacterArchivePanel.cs:71",
+        "D:/unity试水项目/Monster-Dungeon/Assets/Scripts/Dialogue/NarrativeSystem.cs:115"
+      ],
+      "main": [
+        "你可查阅当前冒险者的资料和接任倾向。",
+        "你通过四个页签查看基本信息、对话、有效信息与调查记录。",
+        "冒险者档案中会显示该冒险者的接任倾向，接任倾向越强，终局阶段成为下一任地牢主人的可能性就越高。"
+      ],
+      "mainIds": [
+        "archive.main.01",
+        "archive.main.02",
+        "archive.main.03"
+      ],
+      "details": [
+        "“灵魂透镜”道具可以揭开该冒险者的背景信息，累计揭开两次后，玩家可以获取冒险者的主副属性及其对应培养方向。"
+      ],
+      "detailsIds": [
+        "archive.details.01"
+      ],
+      "intro": [
+        "七维图显示这位冒险者当前的七项属性，你可以通过道具调查或阅读游戏文本等方式找出该冒险者的主、副属性，并对其进行影响，以让其成为你的“替罪羊”。",
+        "冒险者档案中会显示该冒险者的接任倾向，接任倾向越强，终局阶段成为下一任地牢主人的可能性就越高。",
+        "对话记录：这里保存该人物实际说过的话和你的选择。",
+        "有效信息：交谈中获得的关键原句与线索会自动归档，你可以据此判断人物性格。",
+        "调查记录：玩家可以使用“灵魂透镜”对冒险者的背景进行调查。第一次透镜揭示模糊背景，第二次揭示完整背景，并获取冒险者的主副属性及其对应培养方向。"
+      ],
+      "introIds": [
+        "archive.intro.01",
+        "archive.intro.02",
+        "archive.intro.03",
+        "archive.intro.04",
+        "archive.intro.05"
+      ],
+      "introTargets": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "introRevision": "6a3439a926"
+    },
+    {
+      "id": "dice",
+      "title": "界面检定",
+      "sources": [
+        "D:/unity试水项目/Monster-Dungeon/Assets/Scripts/New Scene/04Service/D20Service.cs:78",
+        "D:/unity试水项目/Monster-Dungeon/Assets/Scripts/New Scene/04Service/D20Service.cs:63",
+        "D:/unity试水项目/Monster-Dungeon/Assets/Scripts/UI/Panel/DiceCheckPanel.cs:88",
+        "D:/unity试水项目/Monster-Dungeon/Assets/Scripts/New Scene/05State/RunState.cs:318"
+      ],
+      "main": [
+        "你掷出百分骰（D100），再加上本次修正判断结果计算为最终点数。",
+        "投掷点数合计不低于点数门槛即为成功。",
+        "启用极值规则时，1～5大失败，96～100大成功。"
+      ],
+      "mainIds": [
+        "dice.main.01",
+        "dice.main.02",
+        "dice.main.03"
+      ],
+      "details": [
+        "你的属性修正为本次使用的属性减40。",
+        "检定难度按基础单次成功率分为极难、困难、一般、轻松、极易。",
+        "你可消耗1枚幸运硬币重投一次；同次检定最多重投一次。",
+        "你持有庇护耳坠时，大失败自动消耗1件，改掷6～95的普通点数后重新判定。"
+      ],
+      "detailsIds": [
+        "dice.details.01",
+        "dice.details.02",
+        "dice.details.03",
+        "dice.details.04"
+      ],
+      "intro": [
+        "剧情中有些地方需要你掷出骰子进行检定，检定会受到你属性和多种修正值的影响……好好把握这些吧。"
+      ],
+      "introIds": [
+        "dice.intro.01"
+      ],
+      "introTargets": [
+        0
+      ],
+      "introRevision": "1c600652e4"
+    },
+    {
+      "id": "evolution",
+      "title": "魔物进化",
+      "sources": [
+        "D:/unity试水项目/Monster-Dungeon/Assets/Scripts/UI/Panel/EvolutionPanel.cs:83",
+        "D:/unity试水项目/Monster-Dungeon/Assets/Scripts/UI/Panel/EvolutionPanel.cs:24",
+        "D:/unity试水项目/Monster-Dungeon/Assets/Scripts/DailySettlement/DailyCommissionSystem.cs:121"
+      ],
+      "main": [
+        "你可使未进化魔物获得一种进化方向。",
+        "你选择具体进化的方向后，消耗1份深渊残质确认进化。",
+        "已进化的魔物无法再次进化。"
+      ],
+      "mainIds": [
+        "evolution.main.01",
+        "evolution.main.02",
+        "evolution.main.03"
+      ],
+      "details": [],
+      "detailsIds": [],
+      "intro": [
+        "你可以在背包中将深渊残质拖拽至魔物上令魔物进化，进化后的魔物会提供更多收益并具有改变冒险者七维属性的能力。"
+      ],
+      "introIds": [
+        "evolution.intro.01"
+      ],
+      "introTargets": [
+        0
+      ],
+      "introRevision": "a3b1d31c17"
+    },
+    {
+      "id": "player_type",
+      "title": "",
+      "sources": [
+        "D:/unity试水项目/Monster-Dungeon/Assets/Scripts/New Scene/05State/RunState.cs:318",
+        "D:/unity试水项目/Monster-Dungeon/Assets/Scripts/New Scene/04Service/D20Service.cs:78"
+      ],
+      "main": [],
+      "mainIds": [],
+      "details": [],
+      "detailsIds": [],
+      "intro": [],
+      "introIds": [],
+      "introTargets": [],
+      "introRevision": "e3b0c44298"
+    },
+    {
+      "id": "thought",
+      "title": "思维",
+      "sources": [
+        "D:/unity试水项目/Monster-Dungeon/Assets/Scripts/New Scene/05State/RunState.cs:371",
+        "D:/unity试水项目/Monster-Dungeon/Assets/Scripts/Dialogue/NarrativeSystem.cs:97"
+      ],
+      "main": [
+        "你可以采用一种思维，改变部分信息与影响检定的处理。",
+        "每阶段开始接待前可调整思维。"
+      ],
+      "mainIds": [
+        "thought.main.01",
+        "thought.main.02"
+      ],
+      "details": [
+        "哈耳摩尼亚史官：该人物已有至少2条有效信息时，普通影响检定采用原属性与擅长属性中的较高值。",
+        "戚风蛋糕谈判术：普通影响检定修正增加10；成功后的默认七维变化由±3改为±2。",
+        "地牢精神病人：信息或普通影响检定失败后，本人物本次接待的下一次信息或普通影响检定改用其他属性时，骰子修正增加10。"
+      ],
+      "detailsIds": [
+        "thought.details.01",
+        "thought.details.02",
+        "thought.details.03"
+      ],
+      "intro": [],
+      "introIds": [],
+      "introTargets": [],
+      "introRevision": "e3b0c44298"
+    },
+    {
+      "id": "player_status",
+      "title": "自身状态",
+      "sources": [
+        "D:/unity试水项目/Monster-Dungeon/Assets/Scripts/New Scene/05State/RunState.cs:318",
+        "D:/unity试水项目/Monster-Dungeon/Assets/Scripts/New Scene/05State/RunState.cs:371",
+        "D:/unity试水项目/Monster-Dungeon/Assets/Scripts/Dialogue/NarrativeSystem.cs:97"
+      ],
+      "main": [
+        "你可在自身状态查看你当前的类型、属性与思维。"
+      ],
+      "mainIds": [
+        "player_status.main.01"
+      ],
+      "details": [],
+      "detailsIds": [],
+      "intro": [
+        "你的类型、三项属性与本阶段选择的思维都在这里。"
+      ],
+      "introIds": [
+        "player_status.intro.01"
+      ],
+      "introTargets": [
+        0
+      ],
+      "introRevision": "e09c8a615b"
+    },
+    {
+      "id": "ending",
+      "title": "",
+      "sources": [
+        "D:/unity试水项目/Monster-Dungeon/Assets/Scripts/Dialogue/NarrativeSystem.cs:1367",
+        "D:/unity试水项目/Monster-Dungeon/Assets/Scripts/Dialogue/NarrativeSystem.cs:1440"
+      ],
+      "main": [],
+      "mainIds": [],
+      "details": [],
+      "detailsIds": [],
+      "intro": [
+        "辛苦你经营这么多天了……闲不下来先生……\n可惜……“祂”的宽容已经到极限了……\n你必须选择一位冒险者当你的“替罪羊”"
+      ],
+      "introIds": [
+        "ending.intro.01"
+      ],
+      "introTargets": [
+        0
+      ],
+      "introRevision": "1fa64f7341"
+    },
+    {
+      "id": "settlement",
+      "title": "每日结算",
+      "sources": [
+        "D:/unity试水项目/Monster-Dungeon/Assets/Scripts/DailySettlement/DailyIncomeCalculator.cs:17",
+        "D:/unity试水项目/Monster-Dungeon/Assets/Scripts/DailySettlement/DailyCommissionSystem.cs:121"
+      ],
+      "main": [],
+      "mainIds": [],
+      "details": [],
+      "detailsIds": [],
+      "intro": [
+        "当前经营日结束后，你会看到地牢魔物收益、委托报酬和冒险者的战斗情况，以及下个阶段需要缴纳的“赎身”费用。"
+      ],
+      "introIds": [
+        "settlement.intro.01"
+      ],
+      "introTargets": [
+        0
+      ],
+      "introRevision": "d94ed59114"
+    },
+    {
+      "id": "reception",
+      "title": "来访者",
+      "sources": [
+        "D:/unity试水项目/Monster-Dungeon/Assets/Scripts/Dialogue/NarrativeSystem.cs:270",
+        "D:/unity试水项目/Monster-Dungeon/Assets/Scripts/New Scene/05State/RunState.cs:318",
+        "D:/unity试水项目/Monster-Dungeon/Assets/Scripts/UI/Panel/RouteSelectionPanel.cs:90"
+      ],
+      "main": [],
+      "mainIds": [],
+      "details": [],
+      "detailsIds": [],
+      "intro": [
+        "右侧是当前来访者的对话。你可以通过和冒险者对话来获取信息和推进剧情。",
+        "左侧冒险者档案储存了当前来访的冒险者的基本信息、你与其的对话记录、搭话中的有效信息和背景调查记录。"
+      ],
+      "introIds": [
+        "reception.intro.01",
+        "reception.intro.02"
+      ],
+      "introTargets": [
+        0,
+        1
+      ],
+      "introRevision": "75f52439d1"
+    },
+    {
+      "id": "saves",
+      "title": "",
+      "sources": [
+        "D:/unity试水项目/Monster-Dungeon/Assets/Scripts/New Scene/06Config/SaveAndLoad/SaveAndLoadManager.cs:109",
+        "D:/unity试水项目/Monster-Dungeon/Assets/Scripts/UI/Panel/SaveSlotsPanel.cs:81"
+      ],
+      "main": [],
+      "mainIds": [],
+      "details": [],
+      "detailsIds": [],
+      "intro": [],
+      "introIds": [],
+      "introTargets": [],
+      "introRevision": "e3b0c44298"
+    },
+    {
+      "id": "gallery",
+      "title": "",
+      "sources": [
+        "D:/unity试水项目/Monster-Dungeon/Assets/Scripts/UI/Panel/CGGalleryProgress.cs:36",
+        "D:/unity试水项目/Monster-Dungeon/Assets/Scripts/UI/Panel/CGGalleryPanel.cs:67"
+      ],
+      "main": [],
+      "mainIds": [],
+      "details": [],
+      "detailsIds": [],
+      "intro": [],
+      "introIds": [],
+      "introTargets": [],
+      "introRevision": "e3b0c44298"
+    },
+    {
+      "id": "route_detail",
+      "title": "确认指路",
+      "sources": [
+        "DescriptionPanel.RouteSummary",
+        "CombatResolver.Difficulty",
+        "PlacedItem.IsResting"
+      ],
+      "main": [],
+      "mainIds": [],
+      "details": [],
+      "detailsIds": [],
+      "intro": [
+        "这里是魔物种类，你可以核对它是否属于委托要求的类别。",
+        "这里是冒险者活着完成任务时的报酬，魔物类别不符或冒险者死亡时不产生报酬。",
+        "这里是冒险者当前的伤势，其重伤尚未恢复时再次重伤会死亡。",
+        "这里显示战斗难度——从极易到极难。",
+        "这里显示魔物状态——精神充沛表示可以作为指路目标，疲惫表示本日不可再次成为指路目标。"
+      ],
+      "introIds": [
+        "route_detail.intro.01",
+        "route_detail.intro.02",
+        "route_detail.intro.03",
+        "route_detail.intro.04",
+        "route_detail.intro.05"
+      ],
+      "introTargets": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "introRevision": "4ca2f42909"
+    }
+  ],
+  "common": {
+    "step": "{current} / {total}　点击继续",
+    "skip": "略过本项",
+    "close": "返回",
+    "replay": "重新查看",
+    "detailsOpen": "详细信息  ＋",
+    "detailsClose": "收起详细信息  −"
+  },
+  "disabledOwners": [
+    "SettingsPanel",
+    "CGGalleryPanel"
+  ],
+  "sourceVersion": "用户修订 20261019 R2"
+}

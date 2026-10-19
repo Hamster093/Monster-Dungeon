@@ -15,9 +15,11 @@ MonoBehaviour:
   Id: 114
   DisplayName: "\u6C34\u6676\u96D5\u50CF"
   Color: {r: 0.3921569, g: 0.54901963, b: 0.6784314, a: 1}
+  NormalIcon: {fileID: 21300000, guid: 0091d4bdf8f648a41bc87c7d4cc2a29c, type: 3}
+  EvolvedIcon: {fileID: 21300000, guid: 2e55fba991ff6ea45afffe276eefa231, type: 3}
   Shape:
+  - {x: 0, y: 1}
+  - {x: 1, y: 1}
   - {x: 0, y: 0}
   - {x: 1, y: 0}
-  - {x: 1, y: 1}
-  - {x: 0, y: 1}
   CanRotate: 1

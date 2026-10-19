@@ -1,4 +1,4 @@
-﻿/****************************************************
+/****************************************************
     文件：ActionPointSystem.cs
 	作者：DADI
     邮箱: 1581507659@qq.com
@@ -38,7 +38,9 @@ public class ActionPointSystem
             ToastManager.Show("行动点不足");
             return false;
         }
+        if (cost <= 0) return cost == 0;
         _runState.run.actionPoint -= cost;
+        ToastManager.Show("行动点-" + cost, System.Guid.NewGuid().ToString());
         TopBarRefreshEvent.Trigger();
         return true;
     }

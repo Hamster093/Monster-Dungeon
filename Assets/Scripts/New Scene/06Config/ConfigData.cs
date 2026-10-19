@@ -50,10 +50,14 @@ public class VisitOrder
 [Serializable]
 public class ContractConfig
 {
+    public string specialKind; // Gather / Battle / Legacy；普通剧情委托留空。
+    public int minPhase = 1;
+    public Dictionary<SevenDimension,int> statDeltas = new();
     public int id;                       // 委托 ID
     public string name;                  // 委托名
     public string description;           // 委托描述
-    public int targetMonsterId;
+    public int targetMonsterId; // 旧档目标及默认展示兼容；接单按类别判定。
+    public MonsterType? targetMonsterType;
     public int reward;                   // 委托报酬（100% 完成度时）
 
     // 影响属性，空 = 普通委托，非空 = 特殊委托

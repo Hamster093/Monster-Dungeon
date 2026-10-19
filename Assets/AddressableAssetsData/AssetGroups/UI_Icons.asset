@@ -137,6 +137,31 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6b7a7f7f62b235b47a22170c67fdae22
+    m_Address: Narrative/Myth
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 09b7697e30f3080409a5a7576fd1846c
+    m_Address: Narrative/Ferdia
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a427454679710e64ba76a3ab4c615125
+    m_Address: Narrative/Sarah
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 400915e49fe536e4ca7c5c9e9b00a67b
+    m_Address: Narrative/Audrey
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5adf932458f96d740b1e5043cfb29e9f
+    m_Address: Narrative/Da
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 60406bbc0a80ace45afd417c8f462b21, type: 2}
   m_SchemaSet:

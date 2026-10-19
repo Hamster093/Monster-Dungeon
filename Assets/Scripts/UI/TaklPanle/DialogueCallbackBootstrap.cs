@@ -1,4 +1,4 @@
-﻿/****************************************************
+/****************************************************
     文件：DialogueCallbackBootstrap.cs
     作者：DADI
     邮箱: 1581507659@qq.com
@@ -53,7 +53,6 @@ public class DialogueCallbackBootstrap : MonoBehaviour
         { "myd1_guide_check",           "guide_check"  },
 
         { "open_backpack",              "open_ui" },
-        { "open_special_commission",    "open_ui" },
 
         { "open_commission_panel", "open_commission_panel" },
     };
@@ -182,6 +181,7 @@ private static DialogueOptionResult OnRollD20Check(DialogueOption option)
     // 命中 key：open_backpack / open_special_commission
     private static DialogueOptionResult OnOpenUI(DialogueOption option)
     {
+        if (option.tag == "narrative") return SystemManager.Instance.Narrative.OpenFunction(option);
         switch (option.callbackKey)
         {
             case "open_backpack":
@@ -189,8 +189,7 @@ private static DialogueOptionResult OnRollD20Check(DialogueOption option)
                 return new DialogueOptionResult { waitForExternal = true };
 
             case "open_special_commission":
-                UIManager.Instance.Open<SpecialCommissionPanel>();
-                return new DialogueOptionResult { waitForExternal = true };
+                return new DialogueOptionResult { cancelJump = true }; // 历史回调安全取消。
 
             case "open_commission_panel":
                 return OnOpenCommissionPanel(option);
@@ -200,7 +199,7 @@ private static DialogueOptionResult OnRollD20Check(DialogueOption option)
 
     private static DialogueOptionResult OnOpenCommissionPanel(DialogueOption option)
     {
-
+        if (option.tag == "narrative") return SystemManager.Instance.Narrative.OpenFunction(option);
         int contractId = option.param > 0 ? option.param : 1;
 
         var talkPanel = UIManager.Instance.Get<TalkPanel>();
@@ -210,7 +209,7 @@ private static DialogueOptionResult OnRollD20Check(DialogueOption option)
         if (panel == null)
             return new DialogueOptionResult();
 
-        panel.SetOnAccepted(() => controller?.ContinueFromNode("73"));
+        panel.SetOnAccepted(() => controller?.ContinueFromNode(option.targetNodeId));
         panel.SetOnCancelled(() => controller?.ResumeCurrentNode());
 
         return new DialogueOptionResult { waitForExternal = true };

@@ -4,9 +4,7 @@
     邮箱: 1581507659@qq.com
     日期：2026/10/16 19:29:04
 	功能：战斗检定 → 伤势结果
-    规则：同级 0-5 重伤，6-10 轻伤，11-20 无伤
-          魔物每强 1 级 -5，每弱 1 级 +5
-          重伤状态额外 -5
+    规则：D100。阈值、等级差与伤势修正集中在 Config/d100Rules.json。
 *****************************************************/
 
 using UnityEngine;
@@ -21,6 +19,28 @@ public enum InjuryResult
 public static class CombatResolver
 {
     private static readonly D20Service _d20 = new D20Service();
+    public static int Modifier(int adventurerId,int monsterId)
+    {
+        var db=ConfigDatabase.Instance;var b=D20Service.Balance;
+        int modifier=((int)db.Adventurers[adventurerId].baseLevel-(int)db.Monsters[monsterId].level)*b.levelStep;
+        var adv=RunStateManager.Instance.run.adventurers[adventurerId];
+        return modifier-(adv.isSeverelyInjured?b.severePenalty:adv.health==HealthState.Damaged?b.lightPenalty:0);
+    }
+    public static InjuryResult Outcome(CheckResult result,int modifier)
+    {
+        if(result.IsCritical)return InjuryResult.None;
+        if(result.IsFumble)return InjuryResult.Severe;
+        int sum=result.Roll+modifier;return sum<=D20Service.Balance.severeMax?InjuryResult.Severe:sum<=D20Service.Balance.lightMax?InjuryResult.Light:InjuryResult.None;
+    }
+
+    public static int UnhurtPercent(int adventurerId, int monsterId)
+    {
+        int modifier = Modifier(adventurerId, monsterId), count = 0;
+        for (int roll = 1; roll <= 100; roll++)
+            if (Outcome(D20Service.Evaluate(roll, D20Service.Balance.lightMax + 1, modifier), modifier) == InjuryResult.None) count++;
+        return count;
+    }
+    public static string Difficulty(int adventurerId, int monsterId) => NarrativeSystem.Difficulty(UnhurtPercent(adventurerId, monsterId));
 
     public static InjuryResult Resolve(int adventurerId, int monsterId)
     {
@@ -41,22 +61,11 @@ public static class CombatResolver
         int advLv = (int)advCfg.baseLevel;   // A=4, B=3, C=2, D=1
         int monLv = (int)monCfg.level;
 
-        int modifier = (advLv - monLv) * 5;   // 魔物强 → 负数；魔物弱 → 正数
-
-        var run = RunStateManager.Instance.run;
-        if (run.adventurers.TryGetValue(adventurerId, out var advData)
-            && advData != null && advData.isSeverelyInjured)
-        {
-            modifier -= 5;
-        }
-
+        int modifier = Modifier(adventurerId,monsterId);
         int roll = _d20.Roll();
         int final = roll + modifier;
 
-        InjuryResult result;
-        if (final <= 5) result = InjuryResult.Severe;
-        else if (final <= 10) result = InjuryResult.Light;
-        else result = InjuryResult.None;
+        InjuryResult result=Outcome(D20Service.Evaluate(roll,D20Service.Balance.lightMax+1,modifier),modifier);
 
         Debug.Log($"[战斗检定] 冒险者{adventurerId}({advCfg.baseLevel}) vs 魔物{monsterId}({monCfg.level}) | " +
                   $"骰={roll} + 修正{modifier} = {final} → {result}");

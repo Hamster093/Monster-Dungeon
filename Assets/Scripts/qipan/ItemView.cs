@@ -1,4 +1,4 @@
-﻿/****************************************************
+/****************************************************
     文件：ItemView.cs
 	作者：DADI
     邮箱: 1581507659@qq.com
@@ -13,14 +13,14 @@ using UnityEngine.UI;
 
 [RequireComponent(typeof(RectTransform))]
 public class ItemView : MonoBehaviour,
-    IBeginDragHandler, IDragHandler, IEndDragHandler
+    IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler
 {
     [Header("配置")]
     public ItemShapeDefinition Def;
     public BackpackBoard Board;
 
     [Tooltip("单格像素尺寸，要和棋盘的 CellSize 一致")]
-    public float CellSize = 95f;
+    public float CellSize = 115f;
 
     [Tooltip("格子之间的间距，要和 GridLayoutGroup 的 Spacing 一致")]
     public float Spacing = 5f;
@@ -45,6 +45,40 @@ public class ItemView : MonoBehaviour,
 
     private PlacedItem _item;
     private bool _isDragging;
+    private bool _pendingPlacement;
+    private bool _returnToStorage;
+    private bool _pressed, _draggedThisPress;
+    private float _pressedAt;
+    private PointerEventData _pointer;
+    private Vector2Int _originalOrigin;
+    public const float LongPressSeconds = .18f;
+    public const float DragDistancePixels = 14f;
+    public static bool ShouldStartDrag(float heldSeconds, float distancePixels)
+        => heldSeconds >= LongPressSeconds || distancePixels >= DragDistancePixels;
+    public bool IsPlacing=>_isDragging||_pendingPlacement;
+    public void CancelPlacement()
+    {
+        if(!_pendingPlacement&&!_isDragging)return;
+        _isDragging=false;_pressed=false;_pendingPlacement=false;ClearHighlight();
+        if(_canvasGroup)_canvasGroup.alpha=1;
+        if(_originalParent!=null){_rect.SetParent(_originalParent,false);_originalParent=null;}
+        if(_returnToStorage)
+        {
+            _returnToStorage=false;MonsterStorageModel.Instance.Add(int.Parse(Def.Id),_item.Uid,_item.Evolved,_item.UsedDay,_item.EvolutionKind);
+            UIManager.Instance.Get<ShopPanel>()?.SwitchToStorage();Destroy(gameObject);return;
+        }
+        Board.PlaceItem(_item,_originalOrigin,_originalRotation);
+    }
+    /// <summary>保留旧调用接口；仓库松手已合法落位，立即登记，不再等待空格。</summary>
+    public void StageFromStorage()
+    {
+        _returnToStorage=false;_pendingPlacement=false;ClearHighlight();Board.CommitEdit();
+    }
+    public bool ConfirmPlacement()
+    {
+        if(!_pendingPlacement||!Board.CanPlace(Def,_targetOrigin,_item.Rotation,_item))return false;
+        _pendingPlacement=false;_returnToStorage=false;ClearHighlight();Board.PlaceItem(_item,_targetOrigin,_item.Rotation);Board.CommitEdit();return true;
+    }
     private Vector2Int _grabCellOffset;   // 抓取时鼠标格相对物品 origin 的偏移
     private Vector2Int _targetOrigin;
     private bool _targetValid;
@@ -62,7 +96,7 @@ public class ItemView : MonoBehaviour,
 
         _canvasGroup = GetComponent<CanvasGroup>();
         if (_canvasGroup == null) _canvasGroup = gameObject.AddComponent<CanvasGroup>();
-        _canvasGroup.blocksRaycasts = true;
+        _canvasGroup.blocksRaycasts = !IsGhost;
 
         if (!IsGhost && Board == null)
             Board = FindObjectOfType<BackpackBoard>();
@@ -154,7 +188,9 @@ public class ItemView : MonoBehaviour,
                 var img = go.GetComponent<Image>();
                 if (img != null)
                 {
-                    img.color = Def.Color;
+                    img.sprite = Def.GetIcon(_item.Evolved);
+                    img.preserveAspect = true;
+                    img.color = _item.IsResting ? new Color(.38f,.38f,.38f,1) : img.sprite != null ? Color.white : Def.Color;
                     img.raycastTarget = true; // 让点击/拖拽冒泡到 ItemView
                 }
             }
@@ -163,6 +199,16 @@ public class ItemView : MonoBehaviour,
                 go.SetActive(false);
             }
         }
+    }
+
+    /// <summary>仓库、拖拽及存档共用；只改变实例标记与图片，不隐式执行进化玩法。</summary>
+    public void SetInstanceState(string uid, bool evolved, int usedDay = -1, string evolutionKind = "")
+    {
+        if (_item == null) _item = new PlacedItem(Def) { View = this };
+        if (!string.IsNullOrEmpty(uid)) _item.Uid = uid;
+        _item.Evolved = evolved;
+        _item.UsedDay=usedDay;_item.EvolutionKind=evolutionKind??"";
+        Rebuild();
     }
 
     private GameObject CreateDefaultCell()
@@ -186,21 +232,69 @@ public class ItemView : MonoBehaviour,
 
     // ---------------- 拖拽 ----------------
 
+    public void OnPointerDown(PointerEventData e)
+    {
+        _draggedThisPress=false;
+        if(e.button!=PointerEventData.InputButton.Left)return;
+        _pointer=e;_pressedAt=Time.unscaledTime;_pressed=CanEdit();
+    }
+    public void OnPointerUp(PointerEventData e)
+    {
+        if(e.button!=PointerEventData.InputButton.Left)return;
+        _pressed=false;
+        // 长按但未跨过Unity默认拖拽距离时，也由松手完成同一个提交出口。
+        if(_isDragging)OnEndDrag(e);
+    }
+    private bool CanEdit() => !IsGhost && Board!=null && _item!=null &&
+        !RouteSelectionPanel.IsShowing && !EvolutionPanel.IsShowing &&
+        SystemManager.Instance?.Narrative?.IsPreparing!=false &&
+        !GuideHelpOverlay.BlocksInput && !PlayerBuildPanel.IsShowing && !PresentationEffects.IsBusy;
+    private void TryStartDrag(PointerEventData e)
+    {
+        _pointer=e;
+        if(!_pressed || _isDragging || !CanEdit())return;
+        if(ShouldStartDrag(Time.unscaledTime-_pressedAt,Vector2.Distance(e.pressPosition,e.position)))BeginActualDrag(e);
+    }
+
+    public void OnPointerClick(PointerEventData e)
+    {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        // 仅隔离验收包记录原生输入起止点，正式工程不输出。
+        if(Application.productName.EndsWith("_NarrativeValidation"))Debug.Log($"[Doc3NativeInput] click press={e.pressPosition} end={e.position} dragging={e.dragging}");
+#endif
+        if(_draggedThisPress)return;
+        if (e.button == PointerEventData.InputButton.Left && RouteSelectionPanel.IsShowing)
+        { RouteSelectionPanel.Active.SelectAt(this, e); return; }
+        if(e.button==PointerEventData.InputButton.Left&&SystemManager.Instance.Narrative?.IsPreparing==true&&!IsPlacing)
+            UIManager.Instance.Open<DescriptionPanel>(new DescriptionPanel.OpenContext{item=ItemData.FromMonster(_item),icon=Def.GetIcon(_item.Evolved)});
+    }
     public void OnBeginDrag(PointerEventData e)
     {
+        if(e.button!=PointerEventData.InputButton.Left)return;
+        TryStartDrag(e);
+    }
+    private void BeginActualDrag(PointerEventData e)
+    {
+        if(Board!=null&&Board.IsEditing&&!IsPlacing)return;
+        if(_pendingPlacement){bool fromStorage=_returnToStorage;CancelPlacement();if(fromStorage)return;}
+        if (RouteSelectionPanel.IsShowing || EvolutionPanel.IsShowing || SystemManager.Instance.Narrative?.IsPreparing==false) return;
 
         if (Board == null) return;
         if (_item == null) _item = new PlacedItem(Def) { View = this };
 
         _isDragging = true;
+        _draggedThisPress=true;e.eligibleForClick=false;
         _canvasGroup.alpha = DragAlpha;
 
         _originalRotation = _item.Rotation;
+        _originalOrigin = _item.Origin;
+        _targetValid=false;
 
         var cam = e.pressEventCamera;
 
         // 1. 记录抓取偏移（用棋盘坐标算）
-        if (Board.ScreenToBoardCoord(e.position, cam, out var mouseCell))
+        // 拖拽开始回调发生在鼠标已移动以后，抓取格必须取按下位置；否则快速拖动会把整段位移抵消。
+        if (Board.ScreenToBoardCoord(e.pressPosition, cam, out var mouseCell))
             _grabCellOffset = mouseCell - _item.Origin;
         else
             _grabCellOffset = Vector2Int.zero;
@@ -227,6 +321,7 @@ public class ItemView : MonoBehaviour,
 
     public void OnDrag(PointerEventData e)
     {
+        TryStartDrag(e);
         if (!_isDragging) return;
         var cam = e.pressEventCamera;
 
@@ -245,13 +340,18 @@ public class ItemView : MonoBehaviour,
         else
         {
             _targetValid = false;
+            ClearHighlight();
         }
     }
 
     public void OnEndDrag(PointerEventData e)
     {
         if (!_isDragging) return;
+        if(GuideHelpOverlay.BlocksInput || PlayerBuildPanel.IsShowing || PresentationEffects.IsBusy){CancelPlacement();return;}
+        // 旋转后直接松手也要按最终指针与最终形状重算，不能沿用上一帧绿色结果。
+        OnDrag(e);
         _isDragging = false;
+        _pressed=false;
         _canvasGroup.alpha = 1f;
         ClearHighlight();
 
@@ -270,6 +370,7 @@ public class ItemView : MonoBehaviour,
         {
             decompose.Accept(_item);
             gameObject.SetActive(false);   // 本体隐藏，等拆完/取消再处理
+            Board.CommitEdit();
             return;
         }
 
@@ -290,29 +391,38 @@ public class ItemView : MonoBehaviour,
 
             if (int.TryParse(_item.Def.Id, out int id))
             {
-                MonsterStorageModel.Instance.Add(id);   // ★ 内部生成新实例
+                MonsterStorageModel.Instance.Add(id, _item.Uid, _item.Evolved, _item.UsedDay, _item.EvolutionKind); // 保留同一实例的进化状态。
                 Board.RemoveItem(_item);
                 shop.SwitchToStorage();
                 Destroy(gameObject);
+                Board.CommitEdit();
             }
             else
             {
                 Debug.LogWarning($"[ItemView] Def.Id 非数字，无法退回：{_item.Def.Id}");
+                Board.PlaceItem(_item,_originalOrigin,_originalRotation);
             }
             return;
         }
         // 处理落点
         if (_targetValid)
-            Board.PlaceItem(_item, _targetOrigin, _item.Rotation);
+        {
+            // 松手是唯一摆放确认点；同一实例直接落位、保存并刷新收益。
+            Board.PlaceItem(_item,_targetOrigin,_item.Rotation);
+            Board.CommitEdit();
+        }
         else
-            Board.PlaceItem(_item, _item.Origin, _originalRotation);
+            Board.PlaceItem(_item, _originalOrigin, _originalRotation);
     }
 
     // ---------------- R 键旋转 ----------------
 
     private void Update()
     {
+        if(GuideHelpOverlay.BlocksInput || PlayerBuildPanel.IsShowing || PresentationEffects.IsBusy)return;
+        if(_pressed&&!_isDragging&&_pointer!=null)TryStartDrag(_pointer);
         if (!_isDragging) return;
+        if(Input.GetKeyDown(KeyCode.Escape)){CancelPlacement();return;}
         if (Def == null || !Def.CanRotate) return;
 
         if (Input.GetKeyDown(KeyCode.R))
@@ -321,6 +431,7 @@ public class ItemView : MonoBehaviour,
             Rebuild();
             _grabCellOffset = Vector2Int.zero;
             _grabPixelOffset = Vector2.zero;
+            if(_pointer!=null)OnDrag(_pointer);
         }
     }
 
@@ -386,7 +497,7 @@ public class ItemView : MonoBehaviour,
         {
             _canvasGroup = GetComponent<CanvasGroup>();
             if (_canvasGroup == null) _canvasGroup = gameObject.AddComponent<CanvasGroup>();
-            _canvasGroup.blocksRaycasts = true;
+            _canvasGroup.blocksRaycasts = !IsGhost;
         }
     }
 

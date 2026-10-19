@@ -37,6 +37,17 @@ public class InventoryModel
         if (index < 0 || index >= _slots.Length) return null;
         return _slots[index];
     }
+    public int CountId(int id)
+    {
+        int count=0;foreach(var slot in _slots)if(!slot.IsEmpty&&slot.data.id==id)count+=slot.quantity;
+        var run=RunStateManager.Instance.run;if(run!=null&&run.itemInventory.TryGetValue(id,out int n))count+=n;return count;
+    }
+    /// <summary>主动使用与检定被动消耗共用，成功提交时只扣一件。</summary>
+    public bool ConsumeId(int id)
+    {
+        for(int i=0;i<_slots.Length;i++)if(!_slots[i].IsEmpty&&_slots[i].data.id==id)return RemoveItem(i);
+        var run=RunStateManager.Instance.run;if(run!=null&&run.itemInventory.TryGetValue(id,out int n)&&n>0){run.itemInventory[id]=n-1;return true;}return false;
+    }
 
     /// <summary>添加物品，返回放不下的剩余数量</summary>
     public int AddItem(ItemStack itemStack)

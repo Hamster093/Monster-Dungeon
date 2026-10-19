@@ -21,6 +21,7 @@ public class SystemManager
     public VisitSystem VisitSystem { get; private set; }
     public DailyCommissionSystem DailyCommission { get; private set; }
     public DailyDebriefSystem DailyDebrief { get; private set; }
+    public NarrativeSystem Narrative { get; private set; }
 
     private D20Service _d20;
     private AdventureResolver _resolver;
@@ -51,6 +52,7 @@ public class SystemManager
         VisitSystem = new VisitSystem(RunState, Config);
         DailyCommission = new DailyCommissionSystem();
         DailyDebrief = new DailyDebriefSystem(RunState, VisitSystem);
+        Narrative = new NarrativeSystem(this);
 
         // 5. 让各系统自己注册事件
         Schedule.Init();
@@ -61,6 +63,7 @@ public class SystemManager
         Reception.Init();
         VisitSystem.Init();
         DailyDebrief.Init();
+        Narrative.Init();
 
         IsInitialized = true;
     }
