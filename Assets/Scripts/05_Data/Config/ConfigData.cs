@@ -126,54 +126,6 @@ public class ItemConfig
 }
 
 // <summary>
-/// 对话选项固定配置。前置对话与正式搭话共用。
-/// </summary>
-[Serializable]
-public class DialogueOptionConfig
-{
-    public int id;
-    public int adventurerId;        // 关联冒险者 ID 0 表示通用
-    public DialogueStage stage;     // 对话阶段：前置 / 正式
-    public int costAP;              // 消耗行动点。前置对话为 0 正式按第 1~5 次递增
-    public string text;             // 选项文本，显示给玩家
-    public int checkTarget;         // D20 目标值。前置对话为 0，不检定
-    public string successText;      // 检定成功时的回答整句
-    public string failText;         // 检定失败时的回答整句
-    public int validInfoId;         // 成功且有效时关联的有效信息 ID，0 表示不产出有效信息
-    /// <summary>
-    /// 七维数值变化。
-    /// 同次来访最多推动一次。。
-    /// </summary>
-    public Dictionary<SevenDimension, int> statChanges; // 接任数值变化
-}
-
-/// <summary>
-/// 有效信息固定配置。搭话成功后提取的完整句子，默认未核实。
-/// </summary>
-[Serializable]
-public class ValidInfoConfig
-{
-    public int id;
-    public int adventurerId;
-    public string text;             // 信息原文
-    public bool verified = false;   // 默认未核实
-}
-
-/// <summary>
-/// 调查档案固定配置。每名冒险者三条固定背景，按顺序解锁。
-/// </summary>
-[Serializable]
-public class InvestigationConfig
-{
-    public int id;
-    public int adventurerId;
-    public int order;               // 1/2/3，按顺序解锁
-    public string text;
-    public int costAP = 1;
-    public int itemId;              // 需要的调查道具
-}
-
-// <summary>
 /// D20 检定固定配置。套话、冒险、报复共用一套检定逻辑。
 /// </summary>
 [Serializable]
@@ -199,15 +151,6 @@ public class ScheduleConfig
     public List<int> unlockAdventurerIds; //本阶段解锁的冒险者 ID ，形成 3→4→5→6→7
     public int installmentAmount;   // 本阶段分期费用
     public int deadlineDay;         // 本阶段截止日，即最后一天天号
-}
-
-[Serializable]
-public class MemoryConfig
-{
-    public int id;
-    public MemoryTrigger trigger;     // 触发条件类型
-    public string text;               // 如"被主人误导"
-    public RevengeLevel revengeLevel; //该记忆对应的报复等级：无 / 轻度 / 重度
 }
 
 

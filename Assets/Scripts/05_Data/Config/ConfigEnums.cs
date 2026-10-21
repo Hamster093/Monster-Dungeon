@@ -52,26 +52,9 @@ public enum CurrencyType { Cash, Nutrient }
 /// </summary>
 public enum CheckType { Dialogue, Adventure, Revenge }
 /// <summary>
-/// 记忆触发条件枚举。用于标记在何种事件发生时写入或更新角色的记忆条目。
-/// </summary>
-public enum MemoryTrigger
-{
-    Misled,             // 被误导
-    Suspicion,          // 怀疑主人
-    InjuredInZone,      // 在某分区受伤
-    SuccessGetMaterial, // 成功取得材料
-    ConfirmedDeceived,  // 确认被欺骗
-    HeavyInjuryByLie,   // 因错误指路重伤
-    Death               // 死亡
-}
-/// <summary>
 /// 复仇程度枚举。用于量化角色对玩家的敌意或报复等级。
 /// </summary>
 public enum RevengeLevel { None, Light, Heavy }
-/// <summary>
-/// 对话阶段枚举。用于区分对话流程的不同阶段
-/// </summary>
-public enum DialogueStage { Pre, Formal }
 /// <summary>
 /// 健康状态枚举
 /// </summary>

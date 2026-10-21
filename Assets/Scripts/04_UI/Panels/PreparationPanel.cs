@@ -98,32 +98,17 @@ public class PreparationPanel : PanelBase
 
     #region 按钮回调
 
-    /// <summary>开始接待</summary>
+    /// <summary>开始接待（27 天剧情模式）</summary>
     private void OnStartReceptionClick()
     {
         if(BackpackBoard.Instance?.IsEditing==true)return;
-        if (SystemManager.Instance.Narrative?.Enabled == true)
+        if (SystemManager.Instance.Narrative == null || !SystemManager.Instance.Narrative.Enabled)
         {
-            if (!SystemManager.Instance.Narrative.IsPreparing) return;
-            SystemManager.Instance.Narrative.StartReception();
+            Debug.LogError("[PreparationPanel] 缺少 Narrative/story27，无法开始接待。");
             return;
         }
-        var vs = SystemManager.Instance.VisitSystem;
-        string key = vs.GetCurrentDialogueKey();
-
-        if (string.IsNullOrEmpty(key))
-        {
-            Debug.LogWarning("[PreparationPanel] 当前没有访客，无法开始接待");
-            return;
-        }
-
-        if (UIManager.Instance.IsOpen<ShopPanel>())
-        {
-            UIManager.Instance.Close<ShopPanel>();
-        }
-
-        var panel = UIManager.Instance.Open<TalkPanel>();
-        panel.Dialogue.StartDialogue(key);
+        if (!SystemManager.Instance.Narrative.IsPreparing) return;
+        SystemManager.Instance.Narrative.StartReception();
     }
 
     /// <summary>接待期间锁定开始按钮，棋盘所在的整备面板保持启用。</summary>

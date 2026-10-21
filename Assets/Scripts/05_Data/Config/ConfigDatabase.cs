@@ -20,12 +20,8 @@ public class ConfigDatabase
     public Dictionary<int, MonsterConfig> Monsters = new();
     public Dictionary<int, ZoneConfig> Zones = new();
     public Dictionary<int, ItemConfig> Items = new();
-    public Dictionary<int, DialogueOptionConfig> Dialogues = new();
-    public System.Collections.Generic.Dictionary<int, ValidInfoConfig> ValidInfos = new();
-    public Dictionary<int, InvestigationConfig> Investigations = new();
     public Dictionary<int, D20CheckConfig> D20Checks = new();
     public List<ScheduleConfig> Schedules = new();
-    public Dictionary<int, MemoryConfig> Memories = new();
     public Dictionary<int, VisitOrder> VisitOrders = new();
 
     public List<MonsterDropConfig> MonsterDrops = new();
@@ -52,12 +48,8 @@ public class ConfigDatabase
         Monsters = LoadDict<MonsterConfig>("monsters");
         Zones = LoadDict<ZoneConfig>("zones");
         Items = LoadDict<ItemConfig>("items");
-        Dialogues = LoadDict<DialogueOptionConfig>("dialogues");
-        ValidInfos = LoadDict<ValidInfoConfig>("validInfos");
-        Investigations = LoadDict<InvestigationConfig>("investigations");
         D20Checks = LoadDict<D20CheckConfig>("d20Checks");
         Schedules = LoadList<ScheduleConfig>("schedules");
-        Memories = LoadDict<MemoryConfig>("memories");
         VisitOrders = LoadDict<VisitOrder>("visitOrders");
 
         MonsterDrops = LoadList<MonsterDropConfig>("monsterDrops");

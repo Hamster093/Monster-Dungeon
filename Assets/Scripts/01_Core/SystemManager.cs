@@ -15,16 +15,12 @@ public class SystemManager
     public RunStateManager RunState { get; private set; }
     public ScheduleSystem Schedule { get; private set; }
     public ActionPointSystem ActionPoint { get; private set; }
-    public ReceptionController Reception { get; private set; }
-    public MemorySystem Memory { get; private set; }
     public EconomySystem Economy { get; private set; }
     public VisitSystem VisitSystem { get; private set; }
     public DailyCommissionSystem DailyCommission { get; private set; }
-    public DailyDebriefSystem DailyDebrief { get; private set; }
     public NarrativeSystem Narrative { get; private set; }
 
     private D20Service _d20;
-    private AdventureResolver _resolver;
 
     public bool IsInitialized { get; private set; }
 
@@ -41,28 +37,21 @@ public class SystemManager
 
         // 3. 底层服务
         _d20 = new D20Service();
-        _resolver = new AdventureResolver(_d20);
 
         // 4. 业务系统
         Economy = new EconomySystem(RunState);
         ActionPoint = new ActionPointSystem(RunState);
-        Memory = new MemorySystem(RunState, Config);
         Schedule = new ScheduleSystem(RunState, Config);
-        Reception = new ReceptionController(RunState, Config, _resolver, Economy, ActionPoint, Memory, _d20);
-        VisitSystem = new VisitSystem(RunState, Config);
+        VisitSystem = new VisitSystem(RunState);
         DailyCommission = new DailyCommissionSystem();
-        DailyDebrief = new DailyDebriefSystem(RunState, VisitSystem);
         Narrative = new NarrativeSystem(this);
 
         // 5. 让各系统自己注册事件
         Schedule.Init();
         Schedule.RefreshScheduleData();
         ActionPoint.Init();
-        Memory.Init();
         Economy.Init();
-        Reception.Init();
         VisitSystem.Init();
-        DailyDebrief.Init();
         Narrative.Init();
 
         IsInitialized = true;
@@ -72,11 +61,8 @@ public class SystemManager
     {
         Schedule?.Dispose();
         ActionPoint?.Dispose();
-        Memory?.Dispose();
         Economy?.Dispose();
-        Reception?.Dispose();
         VisitSystem?.Dispose();
-        DailyDebrief?.Dispose();
 
         IsInitialized = false;
     }

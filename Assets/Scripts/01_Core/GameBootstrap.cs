@@ -32,10 +32,8 @@ public class GameBootstrap : MonoBehaviour
     {
         // 等原 UI/棋盘的 Start 完成，再恢复棋盘或显示开场，避免初始化覆盖读档结果。
         yield return null;
-        // 3. 生成今日来客手动触发一次
-        if (SystemManager.Instance.Narrative.Enabled)
-            SystemManager.Instance.Narrative.Boot();
-        else NextDayEvent.Trigger();//放在start 因为ReceptionPanel要先注册事件
+        // 3. 27 天剧情启动（story27 为必需资源，Init 缺失时会直接抛错）
+        SystemManager.Instance.Narrative.Boot();
     }
 
     private void OnDestroy()

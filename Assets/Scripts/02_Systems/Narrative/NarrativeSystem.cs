@@ -145,7 +145,7 @@ public sealed class NarrativeSystem
     public void Init()
     {
         var asset = Resources.Load<TextAsset>("Narrative/story27");
-        if (asset == null) return; // 未安装完整文案时，仍可运行原来的独立 JSON 对话。
+        if (asset == null) throw new InvalidOperationException("缺少 Narrative/story27.json，27 天剧情无法启动。");
         var config = Resources.Load<TextAsset>("Narrative/rules");
         if (config == null) throw new InvalidOperationException("缺少 Narrative/rules.json。");
         _rules = JsonConvert.DeserializeObject<Rules>(config.text);
