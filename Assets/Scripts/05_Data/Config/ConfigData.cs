@@ -80,28 +80,6 @@ public class MonsterConfig
 }
 
 /// <summary>
-/// 魔物掉落配置。每种魔物对应一条固定掉落表，掉落素材不随机。
-/// </summary>
-[Serializable]
-public class MonsterDropConfig
-{
-    public MonsterType monsterType;             // 对应 MonsterType 枚举
-    public List<string> materials = new();      // 掉落素材名列表
-}
-/// <summary>
-/// 地牢分区固定配置。
-/// </summary>
-[Serializable]
-public class ZoneConfig
-{
-    public int id;
-    public string name;
-    public int dangerLevel;          // 区域危险等级
-    public List<int> monsterIds;     //该分区可出现的魔物 ID
-    public string routeDescription;  //路线描述文本
-}
-
-/// <summary>
 /// 道具固定配置。用于背包、商店、调查、陷阱等。
 /// </summary>
 [Serializable]

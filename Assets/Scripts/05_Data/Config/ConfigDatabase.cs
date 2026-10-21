@@ -18,13 +18,11 @@ public class ConfigDatabase
     public Dictionary<int, AdventurerConfig> Adventurers = new();
     public Dictionary<int, ContractConfig> Contracts = new();
     public Dictionary<int, MonsterConfig> Monsters = new();
-    public Dictionary<int, ZoneConfig> Zones = new();
     public Dictionary<int, ItemConfig> Items = new();
     public Dictionary<int, D20CheckConfig> D20Checks = new();
     public List<ScheduleConfig> Schedules = new();
     public Dictionary<int, VisitOrder> VisitOrders = new();
 
-    public List<MonsterDropConfig> MonsterDrops = new();
     public ShapeDatabase ShapeDb { get; private set; }
 
     /// <summary>
@@ -44,16 +42,11 @@ public class ConfigDatabase
     private void LoadAll()
     {
         Adventurers = LoadDict<AdventurerConfig>("adventurers");
-        Contracts = LoadDict<ContractConfig>("contracts");
         Monsters = LoadDict<MonsterConfig>("monsters");
-        Zones = LoadDict<ZoneConfig>("zones");
         Items = LoadDict<ItemConfig>("items");
         D20Checks = LoadDict<D20CheckConfig>("d20Checks");
         Schedules = LoadList<ScheduleConfig>("schedules");
         VisitOrders = LoadDict<VisitOrder>("visitOrders");
-
-        MonsterDrops = LoadList<MonsterDropConfig>("monsterDrops");
-
     }
     /// <summary>
     /// 加载指定指定文件名的 JSON 配置到字典中
@@ -138,15 +131,5 @@ public class ConfigDatabase
     {
         var s = GetSchedule(currentPhase);
         return s != null ? s.installmentAmount : 0;
-    }
-
-    /// <summary>
-    /// 按魔物类型取掉落素材列表，找不到返回空列表
-    /// </summary>
-    public List<string> GetDrops(MonsterType type)
-    {
-        foreach (var d in MonsterDrops)
-            if (d.monsterType == type) return d.materials;
-        return new List<string>();
     }
 }
