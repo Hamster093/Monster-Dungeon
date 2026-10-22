@@ -18,10 +18,10 @@ public enum InjuryResult
 
 public static class CombatResolver
 {
-    private static readonly D20Service _d20 = new D20Service();
+    private static readonly D100Service _d20 = new D100Service();
     public static int Modifier(int adventurerId,int monsterId)
     {
-        var db=ConfigDatabase.Instance;var b=D20Service.Balance;
+        var db=ConfigDatabase.Instance;var b=D100Service.Balance;
         int modifier=((int)db.Adventurers[adventurerId].baseLevel-(int)db.Monsters[monsterId].level)*b.levelStep;
         var adv=RunStateManager.Instance.run.adventurers[adventurerId];
         return modifier-(adv.isSeverelyInjured?b.severePenalty:adv.health==HealthState.Damaged?b.lightPenalty:0);
@@ -30,14 +30,14 @@ public static class CombatResolver
     {
         if(result.IsCritical)return InjuryResult.None;
         if(result.IsFumble)return InjuryResult.Severe;
-        int sum=result.Roll+modifier;return sum<=D20Service.Balance.severeMax?InjuryResult.Severe:sum<=D20Service.Balance.lightMax?InjuryResult.Light:InjuryResult.None;
+        int sum=result.Roll+modifier;return sum<=D100Service.Balance.severeMax?InjuryResult.Severe:sum<=D100Service.Balance.lightMax?InjuryResult.Light:InjuryResult.None;
     }
 
     public static int UnhurtPercent(int adventurerId, int monsterId)
     {
         int modifier = Modifier(adventurerId, monsterId), count = 0;
         for (int roll = 1; roll <= 100; roll++)
-            if (Outcome(D20Service.Evaluate(roll, D20Service.Balance.lightMax + 1, modifier), modifier) == InjuryResult.None) count++;
+            if (Outcome(D100Service.Evaluate(roll, D100Service.Balance.lightMax + 1, modifier), modifier) == InjuryResult.None) count++;
         return count;
     }
     public static string Difficulty(int adventurerId, int monsterId) => NarrativeSystem.Difficulty(UnhurtPercent(adventurerId, monsterId));
@@ -65,7 +65,7 @@ public static class CombatResolver
         int roll = _d20.Roll();
         int final = roll + modifier;
 
-        InjuryResult result=Outcome(D20Service.Evaluate(roll,D20Service.Balance.lightMax+1,modifier),modifier);
+        InjuryResult result=Outcome(D100Service.Evaluate(roll,D100Service.Balance.lightMax+1,modifier),modifier);
 
         Debug.Log($"[战斗检定] 冒险者{adventurerId}({advCfg.baseLevel}) vs 魔物{monsterId}({monCfg.level}) | " +
                   $"骰={roll} + 修正{modifier} = {final} → {result}");

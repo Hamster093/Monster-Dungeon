@@ -64,7 +64,6 @@ public class ScheduleSystem
         if (_runState.run.currentDay > 27)
         {
             Debug.Log("27 天结束");
-            GamePassEvent.Trigger();
         }
     }
 
@@ -106,7 +105,7 @@ public class ScheduleSystem
     /// </summary>
     public void RefreshScheduleData()
     {
-        var run = SystemManager.Instance.RunState.run;
+        var run = SystemManager.Instance.RunStateManager.run;
         var cfg = SystemManager.Instance.Config;
 
         run.remainingDays = cfg.GetRemainingDays(run.currentDay, run.currentPhase);

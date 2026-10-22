@@ -98,7 +98,7 @@ public class HUDPanel : PanelBase
     /// </summary>
     public void RefreshTopBar()
     {
-        var run = SystemManager.Instance.RunState.run;
+        var run = SystemManager.Instance.RunStateManager.run;
         RefreshPlayerEntry();
         var archive = ButtonRoot.Find("CharacterArchive/CharacterArchiveButton").GetComponent<Button>();
         archive.interactable = SystemManager.Instance.Narrative?.Enabled == true
@@ -115,7 +115,7 @@ public class HUDPanel : PanelBase
     }
     private void RefreshPlayerEntry()
     {
-        var run=SystemManager.Instance?.RunState?.run;if(run==null)return;
+        var run=SystemManager.Instance?.RunStateManager?.run;if(run==null)return;
         if (_playerButton && run.player != null)
         {
             _playerButton.gameObject.SetActive(run.player.created || run.currentDay <= 3);

@@ -16,7 +16,7 @@ public struct CheckResult
     public bool IsFumble;
 }
 
-public class D20Service
+public class D100Service
 {
     [System.Serializable]
     public class BalanceConfig

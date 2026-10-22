@@ -110,7 +110,7 @@ public class SaveSlotsPanel : PanelBase
     }
     private void SaveSlot(int id)
     {
-        if(SystemManager.Instance.RunState.SaveSlot(id))
+        if(SystemManager.Instance.RunStateManager.SaveSlot(id))
         {
             CancelOverwrite();
             ToastManager.ShowFeedback("存档保存成功");

@@ -333,7 +333,7 @@ public class TalkPanel : PanelBase, IPointerClickHandler
 
     private void OnTodayVisitorsReady(List<int> ids)
     {
-        int today = SystemManager.Instance.RunState.run.currentDay;
+        int today = SystemManager.Instance.RunStateManager.run.currentDay;
         _historyView.CheckDayChangedAndClear(today);
     }
 
@@ -350,7 +350,7 @@ public class TalkPanel : PanelBase, IPointerClickHandler
 
     public DialogueLine CurrentDisplayedLine => _currentIndex>0 && _currentIndex<=_dialogueList.Count ? _dialogueList[_currentIndex-1] : null;
     /// <summary>自动检定也在当前句后标注。仅刷新已有文本，不推进、不额外写历史。</summary>
-    public void ShowCheckAnnotation(D20Service.Presentation check)
+    public void ShowCheckAnnotation(D100Service.Presentation check)
     {
         if(string.IsNullOrEmpty(check.storyText))return;
         _speakerNameText.text=check.storySpeaker??"";
@@ -364,7 +364,7 @@ public class TalkPanel : PanelBase, IPointerClickHandler
 
     public void CheckDayChangedAndClear()
     {
-        int today = SystemManager.Instance.RunState.run.currentDay;
+        int today = SystemManager.Instance.RunStateManager.run.currentDay;
         _historyView.CheckDayChangedAndClear(today);
     }
 

@@ -61,7 +61,6 @@ public class EconomySystem
         if (!SpendCash(schedule.installmentAmount))
         {
             Debug.LogError("现金不足，契约逾期");
-            GamePassEvent.Trigger();
         }
         else
         {

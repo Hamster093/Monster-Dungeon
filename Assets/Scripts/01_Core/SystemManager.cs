@@ -12,7 +12,7 @@ public class SystemManager
     public static SystemManager Instance => _instance ??= new SystemManager();
 
     public ConfigDatabase Config { get; private set; }
-    public RunStateManager RunState { get; private set; }
+    public RunStateManager RunStateManager { get; private set; }
     public ScheduleSystem Schedule { get; private set; }
     public ActionPointSystem ActionPoint { get; private set; }
     public EconomySystem Economy { get; private set; }
@@ -20,7 +20,6 @@ public class SystemManager
     public DailyCommissionSystem DailyCommission { get; private set; }
     public NarrativeSystem Narrative { get; private set; }
 
-    private D20Service _d20;
 
     public bool IsInitialized { get; private set; }
 
@@ -31,18 +30,16 @@ public class SystemManager
         Config = ConfigDatabase.Instance;
 
         // 2. 运行时状态
-        RunState = RunStateManager.Instance;
-        if (SaveAndLoadManager.Exists("run_state")) RunState.Load();
-        else RunState.NewRun();
+        RunStateManager = RunStateManager.Instance;
+        if (SaveAndLoadManager.Exists("run_state")) RunStateManager.Load();
+        else RunStateManager.NewRun();
 
-        // 3. 底层服务
-        _d20 = new D20Service();
 
         // 4. 业务系统
-        Economy = new EconomySystem(RunState);
-        ActionPoint = new ActionPointSystem(RunState);
-        Schedule = new ScheduleSystem(RunState, Config);
-        VisitSystem = new VisitSystem(RunState);
+        Economy = new EconomySystem(RunStateManager);
+        ActionPoint = new ActionPointSystem(RunStateManager);
+        Schedule = new ScheduleSystem(RunStateManager, Config);
+        VisitSystem = new VisitSystem(RunStateManager);
         DailyCommission = new DailyCommissionSystem();
         Narrative = new NarrativeSystem(this);
 

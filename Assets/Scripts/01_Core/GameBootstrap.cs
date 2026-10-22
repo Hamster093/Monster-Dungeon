@@ -45,7 +45,7 @@ public class GameBootstrap : MonoBehaviour
     {
         if (_inited)
         {
-            SystemManager.Instance.RunState.Save();
+            SystemManager.Instance.RunStateManager.Save();
             SystemManager.Instance.Dispose();
         }
     }

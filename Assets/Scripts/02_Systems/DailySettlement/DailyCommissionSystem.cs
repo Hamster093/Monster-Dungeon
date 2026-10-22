@@ -82,7 +82,7 @@ public class DailyCommissionSystem
         {
             if (list[i].contractId == contractId)
             {
-                list[i].completionRate = Mathf.Clamp(rate, 0, D20Service.Balance.criticalIncome);
+                list[i].completionRate = Mathf.Clamp(rate, 0, D100Service.Balance.criticalIncome);
                 return;
             }
         }
@@ -161,7 +161,7 @@ public class DailyCommissionSystem
 
                     Present(e,
                         "遭遇 · " + Config.Monsters[target].name,
-                        D20Service.Balance.lightMax + 1,
+                        D100Service.Balance.lightMax + 1,
                         modifier,
                         "battle",
                         true,
@@ -192,10 +192,10 @@ public class DailyCommissionSystem
 
         var request = run.pendingDice?.context == "settlement" && run.pendingDice.key == key
             ? run.pendingDice
-            : D20Service.CreatePresentation(key, Config.Adventurers[entry.adventurerId].name + " · " + title, target, modifier, "settlement", critical);
+            : D100Service.CreatePresentation(key, Config.Adventurers[entry.adventurerId].name + " · " + title, target, modifier, "settlement", critical);
 
         run.pendingDice = request;
-        D20Service.Show(request, completed);
+        D100Service.Show(request, completed);
     }
 
     #endregion

@@ -23,7 +23,7 @@ public class RunState
     public List<int> monsterOffers = new();
     public string pendingEvolutionUid;
     public string pendingEvolutionKind = ""; // 尚未提交的进化方向，与实例选择一并保存。
-    public D20Service.Presentation pendingDice;
+    public D100Service.Presentation pendingDice;
     public Dictionary<int,int> injuryAppliedDay = new();
 
     // 读档恢复前只认快照，恢复完成后只认活世界，不能混合两份库存。
@@ -269,7 +269,7 @@ public class AdventurerRuntimeData
     public AdventurerRuntimeData(AdventurerConfig config)
     {
         configId = config.id;
-        trust=D20Service.Balance.initialTrust;
+        trust=D100Service.Balance.initialTrust;
         Config = config;
 
         // 初始化七维属性

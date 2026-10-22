@@ -32,7 +32,7 @@ public static class DailyIncomeCalculator
         int total = boardIncome + commission.normalIncome + commission.specialIncome;
 
         // 4. 下阶段应缴纳分期
-        int phase = SystemManager.Instance?.RunState?.run?.currentPhase ?? 1;
+        int phase = SystemManager.Instance?.RunStateManager?.run?.currentPhase ?? 1;
         int installment = ConfigDatabase.Instance?.GetInstallmentPayment(phase) ?? 0;
 
         return new SettlementData

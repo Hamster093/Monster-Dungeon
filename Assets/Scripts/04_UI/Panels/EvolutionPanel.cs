@@ -43,7 +43,7 @@ public sealed class EvolutionPanel : PanelBase
         base.OnOpen(data);_uid=data as string;_submitted=false;
         var item=Find();
         if(item==null||item.Evolved||item.IsResting||SystemManager.Instance.Narrative?.IsPreparing!=true){UIManager.Instance.Close(this);return;}
-        var run=SystemManager.Instance.RunState.run;
+        var run=SystemManager.Instance.RunStateManager.run;
         // 只恢复同一实例尚未提交的方向；打开另一只魔物时不沿用旧选择。
         _selected=run.pendingEvolutionUid==_uid?Index(run.pendingEvolutionKind):-1;
         run.pendingEvolutionUid=_uid;
@@ -67,7 +67,7 @@ public sealed class EvolutionPanel : PanelBase
         if(_submitted||!IsOpen||index<0||index>=Names.Length)return;
         var item=Find();if(item==null||item.Evolved||item.IsResting||SystemManager.Instance.Narrative?.IsPreparing!=true)return;
         _selected=index;
-        SystemManager.Instance.RunState.run.pendingEvolutionKind=Names[index];
+        SystemManager.Instance.RunStateManager.run.pendingEvolutionKind=Names[index];
         RefreshSelection();
         SystemManager.Instance.Narrative.Save();
     }
@@ -107,7 +107,7 @@ public sealed class EvolutionPanel : PanelBase
     public override bool OnEscapePressed(){UIManager.Instance.Close(this);return true;}
     public override void OnClose()
     {
-        var run=SystemManager.Instance.RunState.run;
+        var run=SystemManager.Instance.RunStateManager.run;
         run.pendingEvolutionUid=null;run.pendingEvolutionKind=null;
         _selected=-1;base.OnClose();SystemManager.Instance.Narrative?.Save();
     }

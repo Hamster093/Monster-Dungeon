@@ -6,7 +6,7 @@
 	功能：库存变更事件
 *****************************************************/
 
-public class InventoryChangedEvent : Event<ShopChangedEvent>
+public class InventoryChangedEvent : Event<InventoryChangedEvent>
 {
 }
 

@@ -64,7 +64,7 @@ public class StartGame : MonoBehaviour
     /// </summary>
     public void SaveSystem()
     {
-        if (SystemManager.Instance.IsInitialized) SystemManager.Instance.RunState.Save();
+        if (SystemManager.Instance.IsInitialized) SystemManager.Instance.RunStateManager.Save();
     }
 
     /// <summary>

@@ -300,7 +300,7 @@ public class ShopPanel : PanelBase
     private void BuildSlots()
     {
         _slots.Clear();
-        SystemManager.Instance.RunState.run.EnsureBusinessDay();
+        SystemManager.Instance.RunStateManager.run.EnsureBusinessDay();
 
         if (ConfigDatabase.Instance == null)
         {
@@ -335,7 +335,7 @@ public class ShopPanel : PanelBase
         }
 
         // 商店模式
-        var run=SystemManager.Instance.RunState.run;
+        var run=SystemManager.Instance.RunStateManager.run;
         var sourceIds = _currentCategory == ShopCategory.Item ? ConfigDatabase.Instance.Items.Values.Where(c=>c.id<=7).OrderBy(c=>c.price).Select(c=>c.id).ToList() : run.monsterOffers;
         foreach (var id in sourceIds)
         {
@@ -616,7 +616,7 @@ public class ShopPanel : PanelBase
 
         // 3. 减库存（-1 表示无限）
         if (slot.stock > 0) slot.stock--;
-        SystemManager.Instance.RunState.run.shopStock[slot.config.id]=slot.stock;
+        SystemManager.Instance.RunStateManager.run.shopStock[slot.config.id]=slot.stock;
         SystemManager.Instance.Narrative?.Save();
 
         DeselectAllSlots();
@@ -656,7 +656,7 @@ public class ShopPanel : PanelBase
         // 商店模式：扣钱
         if (!SystemManager.Instance.Economy.SpendCash(cfg.price)) return false;
         if (slot.stock > 0) slot.stock--;
-        SystemManager.Instance.RunState.run.shopStock[slot.config.id]=slot.stock;
+        SystemManager.Instance.RunStateManager.run.shopStock[slot.config.id]=slot.stock;
         SystemManager.Instance.Narrative?.Save();
         DeselectAllSlots();
         RefreshAll();

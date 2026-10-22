@@ -6,7 +6,7 @@ using UnityEngine.UI;
 /// <summary>所有正式检定共用的结果确认层。演出只读取冻结结果，不重放业务奖励。</summary>
 public sealed class DiceCheckPanel : PanelBase
 {
-    public sealed class OpenData{public D20Service.Presentation request;public Action<CheckResult> completed;}
+    public sealed class OpenData{public D100Service.Presentation request;public Action<CheckResult> completed;}
     [SerializeField] private CanvasGroup _fade;
     [SerializeField] private Text _title,_requirement,_rollText,_outcome,_note;
     [SerializeField] private Text _modifierText,_totalText;
@@ -113,7 +113,7 @@ public sealed class DiceCheckPanel : PanelBase
         if(group)group.alpha=1;if(text)text.text=value.ToString();
     }
     private static string Signed(int value)=>value>=0?"＋"+value:"−"+Mathf.Abs(value);
-    private static string CompactDetails(D20Service.Presentation p)
+    private static string CompactDetails(D100Service.Presentation p)
     {
         if(string.IsNullOrEmpty(p.details))return "";
         var lines=p.details.Split('\n');var visible=new System.Collections.Generic.List<string>{lines[0]};
@@ -142,7 +142,7 @@ public sealed class DiceCheckPanel : PanelBase
     {
         if(GuideHelpOverlay.BlocksInput||!_ready||_done||_data.request.FixedOutcome||_data.request.rerolled||!InventoryModel.Instance.ConsumeId(2))return;
         // 重投仍只扣一枚硬币、建立一次结果，然后完整重播同一显示序列。
-        _data.request.rerolled=true;_data.request.audioPresented=false;AudioManager.Instance?.PlayCue("item");D20Service.RollPresented(_data.request);
+        _data.request.rerolled=true;_data.request.audioPresented=false;AudioManager.Instance?.PlayCue("item");D100Service.RollPresented(_data.request);
         SystemManager.Instance.Narrative?.Save();BeginReveal();
     }
     public void Complete()
